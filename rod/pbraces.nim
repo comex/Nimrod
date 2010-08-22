@@ -485,6 +485,7 @@ proc parseExpr(p: var TParser): PNode =
   #
   case p.tok.toktype
   of tkVar: result = parseTypeDescKAux(p, nkVarTy)
+  of tkConst: result = parseTypeDescKAux(p, nkConstTy)
   of tkRef: result = parseTypeDescKAux(p, nkRefTy)
   of tkPtr: result = parseTypeDescKAux(p, nkPtrTy)
   of tkType: result = parseTypeDescKAux(p, nkTypeOfExpr)

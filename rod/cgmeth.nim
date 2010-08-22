@@ -18,7 +18,7 @@ proc generateMethodDispatchers*(): PNode
 # implementation
 
 const 
-  skipPtrs = {tyVar, tyPtr, tyRef, tyGenericInst}
+  skipPtrs = {tyVar, tyConst, tyPtr, tyRef, tyGenericInst}
 
 proc genConv(n: PNode, d: PType, downcast: bool): PNode = 
   var 

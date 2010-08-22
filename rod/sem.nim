@@ -119,7 +119,7 @@ include "seminst.nim", "sigmatch.nim"
 
 proc CheckBool(t: PNode) = 
   if (t.Typ == nil) or
-      (skipTypes(t.Typ, {tyGenericInst, tyVar, tyOrdinal}).kind != tyBool): 
+      (skipTypes(t.Typ, {tyGenericInst, tyVar, tyConst, tyOrdinal}).kind != tyBool): 
     liMessage(t.Info, errExprMustBeBool)
   
 proc typeMismatch(n: PNode, formal, actual: PType) = 

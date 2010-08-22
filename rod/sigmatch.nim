@@ -182,7 +182,7 @@ proc typeRel(mapping: var TIdTable, f, a: PType): TTypeRelation =
   assert(f != nil)
   assert(a != nil)
   if a.kind == tyGenericInst and
-      skipTypes(f, {tyVar}).kind notin {tyGenericBody, tyGenericInvokation}: 
+      skipTypes(f, {tyVar, tyConst}).kind notin {tyGenericBody, tyGenericInvokation}: 
     return typeRel(mapping, f, lastSon(a))
   if a.kind == tyVar and f.kind != tyVar: 
     return typeRel(mapping, f, a.sons[0])
@@ -208,7 +208,9 @@ proc typeRel(mapping: var TIdTable, f, a: PType): TTypeRelation =
   of tyFloat32:  result = handleFloatRange(f, a)
   of tyFloat64:  result = handleFloatRange(f, a)
   of tyFloat128: result = handleFloatRange(f, a)
-  of tyVar: 
+  of tyVar, tyConst: 
+    #echo(typeToString(a))
+    #echo(typeToString(f))
     if (a.kind == f.kind): result = typeRel(mapping, base(f), base(a))
     else: result = typeRel(mapping, base(f), a)
   of tyArray, tyArrayConstr: 

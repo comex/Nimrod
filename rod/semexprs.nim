@@ -92,7 +92,7 @@ proc checkConvertible(info: TLineInfo, castDest, src: PType) =
     return 
   var d = skipTypes(castDest, abstractVar)
   var s = skipTypes(src, abstractVar)
-  while (d != nil) and (d.Kind in {tyPtr, tyRef}) and (d.Kind == s.Kind): 
+  while (d != nil) and (d.Kind in {tyPtr, tyRef, tyConst}) and (d.Kind == s.Kind): 
     d = base(d)
     s = base(s)
   if d == nil: 
@@ -317,7 +317,10 @@ proc isAssignable(n: PNode): TAssignableResult =
     if (n.sym.kind in {skVar, skTemp}): result = arLValue
   of nkDotExpr: 
     checkMinSonsLen(n, 1)
-    if skipTypes(n.sons[0].typ, abstractInst).kind in {tyVar, tyPtr, tyRef}: 
+    var t = skipTypes(n.sons[0].typ, abstractInst)
+    if t.kind == tyConst:
+      result = arNone
+    elif t.kind in {tyVar, tyPtr, tyRef}: 
       result = arLValue
     else: 
       result = isAssignable(n.sons[0])
@@ -325,7 +328,10 @@ proc isAssignable(n: PNode): TAssignableResult =
       result = arDiscriminant
   of nkBracketExpr: 
     checkMinSonsLen(n, 1)
-    if skipTypes(n.sons[0].typ, abstractInst).kind in {tyVar, tyPtr, tyRef}: 
+    var t = skipTypes(n.sons[0].typ, abstractInst)
+    if t.kind == tyConst:
+      result = arNone
+    elif t.kind in {tyVar, tyPtr, tyRef}: 
       result = arLValue
     else: 
       result = isAssignable(n.sons[0])
@@ -336,7 +342,11 @@ proc isAssignable(n: PNode): TAssignableResult =
     if skipTypes(n.typ, abstractPtrs).kind in {tyOpenArray, tyTuple, tyObject}: 
       result = isAssignable(n.sons[1])
   of nkHiddenDeref, nkDerefExpr: 
-    result = arLValue
+    var t = skipTypes(n.sons[0].typ, abstractInst)
+    if t.kind == tyConst:
+      result = arNone
+    else:
+      result = arLValue
   of nkObjUpConv, nkObjDownConv, nkCheckedFieldExpr: 
     result = isAssignable(n.sons[0])
   else: 
@@ -362,7 +372,7 @@ proc analyseIfAddressTaken(c: PContext, n: PNode): PNode =
   of nkDotExpr: 
     checkSonsLen(n, 2)
     if n.sons[1].kind != nkSym: internalError(n.info, "analyseIfAddressTaken")
-    if skipTypes(n.sons[1].sym.typ, abstractInst).kind != tyVar: 
+    if skipTypes(n.sons[1].sym.typ, abstractInstPlusConst).kind != tyVar: 
       incl(n.sons[1].sym.flags, sfAddrTaken)
       result = newHiddenAddrTaken(c, n)
   of nkBracketExpr: 
@@ -600,13 +610,13 @@ proc lookupInRecordAndBuildCheck(c: PContext, n, r: PNode, field: PIdent,
   else: illFormedAst(n)
   
 proc makeDeref(n: PNode): PNode = 
-  var t = skipTypes(n.typ, {tyGenericInst})
+  var t = skipTypes(n.typ, {tyGenericInst, tyConst})
   result = n
   if t.kind == tyVar: 
     result = newNodeIT(nkHiddenDeref, n.info, t.sons[0])
     addSon(result, n)
-    t = skipTypes(t.sons[0], {tyGenericInst})
-  if t.kind in {tyPtr, tyRef}: 
+    t = skipTypes(t.sons[0], {tyGenericInst, tyConst})
+  elif t.kind in {tyPtr, tyRef}: 
     var a = result
     result = newNodeIT(nkDerefExpr, n.info, t.sons[0])
     addSon(result, a)
@@ -621,8 +631,11 @@ proc builtinFieldAccess(c: PContext, n: PNode, flags: TExprFlags): PNode =
   n.sons[0] = semExprWithType(c, n.sons[0], {efAllowType} + flags)
   var i = considerAcc(n.sons[1])
   var ty = n.sons[0].Typ
+
   var f: PSym = nil
   result = nil
+  ty = skipTypes(ty, {tyConst})
+  
   if ty.kind == tyEnum: 
     # look up if the identifier belongs to the enum:
     while ty != nil: 
@@ -729,7 +742,7 @@ proc semSubscript(c: PContext, n: PNode, flags: TExprFlags): PNode =
   ## returns nil if not a built-in subscript operator;
   checkMinSonsLen(n, 2)
   n.sons[0] = semExprWithType(c, n.sons[0], flags - {efAllowType})
-  var arr = skipTypes(n.sons[0].typ, {tyGenericInst, tyVar, tyPtr, tyRef})
+  var arr = skipTypes(n.sons[0].typ, {tyGenericInst, tyVar, tyConst, tyPtr, tyRef, tyConst})
   case arr.kind
   of tyArray, tyOpenArray, tyArrayConstr, tySequence, tyString, tyCString: 
     checkSonsLen(n, 2)
@@ -814,12 +827,12 @@ proc semSetConstr(c: PContext, n: PNode): PNode =
         n.sons[i].sons[1] = semExprWithType(c, n.sons[i].sons[1])
         if typ == nil: 
           typ = skipTypes(n.sons[i].sons[0].typ, 
-                          {tyGenericInst, tyVar, tyOrdinal})
+                          {tyGenericInst, tyVar, tyConst, tyOrdinal})
         n.sons[i].typ = n.sons[i].sons[1].typ # range node needs type too
       else: 
         n.sons[i] = semExprWithType(c, n.sons[i])
         if typ == nil: 
-          typ = skipTypes(n.sons[i].typ, {tyGenericInst, tyVar, tyOrdinal})
+          typ = skipTypes(n.sons[i].typ, {tyGenericInst, tyVar, tyConst, tyOrdinal})
     if not isOrdinalType(typ): 
       liMessage(n.info, errOrdinalTypeExpected)
       return 
@@ -1041,7 +1054,7 @@ proc semExpr(c: PContext, n: PNode, flags: TExprFlags = {}): PNode =
     checkSonsLen(n, 1)
     n.sons[0] = semExprWithType(c, n.sons[0])
     result = n
-    var t = skipTypes(n.sons[0].typ, {tyGenericInst, tyVar})
+    var t = skipTypes(n.sons[0].typ, {tyGenericInst, tyVar, tyConst})
     case t.kind
     of tyRef, tyPtr: n.typ = t.sons[0]
     else: liMessage(n.sons[0].info, errCircumNeedsPointer)

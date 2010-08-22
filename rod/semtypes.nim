@@ -101,6 +101,16 @@ proc semVarType(c: PContext, n: PNode, prev: PType): PType =
     addSon(result, base)
   else: 
     liMessage(n.info, errXExpectsOneTypeParam, "var")
+
+proc semConstType(c: PContext, n: PNode, prev: PType): PType = 
+  result = newOrPrevType(tyConst, prev, c)
+  if sonsLen(n) == 1: 
+    var base = semTypeNode(c, n.sons[0], nil)
+    if base.kind notin {tyRef, tyPtr}:
+      liMessage(n.info, errConstExpectsPtrOrRef)
+    addSon(result, base) 
+  else: 
+    liMessage(n.info, errXExpectsOneTypeParam, "const")
   
 proc semDistinct(c: PContext, n: PNode, prev: PType): PType = 
   result = newOrPrevType(tyDistinct, prev, c)
@@ -602,6 +612,7 @@ proc semTypeNode(c: PContext, n: PNode, prev: PType): PType =
   of nkTupleTy: result = semTuple(c, n, prev)
   of nkRefTy: result = semAnyRef(c, n, tyRef, "ref", prev)
   of nkPtrTy: result = semAnyRef(c, n, tyPtr, "ptr", prev)
+  of nkConstTy: result = semConstType(c, n, prev)
   of nkVarTy: result = semVarType(c, n, prev)
   of nkDistinctTy: result = semDistinct(c, n, prev)
   of nkProcTy: 

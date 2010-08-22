@@ -176,6 +176,7 @@ type
     nkRefTy,
     nkPtrTy,
     nkVarTy,
+    nkConstTy,
     nkDistinctTy,         # distinct type
     nkProcTy,
     nkEnumTy,
@@ -242,6 +243,7 @@ type
     tyRange,
     tyPtr, tyRef,
     tyVar,
+    tyConst,
     tySequence,
     tyProc,
     tyPointer, tyOpenArray,
@@ -515,11 +517,11 @@ const
   GenericTypes*: TTypeKinds = {tyGenericInvokation, tyGenericBody, 
     tyGenericParam}
   StructuralEquivTypes*: TTypeKinds = {tyArrayConstr, tyNil, tyTuple, tyArray, 
-    tySet, tyRange, tyPtr, tyRef, tyVar, tySequence, tyProc, tyOpenArray}
+    tySet, tyRange, tyPtr, tyRef, tyVar, tyConst, tySequence, tyProc, tyOpenArray}
   ConcreteTypes*: TTypeKinds = { # types of the expr that may occur in::
                                  # var x = expr
     tyBool, tyChar, tyEnum, tyArray, tyObject, 
-    tySet, tyTuple, tyRange, tyPtr, tyRef, tyVar, tySequence, tyProc, tyPointer, 
+    tySet, tyTuple, tyRange, tyPtr, tyRef, tyVar, tyConst, tySequence, tyProc, tyPointer, 
     tyOpenArray, tyString, tyCString, tyInt..tyInt64, tyFloat..tyFloat128} 
   
   ConstantDataTypes*: TTypeKinds = {tyArray, tySet, tyTuple}

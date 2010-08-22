@@ -87,17 +87,17 @@ const
     tySet, tyVar, tyRef, tyPtr}
 
 proc mapType(typ: PType): TEcmasTypeKind = 
-  var t = skipTypes(typ, abstractInst)
+  var t = skipTypes(typ, abstractInstPlusConst)
   case t.kind
   of tyVar, tyRef, tyPtr: 
-    if skipTypes(t.sons[0], abstractInst).kind in mappedToObject: 
+    if skipTypes(t.sons[0], abstractInstPlusConst).kind in mappedToObject: 
       result = etyObject
     else: 
       result = etyBaseIndex
   of tyPointer: 
     # treat a tyPointer like a typed pointer to an array of bytes
     result = etyInt
-  of tyRange, tyDistinct, tyOrdinal: result = mapType(t.sons[0])
+  of tyRange, tyDistinct, tyOrdinal, tyConst: result = mapType(t.sons[0])
   of tyInt..tyInt64, tyEnum, tyChar: result = etyInt
   of tyBool: result = etyBool
   of tyFloat..tyFloat128: result = etyFloat
@@ -720,7 +720,7 @@ const
 
 proc needsNoCopy(y: PNode): bool = 
   result = (y.kind in nodeKindsNeedNoCopy) or
-      (skipTypes(y.typ, abstractInst).kind in {tyRef, tyPtr, tyVar})
+      (skipTypes(y.typ, abstractInstPlusConst).kind in {tyRef, tyPtr, tyVar})
 
 proc genAsgnAux(p: var TProc, x, y: PNode, r: var TCompRes, 
                 noCopyNeeded: bool) = 
@@ -925,7 +925,7 @@ proc createRecordVarAux(p: var TProc, rec: PNode, c: var int): PRope =
   else: InternalError(rec.info, "createRecordVarAux")
   
 proc createVar(p: var TProc, typ: PType, indirect: bool): PRope = 
-  var t = skipTypes(typ, abstractInst)
+  var t = skipTypes(typ, abstractInstPlusConst)
   case t.kind
   of tyInt..tyInt64, tyEnum, tyChar: 
     result = putToSeq("0", indirect)
