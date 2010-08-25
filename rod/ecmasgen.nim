@@ -297,6 +297,11 @@ const # magic checked op; magic unchecked op; checked op; unchecked op
     ["mulInt", "", "mulInt($1, $2)", "($1 * $2)"], # MulI
     ["divInt", "", "divInt($1, $2)", "Math.floor($1 / $2)"], # DivI
     ["modInt", "", "modInt($1, $2)", "Math.floor($1 % $2)"], # ModI
+    ["addInt32", "", "addInt32($1, $2)", "($1 + $2)"], # AddI32
+    ["subInt32", "", "subInt32($1, $2)", "($1 - $2)"], # SubI32
+    ["mulInt32", "", "mulInt32($1, $2)", "($1 * $2)"], # MulI32
+    ["divInt32", "", "divInt32($1, $2)", "Math.floor($1 / $2)"], # DivI32
+    ["modInt32", "", "modInt32($1, $2)", "Math.floor($1 % $2)"], # ModI32
     ["addInt64", "", "addInt64($1, $2)", "($1 + $2)"], # AddI64
     ["subInt64", "", "subInt64($1, $2)", "($1 - $2)"], # SubI64
     ["mulInt64", "", "mulInt64($1, $2)", "($1 * $2)"], # MulI64

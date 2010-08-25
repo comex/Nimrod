@@ -84,6 +84,7 @@ proc parseRunData(dir: string): seq[TOutp] =
 proc findSpec[T](specs: seq[T], filename: string): int = 
   while result < specs.len:
     if specs[result].file == filename: return
+    echo(specs[result].file)
     inc(result)
   quit("cannot find spec for file: " & filename)
 

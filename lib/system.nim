@@ -360,28 +360,28 @@ proc `not` *(x: int64): int64 {.magic: "BitnotI64", noSideEffect.}
 proc `+` *(x, y: int): int {.magic: "AddI", noSideEffect.}
 proc `+` *(x, y: int8): int8 {.magic: "AddI", noSideEffect.}
 proc `+` *(x, y: int16): int16 {.magic: "AddI", noSideEffect.}
-proc `+` *(x, y: int32): int32 {.magic: "AddI", noSideEffect.}
+proc `+` *(x, y: int32): int32 {.magic: "AddI32", noSideEffect.}
 proc `+` *(x, y: int64): int64 {.magic: "AddI64", noSideEffect.}
   ## Binary `+` operator for an integer.
 
 proc `-` *(x, y: int): int {.magic: "SubI", noSideEffect.}
 proc `-` *(x, y: int8): int8 {.magic: "SubI", noSideEffect.}
 proc `-` *(x, y: int16): int16 {.magic: "SubI", noSideEffect.}
-proc `-` *(x, y: int32): int32 {.magic: "SubI", noSideEffect.}
+proc `-` *(x, y: int32): int32 {.magic: "SubI32", noSideEffect.}
 proc `-` *(x, y: int64): int64 {.magic: "SubI64", noSideEffect.}
   ## Binary `-` operator for an integer.
 
 proc `*` *(x, y: int): int {.magic: "MulI", noSideEffect.}
 proc `*` *(x, y: int8): int8 {.magic: "MulI", noSideEffect.}
 proc `*` *(x, y: int16): int16 {.magic: "MulI", noSideEffect.}
-proc `*` *(x, y: int32): int32 {.magic: "MulI", noSideEffect.}
+proc `*` *(x, y: int32): int32 {.magic: "MulI32", noSideEffect.}
 proc `*` *(x, y: int64): int64 {.magic: "MulI64", noSideEffect.}
   ## Binary `*` operator for an integer.
 
 proc `div` *(x, y: int): int {.magic: "DivI", noSideEffect.}
 proc `div` *(x, y: int8): int8 {.magic: "DivI", noSideEffect.}
 proc `div` *(x, y: int16): int16 {.magic: "DivI", noSideEffect.}
-proc `div` *(x, y: int32): int32 {.magic: "DivI", noSideEffect.}
+proc `div` *(x, y: int32): int32 {.magic: "DivI32", noSideEffect.}
 proc `div` *(x, y: int64): int64 {.magic: "DivI64", noSideEffect.}
   ## computes the integer division. This is roughly the same as
   ## ``floor(x/y)``.
@@ -389,7 +389,7 @@ proc `div` *(x, y: int64): int64 {.magic: "DivI64", noSideEffect.}
 proc `mod` *(x, y: int): int {.magic: "ModI", noSideEffect.}
 proc `mod` *(x, y: int8): int8 {.magic: "ModI", noSideEffect.}
 proc `mod` *(x, y: int16): int16 {.magic: "ModI", noSideEffect.}
-proc `mod` *(x, y: int32): int32 {.magic: "ModI", noSideEffect.}
+proc `mod` *(x, y: int32): int32 {.magic: "ModI32", noSideEffect.}
 proc `mod` *(x, y: int64): int64 {.magic: "ModI64", noSideEffect.}
   ## computes the integer modulo operation. This is the same as
   ## ``x - (x div y) * y``.
@@ -1302,6 +1302,10 @@ when not defined(EcmaScript) and not defined(NimrodVM):
     ## a shorthand for ``echo(errormsg); quit(quitFailure)``.
 
 when not defined(EcmaScript) and not defined(NimrodVM):
+  
+  proc likely*(val : bool) : bool {.importc: "likely", nodecl, nosideeffect}
+  proc unlikely*(val : bool) : bool {.importc: "unlikely", nodecl, nosideeffect}
+
 
   proc initGC()
 
@@ -1533,6 +1537,7 @@ when not defined(EcmaScript) and not defined(NimrodVM):
   # ----------------------------------------------------------------------------
 
   include "system/excpt"
+
   # we cannot compile this with stack tracing on
   # as it would recurse endlessly!
   include "system/arithm"
@@ -1613,6 +1618,12 @@ elif defined(NimrodVM):
   proc alloc(size: int): pointer = nil
   proc alloc0(size: int): pointer = nil
   proc realloc(p: Pointer, newsize: int): pointer = nil
+
+  proc likely*(val : bool) : bool {.inline, nosideeffect.} =
+    return val
+  proc unlikely*(val : bool) : bool {.inline, nosideeffect.} =
+    return val
+
 
 {.pop.} # checks
 {.pop.} # hints

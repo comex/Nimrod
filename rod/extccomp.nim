@@ -56,7 +56,7 @@ const
      includeCmd: " -I", 
      debug: "", 
      pic: "-fPIC", 
-     asmStmtFrmt: "asm($1);$n", 
+     asmStmtFrmt: "asm volatile($1);$n", 
      props: {hasSwitchRange, hasComputedGoto, hasCpp}), 
     (name: "llvm_gcc", 
      objExt: "o", 

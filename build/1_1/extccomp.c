@@ -234,7 +234,7 @@ STRING_LITERAL(TMP64269, "$options $buildgui $builddll -o $exefile $objfiles", 5
 STRING_LITERAL(TMP64270, " -I", 3);
 STRING_LITERAL(TMP64271, "", 0);
 STRING_LITERAL(TMP64272, "-fPIC", 5);
-STRING_LITERAL(TMP64273, "asm($1);$n", 10);
+STRING_LITERAL(TMP64273, "asm volatile($1);$n", 10);
 STRING_LITERAL(TMP64274, "llvm_gcc", 8);
 STRING_LITERAL(TMP64275, "llvm-gcc", 8);
 STRING_LITERAL(TMP64276, "lcc", 3);

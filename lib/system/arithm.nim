@@ -17,82 +17,6 @@ proc raiseOverflow {.compilerproc, noinline, noreturn.} =
 proc raiseDivByZero {.compilerproc, noinline, noreturn.} =
   raise newException(EDivByZero, "divison by zero")
 
-proc addInt64(a, b: int64): int64 {.compilerProc, inline.} =
-  result = a +% b
-  if (result xor a) >= int64(0) or (result xor b) >= int64(0):
-    return result
-  raiseOverflow()
-
-proc subInt64(a, b: int64): int64 {.compilerProc, inline.} =
-  result = a -% b
-  if (result xor a) >= int64(0) or (result xor not b) >= int64(0):
-    return result
-  raiseOverflow()
-
-proc negInt64(a: int64): int64 {.compilerProc, inline.} =
-  if a != low(int64): return -a
-  raiseOverflow()
-
-proc absInt64(a: int64): int64 {.compilerProc, inline.} =
-  if a != low(int64):
-    if a >= 0: return a
-    else: return -a
-  raiseOverflow()
-
-proc divInt64(a, b: int64): int64 {.compilerProc, inline.} =
-  if b == int64(0):
-    raiseDivByZero()
-  if a == low(int64) and b == int64(-1):
-    raiseOverflow()
-  return a div b
-
-proc modInt64(a, b: int64): int64 {.compilerProc, inline.} =
-  if b == int64(0):
-    raiseDivByZero()
-  return a mod b
-
-#
-# This code has been inspired by Python's source code.
-# The native int product x*y is either exactly right or *way* off, being
-# just the last n bits of the true product, where n is the number of bits
-# in an int (the delivered product is the true product plus i*2**n for
-# some integer i).
-#
-# The native float64 product x*y is subject to three
-# rounding errors: on a sizeof(int)==8 box, each cast to double can lose
-# info, and even on a sizeof(int)==4 box, the multiplication can lose info.
-# But, unlike the native int product, it's not in *range* trouble:  even
-# if sizeof(int)==32 (256-bit ints), the product easily fits in the
-# dynamic range of a float64. So the leading 50 (or so) bits of the float64
-# product are correct.
-#
-# We check these two ways against each other, and declare victory if they're
-# approximately the same. Else, because the native int product is the only
-# one that can lose catastrophic amounts of information, it's the native int
-# product that must have overflowed.
-#
-proc mulInt64(a, b: int64): int64 {.compilerproc.} =
-  var
-    resAsFloat, floatProd: float64
-  result = a *% b
-  floatProd = toBiggestFloat(a) # conversion
-  floatProd = floatProd * toBiggestFloat(b)
-  resAsFloat = toBiggestFloat(result)
-
-  # Fast path for normal case: small multiplicands, and no info
-  # is lost in either method.
-  if resAsFloat == floatProd: return result
-
-  # Somebody somewhere lost info. Close enough, or way off? Note
-  # that a != 0 and b != 0 (else resAsFloat == floatProd == 0).
-  # The difference either is or isn't significant compared to the
-  # true value (of which floatProd is a good approximation).
-
-  # abs(diff)/abs(prod) <= 1/32 iff
-  #   32 * abs(diff) <= abs(prod) -- 5 good bits is "close enough"
-  if 32.0 * abs(resAsFloat - floatProd) <= abs(floatProd):
-    return result
-  raiseOverflow()
 
 
 proc absInt(a: int): int {.compilerProc, inline.} =
@@ -102,16 +26,17 @@ proc absInt(a: int): int {.compilerProc, inline.} =
   raiseOverflow()
 
 const
-  asmVersion = defined(I386) and (defined(vcc) or defined(wcc) or
+  asmVersion = (defined(i386) or defined(x8664)) and
+               (defined(vcc) or defined(wcc) or
                defined(dmc) or defined(gcc) or defined(llvm_gcc))
     # my Version of Borland C++Builder does not have
     # tasm32, which is needed for assembler blocks
     # this is why Borland is not included in the 'when'
 
-when asmVersion and not defined(gcc) and not defined(llvm_gcc):
+when asmVersion and defined(i386) and not defined(gcc) and not defined(llvm_gcc):
   # assembler optimized versions for compilers that
   # have an intel syntax assembler:
-  proc addInt(a, b: int): int {.compilerProc, pure.} =
+  proc addInt32(a, b: int32): int32 {.compilerProc, pure.} =
     # a in eax, and b in edx
     asm """
         mov eax, `a`
@@ -121,7 +46,7 @@ when asmVersion and not defined(gcc) and not defined(llvm_gcc):
       theEnd:
     """
 
-  proc subInt(a, b: int): int {.compilerProc, pure.} =
+  proc subInt32(a, b: int32): int32 {.compilerProc, pure.} =
     asm """
         mov eax, `a`
         sub eax, `b`
@@ -130,7 +55,7 @@ when asmVersion and not defined(gcc) and not defined(llvm_gcc):
       theEnd:
     """
 
-  proc negInt(a: int): int {.compilerProc, pure.} =
+  proc negInt32(a: int32): int32 {.compilerProc, pure.} =
     asm """
         mov eax, `a`
         neg eax
@@ -139,7 +64,7 @@ when asmVersion and not defined(gcc) and not defined(llvm_gcc):
       theEnd:
     """
 
-  proc divInt(a, b: int): int {.compilerProc, pure.} =
+  proc divInt32(a, b: int32): int32 {.compilerProc, pure.} =
     asm """
         mov eax, `a`
         mov ecx, `b`
@@ -150,7 +75,7 @@ when asmVersion and not defined(gcc) and not defined(llvm_gcc):
       theEnd:
     """
 
-  proc modInt(a, b: int): int {.compilerProc, pure.} =
+  proc modInt32(a, b: int32): int32 {.compilerProc, pure.} =
     asm """
         mov eax, `a`
         mov ecx, `b`
@@ -162,158 +87,313 @@ when asmVersion and not defined(gcc) and not defined(llvm_gcc):
         mov eax, edx
     """
 
-  proc mulInt(a, b: int): int {.compilerProc, pure.} =
+  proc mulInt32(a, b: int32): int32 {.compilerProc, pure.} =
     asm """
         mov eax, `a`
         mov ecx, `b`
-        xor edx, edx
         imul ecx
         jno theEnd
         call `raiseOverflow`
       theEnd:
     """
 
-elif false: # asmVersion and (defined(gcc) or defined(llvm_gcc)):
-  proc addInt(a, b: int): int {.compilerProc, inline.} =
-    # don't use a pure proc here!
+elif asmVersion and (defined(i386) or defined(x8664)) and (defined(gcc) or defined(llvm_gcc)):
+  # I can't figure out how to make GCC choose an arbitrary %r* register (rax, etc.)
+  # So this hack is probably the best option!
+  # add doesn't work because it compiles to lea
+
+  proc addInt32(a, b: int32): int32 {.compilerProc, inline.} =
+    result = a
     asm """
-      "addl %%ecx, %%eax\n"
-      "jno 1\n"
+      "addl %1, %0\n"
+      "jno 1f\n"
       "call _raiseOverflow\n"
       "1: \n"
-      :"=a"(`result`)
-      :"a"(`a`), "c"(`b`)
+      :"+r"(`result`)
+      :"r"(`b`)
     """
 
-  proc subInt(a, b: int): int {.compilerProc, inline.} =
-    asm """ "subl %%ecx,%%eax\n"
-            "jno 1\n"
-            "call _raiseOverflow\n"
-            "1: \n"
-           :"=a"(`result`)
-           :"a"(`a`), "c"(`b`)
+  proc subInt32(a, b: int32): int32 {.compilerProc, inline.} =
+    var my_result {.volatile.} = a -% b
+    asm """
+      "jno 1f\n"
+      "call _raiseOverflow\n"
+      "1: \n"
     """
+    return my_result
 
-  proc mulInt(a, b: int): int {.compilerProc, inline.} =
-    asm """  "xorl %%edx, %%edx\n"
-             "imull %%ecx\n"
-             "jno 1\n"
-             "call _raiseOverflow\n"
-             "1: \n"
-            :"=a"(`result`)
-            :"a"(`a`), "c"(`b`)
-            :"%edx"
+  proc mulInt32(a, b: int32): int32 {.compilerProc, inline.} =
+    var my_result {.volatile.} = a *% b
+    asm """
+      "jno 1f\n"
+      "call _raiseOverflow\n"
+      "1: \n"
     """
+    return my_result
 
-  proc negInt(a: int): int {.compilerProc, inline.} =
-    asm """ "negl %%eax\n"
-            "jno 1\n"
-            "call _raiseOverflow\n"
-            "1: \n"
-           :"=a"(`result`)
-           :"a"(`a`)
-    """
-
-  proc divInt(a, b: int): int {.compilerProc, inline.} =
-    asm """  "xorl %%edx, %%edx\n"
-             "idivl %%ecx\n"
-             "jno 1\n"
-             "call _raiseOverflow\n"
-             "1: \n"
-            :"=a"(`result`)
-            :"a"(`a`), "c"(`b`)
-            :"%edx"
-    """
-
-  proc modInt(a, b: int): int {.compilerProc, inline.} =
-    asm """  "xorl %%edx, %%edx\n"
-             "idivl %%ecx\n"
-             "jno 1\n"
-             "call _raiseOverflow\n"
-             "1: \n"
-             "movl %%edx, %%eax"
-            :"=a"(`result`)
-            :"a"(`a`), "c"(`b`)
-            :"%edx"
-    """
-
-# Platform independant versions of the above (slower!)
-when not defined(addInt):
-  proc addInt(a, b: int): int {.compilerProc, inline.} =
-    result = a +% b
-    if (result xor a) >= 0 or (result xor b) >= 0:
-      return result
-    raiseOverflow()
-
-when not defined(subInt):
-  proc subInt(a, b: int): int {.compilerProc, inline.} =
-    result = a -% b
-    if (result xor a) >= 0 or (result xor not b) >= 0:
-      return result
-    raiseOverflow()
-
-when not defined(negInt):
-  proc negInt(a: int): int {.compilerProc, inline.} =
-    if a != low(int): return -a
-    raiseOverflow()
-
-when not defined(divInt):
-  proc divInt(a, b: int): int {.compilerProc, inline.} =
-    if b == 0:
-      raiseDivByZero()
-    if a == low(int) and b == -1:
+  proc negInt32(a: int32): int32 {.compilerProc, inline.} =
+    if a == low(int32):
       raiseOverflow()
-    return a div b
+    return -a
 
-when not defined(modInt):
-  proc modInt(a, b: int): int {.compilerProc, inline.} =
-    if b == 0:
-      raiseDivByZero()
-    return a mod b
+  proc divInt32(a, b: int32): int32 {.compilerProc, inline.} =
+    var my_result {.volatile.} = a /% b
+    asm """
+      "jno 1f\n"
+      "call _raiseOverflow\n"
+      "1: \n"
+    """
+    return my_result
 
-when not defined(mulInt):
-  #
-  # This code has been inspired by Python's source code.
-  # The native int product x*y is either exactly right or *way* off, being
-  # just the last n bits of the true product, where n is the number of bits
-  # in an int (the delivered product is the true product plus i*2**n for
-  # some integer i).
-  #
-  # The native float64 product x*y is subject to three
-  # rounding errors: on a sizeof(int)==8 box, each cast to double can lose
-  # info, and even on a sizeof(int)==4 box, the multiplication can lose info.
-  # But, unlike the native int product, it's not in *range* trouble:  even
-  # if sizeof(int)==32 (256-bit ints), the product easily fits in the
-  # dynamic range of a float64. So the leading 50 (or so) bits of the float64
-  # product are correct.
-  #
-  # We check these two ways against each other, and declare victory if
-  # they're approximately the same. Else, because the native int product is
-  # the only one that can lose catastrophic amounts of information, it's the
-  # native int product that must have overflowed.
-  #
-  proc mulInt(a, b: int): int {.compilerProc.} =
-    var
-      resAsFloat, floatProd: float
+  proc modInt32(a, b: int32): int32 {.compilerProc, inline.} =
+    var my_result {.volatile.} = a %% b
+    asm """
+      "jno 1f\n"
+      "call _raiseOverflow\n"
+      "1: \n"
+    """
+    return my_result
+  when defined(x8664):
+    proc addInt64(a, b: int64): int64 {.compilerProc, inline.} =
+      result = a
+      asm """
+        "addq %1, %0\n"
+        "jno 1f\n"
+        "call _raiseOverflow\n"
+        "1: \n"
+        :"+a"(`result`)
+        :"c"(`b`)
+      """
 
-    result = a *% b
-    floatProd = toFloat(a) * toFloat(b)
-    resAsFloat = toFloat(result)
+    proc subInt64(a, b: int64): int64 {.compilerProc, inline.} =
+      var my_result {.volatile.} = a -% b
+      asm """
+        "jno 1f\n"
+        "call _raiseOverflow\n"
+        "1: \n"
+      """
+      return my_result
 
-    # Fast path for normal case: small multiplicands, and no info
-    # is lost in either method.
-    if resAsFloat == floatProd: return result
+    proc mulInt64(a, b: int64): int64 {.compilerProc, inline.} =
+      var my_result {.volatile.} = a *% b
+      asm """
+        "jno 1f\n"
+        "call _raiseOverflow\n"
+        "1: \n"
+      """
+      return my_result
 
-    # Somebody somewhere lost info. Close enough, or way off? Note
-    # that a != 0 and b != 0 (else resAsFloat == floatProd == 0).
-    # The difference either is or isn't significant compared to the
-    # true value (of which floatProd is a good approximation).
+    proc negInt64(a: int64): int64 {.compilerProc, inline.} =
+      if a == low(int64):
+        raiseOverflow()
+      return -a
 
-    # abs(diff)/abs(prod) <= 1/32 iff
-    #   32 * abs(diff) <= abs(prod) -- 5 good bits is "close enough"
-    if 32.0 * abs(resAsFloat - floatProd) <= abs(floatProd):
+    proc divInt64(a, b: int64): int64 {.compilerProc, inline.} =
+      var my_result {.volatile.} = a /% b
+      asm """
+        "jno 1f\n"
+        "call _raiseOverflow\n"
+        "1: \n"
+      """
+      return my_result
+
+    proc modInt64(a, b: int64): int64 {.compilerProc, inline.} =
+      var my_result {.volatile.} = a %% b
+      asm """
+        "jno 1f\n"
+        "call _raiseOverflow\n"
+        "1: \n"
+      """
+      return my_result
+
+# 64-bit:
+
+when not defined(mulInt64):
+    #
+    # This code has been inspired by Python's source code.
+    # The native int product x*y is either exactly right or *way* off, being
+    # just the last n bits of the true product, where n is the number of bits
+    # in an int (the delivered product is the true product plus i*2**n for
+    # some integer i).
+    #
+    # The native float64 product x*y is subject to three
+    # rounding errors: on a sizeof(int)==8 box, each cast to double can lose
+    # info, and even on a sizeof(int)==4 box, the multiplication can lose info.
+    # But, unlike the native int product, it's not in *range* trouble:  even
+    # if sizeof(int)==32 (256-bit ints), the product easily fits in the
+    # dynamic range of a float64. So the leading 50 (or so) bits of the float64
+    # product are correct.
+    #
+    # We check these two ways against each other, and declare victory if they're
+    # approximately the same. Else, because the native int product is the only
+    # one that can lose catastrophic amounts of information, it's the native int
+    # product that must have overflowed.
+    #
+    proc mulInt64(a, b: int64): int64 {.compilerproc.} =
+      var
+        resAsFloat, floatProd: float64
+      result = a *% b
+      floatProd = toBiggestFloat(a) # conversion
+      floatProd = floatProd * toBiggestFloat(b)
+      resAsFloat = toBiggestFloat(result)
+
+      # Fast path for normal case: small multiplicands, and no info
+      # is lost in either method.
+      if resAsFloat == floatProd: return result
+
+      # Somebody somewhere lost info. Close enough, or way off? Note
+      # that a != 0 and b != 0 (else resAsFloat == floatProd == 0).
+      # The difference either is or isn't significant compared to the
+      # true value (of which floatProd is a good approximation).
+
+      # abs(diff)/abs(prod) <= 1/32 iff
+      #   32 * abs(diff) <= abs(prod) -- 5 good bits is "close enough"
+      if unlikely(32.0 * abs(resAsFloat - floatProd) > abs(floatProd)):
+        raiseOverflow()
       return result
-    raiseOverflow()
+
+when not defined(addInt64):
+    proc addInt64(a, b: int64): int64 {.compilerProc, inline.} =
+      result = a +% b
+      if unlikely((result xor a) < int64(0) and (result xor b) < int64(0)): raiseOverflow()
+      return result
+
+when not defined(subInt64):
+    proc subInt64(a, b: int64): int64 {.compilerProc, inline.} =
+      return addInt64(a, -b)
+
+when not defined(negInt64):
+    proc negInt64(a: int64): int64 {.compilerProc, inline.} =
+      if unlikely(a == low(int64)):
+        raiseOverflow()
+      return (~a + 1)
+
+when not defined(absInt64):
+    proc absInt64(a: int64): int64 {.compilerProc, inline.} =
+      if a >= 0: return a
+      else: return -a
+
+when not defined(divInt64):
+    proc divInt64(a, b: int64): int64 {.compilerProc, inline.} =
+      if b == int64(0):
+        raiseDivByZero()
+      if a == low(int64) and b == int64(-1):
+        raiseOverflow()
+      return a div b
+
+when not defined(modInt64):
+    proc modInt64(a, b: int64): int64 {.compilerProc, inline.} =
+      if b == int64(0):
+        raiseDivByZero()
+      return a mod b
+
+# 32-bit: (this is exactly the same as the above but s/64/32)
+
+when not defined(mulInt32):
+    #
+    # This code has been inspired by Python's source code.
+    # The native int product x*y is either exactly right or *way* off, being
+    # just the last n bits of the true product, where n is the number of bits
+    # in an int (the delivered product is the true product plus i*2**n for
+    # some integer i).
+    #
+    # The native float32 product x*y is subject to three
+    # rounding errors: on a sizeof(int)==8 box, each cast to double can lose
+    # info, and even on a sizeof(int)==4 box, the multiplication can lose info.
+    # But, unlike the native int product, it's not in *range* trouble:  even
+    # if sizeof(int)==32 (256-bit ints), the product easily fits in the
+    # dynamic range of a float32. So the leading 50 (or so) bits of the float32
+    # product are correct.
+    #
+    # We check these two ways against each other, and declare victory if they're
+    # approximately the same. Else, because the native int product is the only
+    # one that can lose catastrophic amounts of information, it's the native int
+    # product that must have overflowed.
+    #
+    proc mulInt32(a, b: int32): int32 {.compilerproc.} =
+      var
+        resAsFloat, floatProd: float32
+      result = a *% b
+      floatProd = toBiggestFloat(a) # conversion
+      floatProd = floatProd * toBiggestFloat(b)
+      resAsFloat = toBiggestFloat(result)
+
+      # Fast path for normal case: small multiplicands, and no info
+      # is lost in either method.
+      if resAsFloat == floatProd: return result
+
+      # Somebody somewhere lost info. Close enough, or way off? Note
+      # that a != 0 and b != 0 (else resAsFloat == floatProd == 0).
+      # The difference either is or isn't significant compared to the
+      # true value (of which floatProd is a good approximation).
+
+      # abs(diff)/abs(prod) <= 1/32 iff
+      #   32 * abs(diff) <= abs(prod) -- 5 good bits is "close enough"
+      if unlikely(32.0 * abs(resAsFloat - floatProd) > abs(floatProd)):
+        raiseOverflow()
+      return result
+
+when not defined(addInt32):
+    proc addInt32(a, b: int32): int32 {.compilerProc, inline.} =
+      result = a +% b
+      if unlikely((result xor a) < int32(0) and (result xor b) < int32(0)): raiseOverflow()
+      return result
+
+when not defined(subInt32):
+    proc subInt32(a, b: int32): int32 {.compilerProc, inline.} =
+      return addInt32(a, -b)
+
+when not defined(negInt32):
+    proc negInt32(a: int32): int32 {.compilerProc, inline.} =
+      if unlikely(a == low(int32)):
+        raiseOverflow()
+      return (~a + 1)
+
+when not defined(absInt32):
+    proc absInt32(a: int32): int32 {.compilerProc, inline.} =
+      if unlikely(a == low(int32)):
+        raiseOverflow()
+      if a >= 0: return a
+      else: return -a
+
+when not defined(divInt32):
+    proc divInt32(a, b: int32): int32 {.compilerProc, inline.} =
+      if b == int32(0):
+        raiseDivByZero()
+      if a == low(int32) and b == int32(-1):
+        raiseOverflow()
+      return a div b
+
+when not defined(modInt32):
+    proc modInt32(a, b: int32): int32 {.compilerProc, inline.} =
+      if b == int32(0):
+        raiseDivByZero()
+      return a mod b
+
+# end
+
+proc negInt(a : int) : int {.compilerProc, inline.} =
+    when sizeof(int) == sizeof(int32):
+        return int(negInt32(int32(a)))
+    elif sizeof(int) == sizeof(int64):
+        return int(negInt64(int64(a)))
+    else:
+        assert(false)
+
+template binaryOption(base, if32, if64 : expr) : stmt =
+    proc base(a, b : int) : int {.compilerProc, inline.} =
+        when sizeof(int) == sizeof(int32):
+            return int(if32(int32(a), int32(b)))
+        elif sizeof(int) == sizeof(int64):
+            return int(if64(int64(a), int64(b)))
+        else:
+            assert(false)
+
+binaryOption(addInt, addInt32, addInt64)
+binaryOption(subInt, subInt32, subInt64)
+binaryOption(divInt, divInt32, divInt64)
+binaryOption(modInt, modInt32, modInt64)
+binaryOption(mulInt, mulInt32, mulInt64)
 
 # We avoid setting the FPU control word here for compatibility with libraries
 # written in other languages.

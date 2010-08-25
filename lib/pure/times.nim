@@ -209,7 +209,7 @@ when not defined(ECMAScript):
     result.hour = int(tm.hour)
     result.monthday = int(tm.monthday)
     result.month = TMonth(tm.month)
-    result.year = tm.year + 1900'i32
+    result.year = tm.year +% 1900'i32 # hack because nimlib is weird
     result.weekday = weekDays[int(tm.weekDay)]
     result.yearday = int(tm.yearday)
   

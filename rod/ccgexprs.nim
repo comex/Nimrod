@@ -362,38 +362,26 @@ proc unaryExprChar(p: BProc, e: PNode, d: var TLoc, frmt: string) =
 
 proc binaryArithOverflow(p: BProc, e: PNode, d: var TLoc, m: TMagic) =
   const
-    prc: array[mAddi..mModi64, string] = ["addInt", "subInt", "mulInt",
-      "divInt", "modInt", "addInt64", "subInt64", "mulInt64", "divInt64",
-      "modInt64"]
-    opr: array[mAddi..mModi64, string] = ["+", "-", "*", "/", "%", "+", "-",
-      "*", "/", "%"]
+    prc: array[mAddi..mModi64, string] = ["addInt", "subInt", "mulInt", "divInt", "modInt",
+                                        "addInt32", "subInt32", "mulInt32", "divInt32", "modInt32",
+                                        "addInt64", "subInt64", "mulInt64", "divInt64", "modInt64"]
+    opr: array[mAddi..mModi64, string] = ["+", "-", "*", "/", "%",
+                                          "+", "-", "*", "/", "%",
+                                          "+", "-", "*", "/", "%"]
   var a, b: TLoc
   assert(e.sons[1].typ != nil)
   assert(e.sons[2].typ != nil)
   InitLocExpr(p, e.sons[1], a)
   InitLocExpr(p, e.sons[2], b)
   var t = skipTypes(e.typ, abstractRange)
-  if getSize(t) >= platform.IntSize:
-    if optOverflowCheck in p.options:
-      putIntoDest(p, d, e.typ, ropecg(p.module, 
-                  "#$1($2, $3)", [toRope(prc[m]), rdLoc(a), rdLoc(b)]))
-    else:
-      putIntoDest(p, d, e.typ, ropef("(NI$4)($2 $1 $3)", [toRope(opr[m]),
-          rdLoc(a), rdLoc(b), toRope(getSize(t) * 8)]))
+  if optOverflowCheck in p.options:
+    putIntoDest(p, d, e.typ, ropecg(p.module, 
+                "#$1($2, $3)", [toRope(prc[m]), rdLoc(a), rdLoc(b)]))
+    appcg(p, cpsStmts, "if ($1 < $2 || $1 > $3) #raiseOverflow();$n",
+         [rdLoc(d), intLiteral(firstOrd(t)), intLiteral(lastOrd(t))])
   else:
-    if optOverflowCheck in p.options:
-      if (m == mModI) or (m == mDivI):
-        appcg(p, cpsStmts, "if (!$1) #raiseDivByZero();$n", [rdLoc(b)])
-      a.r = ropef("((NI)($2) $1 (NI)($3))", [toRope(opr[m]), rdLoc(a), rdLoc(b)])
-      if d.k == locNone: getTemp(p, getSysType(tyInt), d)
-      genAssignment(p, d, a, {})
-      appcg(p, cpsStmts, "if ($1 < $2 || $1 > $3) #raiseOverflow();$n",
-           [rdLoc(d), intLiteral(firstOrd(t)), intLiteral(lastOrd(t))])
-      d.t = e.typ
-      d.r = ropef("(NI$1)($2)", [toRope(getSize(t) * 8), rdLoc(d)])
-    else:
-      putIntoDest(p, d, e.typ, ropef("(NI$4)($2 $1 $3)", [toRope(opr[m]),
-          rdLoc(a), rdLoc(b), toRope(getSize(t) * 8)]))
+    putIntoDest(p, d, e.typ, ropef("(NI$4)($2 $1 $3)", [toRope(opr[m]),
+        rdLoc(a), rdLoc(b), toRope(getSize(t) * 8)]))
 
 proc unaryArithOverflow(p: BProc, e: PNode, d: var TLoc, m: TMagic) =
   const
