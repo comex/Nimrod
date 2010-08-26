@@ -195,8 +195,11 @@ proc typeRel(mapping: var TIdTable, f, a: PType): TTypeRelation =
     elif skipTypes(a, {tyRange}).kind == f.kind: result = isSubtype
   of tyRange: 
     if a.kind == f.kind: 
-      result = typeRel(mapping, base(a), base(f))
-      if result < isGeneric: result = isNone
+      if firstOrd(a) != firstOrd(f) or lastOrd(a) != lastOrd(f):
+        return isIntConv
+      else:
+        result = typeRel(mapping, base(a), base(f))
+        if result < isGeneric: result = isNone
     elif skipTypes(f, {tyRange}).kind == a.kind: 
       result = isConvertible  # a convertible to f
   of tyInt:      result = handleRange(f, a, tyInt8, tyInt32)
@@ -465,6 +468,7 @@ proc userConvMatch(c: PContext, m: var TCandidate, f, a: PType,
 proc ParamTypesMatchAux(c: PContext, m: var TCandidate, f, a: PType, 
                         arg: PNode): PNode = 
   var r = typeRel(m.bindings, f, a)
+  #echo("typeRel($#, $#) = $#" % [typeToString(f), typeToString(a), $r])
   case r
   of isConvertible: 
     inc(m.convMatches)

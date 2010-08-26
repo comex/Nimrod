@@ -283,15 +283,19 @@ proc transformAddrDeref(c: PTransf, n: PNode, a, b: TNodeKind): PNode =
 proc transformConv(c: PTransf, n: PNode): PNode = 
   n.sons[1] = transform(c, n.sons[1])
   result = n                  # numeric types need range checks:
-  var dest = skipTypes(n.typ, abstractVarRange)
-  var source = skipTypes(n.sons[1].typ, abstractVarRange)
+  var dest0 = skipTypes(n.typ, abstractVar)
+  var source0 = skipTypes(n.sons[1].typ, abstractVar)
+  var dest = skipTypes(dest0, {tyRange})
+  var source = skipTypes(source0, {tyRange})
+  #echo("transformConv: $# <- $#" % [typeToString(dest), typeToString(source)])
+  #echo("real: $# <- $#" % [typeToString(n.typ), typeToString(n.sons[1].typ)])
   case dest.kind
   of tyInt..tyInt64, tyEnum, tyChar, tyBool: 
-    if not isOrdinalType(source):
+    if not isOrdinalType(source0):
       # XXX int64 -> float conversion?
       result = n
-    elif firstOrd(dest) <= firstOrd(source) and
-        lastOrd(source) <= lastOrd(dest): 
+    elif firstOrd(dest0) <= firstOrd(source0) and
+        lastOrd(source0) <= lastOrd(dest0): 
       # BUGFIX: simply leave n as it is; we need a nkConv node,
       # but no range check:
       result = n

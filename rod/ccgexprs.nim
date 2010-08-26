@@ -375,10 +375,19 @@ proc binaryArithOverflow(p: BProc, e: PNode, d: var TLoc, m: TMagic) =
   InitLocExpr(p, e.sons[2], b)
   var t = skipTypes(e.typ, abstractRange)
   if optOverflowCheck in p.options:
-    putIntoDest(p, d, e.typ, ropecg(p.module, 
-                "#$1($2, $3)", [toRope(prc[m]), rdLoc(a), rdLoc(b)]))
-    appcg(p, cpsStmts, "if ($1 < $2 || $1 > $3) #raiseOverflow();$n",
-         [rdLoc(d), intLiteral(firstOrd(t)), intLiteral(lastOrd(t))])
+    # It would be better to just implement these
+    if getSize(t) < 4:
+      var tmp = getTempName()
+      appcg(p, cpsLocals, "NI32 $2;", [toRope(platform.IntSize * 8), tmp])
+      appcg(p, cpsStmts, "$1 = #$2($3, $4);", [tmp, toRope(prc[m]), rdLoc(a), rdLoc(b)])
+      appcg(p, cpsStmts, "if ($1 < $2 || $1 > $3) #raiseOverflow();$n",
+           [tmp, intLiteral(firstOrd(t)), intLiteral(lastOrd(t))])
+      putIntoDest(p, d, e.typ, tmp)
+    else:
+      putIntoDest(p, d, e.typ, ropecg(p.module, 
+                  "#$1($2, $3)", [toRope(prc[m]), rdLoc(a), rdLoc(b)]))
+      appcg(p, cpsStmts, "if ($1 < $2 || $1 > $3) #raiseOverflow();$n",
+           [rdLoc(d), intLiteral(firstOrd(t)), intLiteral(lastOrd(t))])
   else:
     putIntoDest(p, d, e.typ, ropef("(NI$4)($2 $1 $3)", [toRope(opr[m]),
         rdLoc(a), rdLoc(b), toRope(getSize(t) * 8)]))
