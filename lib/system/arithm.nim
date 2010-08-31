@@ -134,7 +134,7 @@ elif asmVersion and (defined(i386) or defined(x8664)) and (defined(gcc) or defin
   proc divInt32(a, b: int32): int32 {.compilerProc, inline.} =
     if b == 0'i32: raiseDivByZero() 
     result = a
-    var remainder = 0'i32
+    var remainder = (if a < 0: -1'i32 else: 0'i32)
     var b2 = b
     asm """
       "idivl %2\n"
@@ -145,7 +145,7 @@ elif asmVersion and (defined(i386) or defined(x8664)) and (defined(gcc) or defin
   proc modInt32(a, b: int32): int32 {.compilerProc, inline.} =
     if b == 0'i32: raiseDivByZero() 
     var quotient = a
-    result = 0'i32
+    result = (if a < 0: -1'i32 else: 0'i32)
     var b2 = b
     asm """
       "idivl %2\n"
@@ -190,7 +190,7 @@ elif asmVersion and (defined(i386) or defined(x8664)) and (defined(gcc) or defin
   proc divInt64(a, b: int64): int64 {.compilerProc, inline.} =
     if b == 0'i64: raiseDivByZero() 
     result = a
-    var remainder = 0'i64
+    var remainder = (if a < 0: -1'i64 else: 0'i64)
     var b2 = b
     asm """
       "idivq %2\n"
@@ -201,7 +201,7 @@ elif asmVersion and (defined(i386) or defined(x8664)) and (defined(gcc) or defin
   proc modInt64(a, b: int64): int64 {.compilerProc, inline.} =
     if b == 0'i64: raiseDivByZero() 
     var quotient = a
-    result = 0'i64
+    result = (if a < 0: -1'i64 else: 0'i64)
     var b2 = b
     asm """
       "idivq %2\n"
