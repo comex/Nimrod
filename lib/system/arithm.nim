@@ -98,10 +98,6 @@ when asmVersion and defined(i386) and not defined(gcc) and not defined(llvm_gcc)
     """
 
 elif asmVersion and (defined(i386) or defined(x8664)) and (defined(gcc) or defined(llvm_gcc)):
-  # I can't figure out how to make GCC choose an arbitrary %r* register (rax, etc.)
-  # So this hack is probably the best option!
-  # add doesn't work because it compiles to lea
-
   proc addInt32(a, b: int32): int32 {.compilerProc, inline.} =
     result = a
     asm """
@@ -110,49 +106,53 @@ elif asmVersion and (defined(i386) or defined(x8664)) and (defined(gcc) or defin
       "call _raiseOverflow\n"
       "1: \n"
       :"+r"(`result`)
-      :"r"(`b`)
+      :"g"(`b`)
     """
-
+  
   proc subInt32(a, b: int32): int32 {.compilerProc, inline.} =
-    var my_result {.volatile.} = a -% b
+    result = a
     asm """
+      "subl %1, %0\n"
       "jno 1f\n"
       "call _raiseOverflow\n"
       "1: \n"
+      :"+r"(`result`)
+      :"g"(`b`)
     """
-    return my_result
-
+  
   proc mulInt32(a, b: int32): int32 {.compilerProc, inline.} =
-    var my_result {.volatile.} = a *% b
+    result = a
     asm """
+      "imull %1, %0\n"
       "jno 1f\n"
       "call _raiseOverflow\n"
       "1: \n"
+      :"+r"(`result`)
+      :"g"(`b`)
     """
-    return my_result
-
-  proc negInt32(a: int32): int32 {.compilerProc, inline.} =
-    if a == low(int32):
-      raiseOverflow()
-    return -a
 
   proc divInt32(a, b: int32): int32 {.compilerProc, inline.} =
-    var my_result {.volatile.} = a /% b
+    if b == 0'i32: raiseDivByZero() 
+    result = a
+    var remainder = 0'i32
+    var b2 = b
     asm """
-      "jno 1f\n"
-      "call _raiseOverflow\n"
-      "1: \n"
+      "idivl %2\n"
+      :"+d"(`remainder`), "+a"(`result`)
+      :"g"(`b2`)
     """
-    return my_result
 
   proc modInt32(a, b: int32): int32 {.compilerProc, inline.} =
-    var my_result {.volatile.} = a %% b
+    if b == 0'i32: raiseDivByZero() 
+    var quotient = a
+    result = 0'i32
+    var b2 = b
     asm """
-      "jno 1f\n"
-      "call _raiseOverflow\n"
-      "1: \n"
+      "idivl %2\n"
+      :"+d"(`result`), "+a"(`quotient`)
+      :"g"(`b2`)
     """
-    return my_result
+
   when defined(x8664):
     proc addInt64(a, b: int64): int64 {.compilerProc, inline.} =
       result = a
@@ -161,50 +161,53 @@ elif asmVersion and (defined(i386) or defined(x8664)) and (defined(gcc) or defin
         "jno 1f\n"
         "call _raiseOverflow\n"
         "1: \n"
-        :"+a"(`result`)
-        :"c"(`b`)
+        :"+r"(`result`)
+        :"g"(`b`)
       """
 
-    proc subInt64(a, b: int64): int64 {.compilerProc, inline.} =
-      var my_result {.volatile.} = a -% b
-      asm """
-        "jno 1f\n"
-        "call _raiseOverflow\n"
-        "1: \n"
-      """
-      return my_result
+  proc subInt64(a, b: int64): int64 {.compilerProc, inline.} =
+    result = a
+    asm """
+      "subq %1, %0\n"
+      "jno 1f\n"
+      "call _raiseOverflow\n"
+      "1: \n"
+      :"+r"(`result`)
+      :"g"(`b`)
+    """
+  
+  proc mulInt64(a, b: int64): int64 {.compilerProc, inline.} =
+    result = a
+    asm """
+      "imulq %1, %0\n"
+      "jno 1f\n"
+      "call _raiseOverflow\n"
+      "1: \n"
+      :"+r"(`result`)
+      :"g"(`b`)
+    """
+ 
+  proc divInt64(a, b: int64): int64 {.compilerProc, inline.} =
+    if b == 0'i64: raiseDivByZero() 
+    result = a
+    var remainder = 0'i64
+    var b2 = b
+    asm """
+      "idivq %2\n"
+      :"+d"(`remainder`), "+a"(`result`)
+      :"g"(`b2`)
+    """
 
-    proc mulInt64(a, b: int64): int64 {.compilerProc, inline.} =
-      var my_result {.volatile.} = a *% b
-      asm """
-        "jno 1f\n"
-        "call _raiseOverflow\n"
-        "1: \n"
-      """
-      return my_result
-
-    proc negInt64(a: int64): int64 {.compilerProc, inline.} =
-      if a == low(int64):
-        raiseOverflow()
-      return -a
-
-    proc divInt64(a, b: int64): int64 {.compilerProc, inline.} =
-      var my_result {.volatile.} = a /% b
-      asm """
-        "jno 1f\n"
-        "call _raiseOverflow\n"
-        "1: \n"
-      """
-      return my_result
-
-    proc modInt64(a, b: int64): int64 {.compilerProc, inline.} =
-      var my_result {.volatile.} = a %% b
-      asm """
-        "jno 1f\n"
-        "call _raiseOverflow\n"
-        "1: \n"
-      """
-      return my_result
+  proc modInt64(a, b: int64): int64 {.compilerProc, inline.} =
+    if b == 0'i64: raiseDivByZero() 
+    var quotient = a
+    result = 0'i64
+    var b2 = b
+    asm """
+      "idivq %2\n"
+      :"+d"(`result`), "+a"(`quotient`)
+      :"g"(`b2`)
+    """
 
 # 64-bit:
 
@@ -266,7 +269,7 @@ when not defined(negInt64):
     proc negInt64(a: int64): int64 {.compilerProc, inline.} =
       if unlikely(a == low(int64)):
         raiseOverflow()
-      return (~a + 1)
+      return ((not a) + 1)
 
 when not defined(absInt64):
     proc absInt64(a: int64): int64 {.compilerProc, inline.} =
@@ -279,7 +282,14 @@ when not defined(divInt64):
         raiseDivByZero()
       if a == low(int64) and b == int64(-1):
         raiseOverflow()
-      return a div b
+      if a < 0 and b < 0:
+        return (-a) // (-b)
+      elif a < 0:
+        return -((-a) // b)
+      elif b < 0:
+        return -(a // (-b))
+      else:
+        return a // b
 
 when not defined(modInt64):
     proc modInt64(a, b: int64): int64 {.compilerProc, inline.} =
@@ -347,7 +357,7 @@ when not defined(negInt32):
     proc negInt32(a: int32): int32 {.compilerProc, inline.} =
       if unlikely(a == low(int32)):
         raiseOverflow()
-      return (~a + 1)
+      return ((not a) + 1)
 
 when not defined(absInt32):
     proc absInt32(a: int32): int32 {.compilerProc, inline.} =
@@ -362,13 +372,20 @@ when not defined(divInt32):
         raiseDivByZero()
       if a == low(int32) and b == int32(-1):
         raiseOverflow()
-      return a div b
+      if a < 0 and b < 0:
+        return (-a) // (-b)
+      elif a < 0:
+        return -((-a) // b)
+      elif b < 0:
+        return -(a // (-b))
+      else:
+        return a // b
 
 when not defined(modInt32):
     proc modInt32(a, b: int32): int32 {.compilerProc, inline.} =
       if b == int32(0):
         raiseDivByZero()
-      return a mod b
+      return a - ((a div b) * b)
 
 # end
 
