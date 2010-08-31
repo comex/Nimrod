@@ -10,7 +10,7 @@
 # implements some little helper passes
 
 import 
-  strutils, ast, astalgo, passes, msgs, options
+  strutils, ast, astalgo, passes, msgs, options, idents
 
 proc verbosePass*(): TPass
 proc cleanupPass*(): TPass

@@ -12,7 +12,7 @@
 import 
   ast, astalgo, msgs, nhashes, platform, strutils, idents
 
-var gSymbols*: TStrTable
+var gSymbols*: TStrTable # safe
 
 proc InitDefines*()
 proc DeinitDefines*()

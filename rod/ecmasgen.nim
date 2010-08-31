@@ -48,7 +48,7 @@ type
   
   TGlobals{.final.} = object 
     typeInfo*, code*: PRope
-    typeInfoGenerated*: TIntSet
+    typeInfoGenerated*: TIdSet
 
   PGlobals = ref TGlobals
   TProc{.final.} = object 
@@ -66,7 +66,7 @@ type
 
 proc newGlobals(): PGlobals = 
   new(result)
-  IntSetInit(result.typeInfoGenerated)
+  IdSetInit(result.typeInfoGenerated)
 
 proc initCompRes(r: var TCompRes) = 
   r.com = nil
@@ -227,7 +227,7 @@ proc genTypeInfo(p: var TProc, typ: PType): PRope =
   var t = typ
   if t.kind == tyGenericInst: t = lastSon(t)
   result = ropef("NTI$1", [toRope(t.id)])
-  if IntSetContainsOrIncl(p.globals.TypeInfoGenerated, t.id): return 
+  if IdSetContainsOrIncl(p.globals.TypeInfoGenerated, t.id): return 
   case t.kind
   of tyDistinct: 
     result = genTypeInfo(p, typ.sons[0])

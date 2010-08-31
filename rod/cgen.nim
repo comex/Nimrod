@@ -25,28 +25,29 @@ type
   TLabel = PRope              # for the C generator a label is just a rope
   TCFileSection = enum        # the sections a generated C file consists of
     cfsHeaders,               # section for C include file headers
-    cfsForwardTypes,          # section for C forward typedefs
-    cfsTypes,                 # section for C typedefs
-    cfsSeqTypes,              # section for sequence types only
-                              # this is needed for strange type generation
-                              # reasons
-    cfsFieldInfo,             # section for field information
-    cfsTypeInfo,              # section for type information
+    cfsDebugInit,             # section for init of debug information
+    cfsDynLibInit,            # section for init of dynamic library binding
+    cfsDynLibDeinit,          # section for deinitialization of dynamic libraries
     cfsProcHeaders,           # section for C procs prototypes
     cfsData,                  # section for C constant data
     cfsVars,                  # section for C variable declarations
     cfsProcs,                 # section for C procs that are not inline
-    cfsTypeInit1,             # section 1 for declarations of type information
-    cfsTypeInit2,             # section 2 for init of type information
-    cfsTypeInit3,             # section 3 for init of type information
-    cfsDebugInit,             # section for init of debug information
-    cfsDynLibInit,            # section for init of dynamic library binding
-    cfsDynLibDeinit           # section for deinitialization of dynamic libraries
+  TCTypeFileSection = enum
+    ctfsForwardTypes,          # section for C forward typedefs
+    ctfsTypes,                 # section for C typedefs
+    ctfsSeqTypes,              # section for sequence types only
+                               # this is needed for strange type generation
+                               # reasons
+    ctfsVars,
+    ctfsTypeInit1,             # section 1 for declarations of type information
+    ctfsTypeInit2,             # section 2 for init of type information
+    ctfsTypeInit3             # section 3 for init of type information
   TCTypeKind = enum           # describes the type kind of a C type
     ctVoid, ctChar, ctBool, ctUInt, ctUInt8, ctUInt16, ctUInt32, ctUInt64, 
     ctInt, ctInt8, ctInt16, ctInt32, ctInt64, ctFloat, ctFloat32, ctFloat64, 
     ctFloat128, ctArray, ctStruct, ctPtr, ctNimStr, ctNimSeq, ctProc, ctCString
   TCFileSections = array[TCFileSection, PRope] # represents a generated C file
+  TCTypeFileSections = array[TCTypeFileSection, PRope]
   TCProcSection = enum        # the sections a generated C proc consists of
     cpsLocals,                # section of local variables for C proc
     cpsInit,                  # section for init of variables for C proc
@@ -80,14 +81,15 @@ type
     module*: PSym
     filename*: string
     s*: TCFileSections        # sections of the C file
+    ts*: TCTypeFileSections   # type info
     cfilename*: string        # filename of the module (including path,
                               # without extension)
     typeCache*: TIdTable      # cache the generated types
     forwTypeCache*: TIdTable  # cache for forward declarations of types
-    declaredThings*: TIntSet  # things we have declared in this .c file
-    declaredProtos*: TIntSet  # prototypes we have declared in this .c file
+    declaredThings*: TIdSet   # things we have declared in this .c file
+    declaredProtos*: TIdSet   # prototypes we have declared in this .c file
     headerFiles*: TLinkedList # needed headers to include
-    typeInfoMarker*: TIntSet  # needed for generating type information
+    typeInfoMarker*: TIdSet   # needed for generating type information
     initProc*: BProc          # code for init procedure
     typeStack*: TTypeSeq      # used for type generation
     dataCache*: TNodeTable
@@ -101,11 +103,10 @@ var
   mainModProcs, mainModInit: PRope # parts of the main module
   gMapping: PRope             # the generated mapping file (if requested)
   gProcProfile: Natural       # proc profile counter
-  gGeneratedSyms: TIntSet     # set of ID's of generated symbols
+  gGeneratedSyms: TIdSet      # set of ID's of generated symbols
   gPendingModules: seq[BModule] = @[] # list of modules that are not
                                       # finished with code generation
   gForwardedProcsCounter: int = 0
-  gNimDat: BModule            # generated global data
 
 proc ropeff(cformat, llvmformat: string, args: openarray[PRope]): PRope = 
   if gCmd == cmdCompileToLLVM: result = ropef(llvmformat, args)
@@ -133,7 +134,7 @@ proc findPendingModule(m: BModule, s: PSym): BModule =
   for i in countup(0, high(gPendingModules)): 
     result = gPendingModules[i]
     if result.module.id == ms.id: return 
-  InternalError(s.info, "no pending module found for: " & s.name.s)
+  InternalError(s.info, "no pending module (" & $ms.id & ") found for: " & s.name.s)
 
 proc initLoc(result: var TLoc, k: TLocKind, typ: PType, s: TStorageLoc) = 
   result.k = k
@@ -230,7 +231,6 @@ proc appcg(m: BModule, c: var PRope, frmt: TFormatStr, args: openarray[PRope]) =
 proc appcg(p: BProc, s: TCProcSection, frmt: TFormatStr, 
            args: openarray[PRope]) = 
   app(p.s[s], ropecg(p.module, frmt, args))
-
 
 include "ccgtypes.nim"
 
@@ -530,6 +530,7 @@ proc genProcAux(m: BModule, prc: PSym) =
     p: BProc
     generatedProc, header, returnStmt, procname, filename: PRope
     res, param: PSym
+  if sfCached in m.module.flags: return
   p = newProc(prc, m)
   header = genProcHeader(m, prc)
   if (gCmd != cmdCompileToLLVM) and (lfExportLib in prc.loc.flags): 
@@ -597,13 +598,13 @@ proc genProcPrototype(m: BModule, sym: PSym) =
   if (lfNoDecl in sym.loc.Flags): return 
   if lfDynamicLib in sym.loc.Flags: 
     if (sym.owner.id != m.module.id) and
-        not intSetContainsOrIncl(m.declaredThings, sym.id): 
+        not IdSetContainsOrIncl(m.declaredThings, sym.id): 
       appff(m.s[cfsVars], "extern $1 $2;$n", 
             "@$2 = linkonce global $1 zeroinitializer$n", 
             [getTypeDesc(m, sym.loc.t), mangleDynLibProc(sym)])
       if gCmd == cmdCompileToLLVM: incl(sym.loc.flags, lfIndirect)
   else: 
-    if not IntSetContainsOrIncl(m.declaredProtos, sym.id): 
+    if not IdSetContainsOrIncl(m.declaredProtos, sym.id): 
       appf(m.s[cfsProcHeaders], "$1;$n", [genProcHeader(m, sym)])
 
 proc genProcNoForward(m: BModule, prc: PSym) = 
@@ -615,12 +616,12 @@ proc genProcNoForward(m: BModule, prc: PSym) =
     # We add inline procs to the calling module to enable C based inlining.
     # This also means that a check with ``gGeneratedSyms`` is wrong, we need
     # a check for ``m.declaredThings``.
-    if not intSetContainsOrIncl(m.declaredThings, prc.id): genProcAux(m, prc)
+    if not IdSetContainsOrIncl(m.declaredThings, prc.id): genProcAux(m, prc)
   elif lfDynamicLib in prc.loc.flags: 
-    if not IntSetContainsOrIncl(gGeneratedSyms, prc.id): 
+    if not IdSetContainsOrIncl(gGeneratedSyms, prc.id): 
       SymInDynamicLib(findPendingModule(m, prc), prc)
   elif not (sfImportc in prc.flags): 
-    if not IntSetContainsOrIncl(gGeneratedSyms, prc.id): 
+    if not IdSetContainsOrIncl(gGeneratedSyms, prc.id): 
       genProcAux(findPendingModule(m, prc), prc)
   
 proc genProc(m: BModule, prc: PSym) = 
@@ -634,7 +635,7 @@ proc genVarPrototype(m: BModule, sym: PSym) =
   useHeader(m, sym)
   fillLoc(sym.loc, locGlobalVar, sym.typ, mangleName(sym), OnHeap)
   if (lfNoDecl in sym.loc.Flags) or
-      intSetContainsOrIncl(m.declaredThings, sym.id): 
+      IdSetContainsOrIncl(m.declaredThings, sym.id): 
     return 
   if sym.owner.id != m.module.id: 
     # else we already have the symbol generated!
@@ -656,7 +657,7 @@ proc genConstPrototype(m: BModule, sym: PSym) =
   if sym.loc.k == locNone: 
     fillLoc(sym.loc, locData, sym.typ, mangleName(sym), OnUnknown)
   if (lfNoDecl in sym.loc.Flags) or
-      intSetContainsOrIncl(m.declaredThings, sym.id): 
+      IdSetContainsOrIncl(m.declaredThings, sym.id): 
     return 
   if sym.owner.id != m.module.id: 
     # else we already have the symbol generated!
@@ -772,23 +773,23 @@ proc genInitCode(m: BModule) =
   prc = ropeff("N_NOINLINE(void, $1)(void) {$n", 
                "define void $1() noinline {$n", [initname])
   if m.typeNodes > 0: 
-    appcg(m, m.s[cfsTypeInit1], "static #TNimNode $1[$2];$n", 
+    appcg(m, m.ts[ctfsTypeInit1], "static #TNimNode $1[$2];$n", 
           [m.typeNodesName, toRope(m.typeNodes)])
   if m.nimTypes > 0: 
-    appcg(m, m.s[cfsTypeInit1], "static #TNimType $1[$2];$n", 
+    appcg(m, m.ts[ctfsTypeInit1], "static #TNimType $1[$2];$n", 
           [m.nimTypesName, toRope(m.nimTypes)])
   if optStackTrace in m.initProc.options: 
     getFrameDecl(m.initProc)
     app(prc, m.initProc.s[cpsLocals])
-    app(prc, m.s[cfsTypeInit1])
+    #app(prc, m.s[ctfsTypeInit1])
     procname = CStringLit(m.initProc, prc, m.module.name.s)
     filename = CStringLit(m.initProc, prc, toFilename(m.module.info))
     app(prc, initFrame(m.initProc, procname, filename))
   else: 
     app(prc, m.initProc.s[cpsLocals])
-    app(prc, m.s[cfsTypeInit1])
-  app(prc, m.s[cfsTypeInit2])
-  app(prc, m.s[cfsTypeInit3])
+    #app(prc, m.s[ctfsTypeInit1])
+  #app(prc, m.s[ctfsTypeInit2])
+  #app(prc, m.s[ctfsTypeInit3])
   app(prc, m.s[cfsDebugInit])
   app(prc, m.s[cfsDynLibInit])
   app(prc, m.initProc.s[cpsInit])
@@ -797,22 +798,26 @@ proc genInitCode(m: BModule) =
   app(prc, '}' & tnl & tnl)
   app(m.s[cfsProcs], prc)
 
+var gTypeInitCode1, gTypeInitCode2 : PRope
+
 proc genModule(m: BModule, cfilenoext: string): PRope = 
   result = getFileHeader(cfilenoext)
   generateHeaders(m)
-  for i in countup(low(TCFileSection), cfsProcs): app(result, m.s[i])
+  app(result, m.s[cfsHeaders])
+  for i in countup(ctfsForwardTypes, ctfsVars): app(result, m.ts[i])
+  for i in countup(cfsDebugInit, high(TCFileSection)): app(result, m.s[i])
   
 proc rawNewModule(module: PSym, filename: string): BModule = 
   new(result)
   InitLinkedList(result.headerFiles)
-  intSetInit(result.declaredThings)
-  intSetInit(result.declaredProtos)
+  IdSetInit(result.declaredThings)
+  IdSetInit(result.declaredProtos)
   result.cfilename = filename
   result.filename = filename
   initIdTable(result.typeCache)
   initIdTable(result.forwTypeCache)
   result.module = module
-  intSetInit(result.typeInfoMarker)
+  IdSetInit(result.typeInfoMarker)
   result.initProc = newProc(nil, result)
   result.initProc.options = gOptions
   initNodeTable(result.dataCache)
@@ -826,32 +831,28 @@ proc newModule(module: PSym, filename: string): BModule =
   if (optDeadCodeElim in gGlobalOptions): 
     if (sfDeadCodeElim in module.flags): 
       InternalError("added pending module twice: " & filename)
-    addPendingModule(result)
+  addPendingModule(result)
 
 proc registerTypeInfoModule() = 
   const moduleName = "nim__dat"
   var s = NewSym(skModule, getIdent(moduleName), nil)
-  gNimDat = rawNewModule(s, joinPath(options.projectPath, moduleName) & ".nim")
-  addPendingModule(gNimDat)
   appff(mainModProcs, "N_NOINLINE(void, $1)(void);$n", 
         "declare void $1() noinline$n", [getInitName(s)])
 
 proc myOpen(module: PSym, filename: string): PPassContext = 
-  if gNimDat == nil: registerTypeInfoModule()
+  #echo("myOpen: ", filename)
   result = newModule(module, filename)
 
+proc writeTypeInitCode(module : PSym)
 proc myOpenCached(module: PSym, filename: string, 
                   rd: PRodReader): PPassContext = 
-  if gNimDat == nil: 
-    registerTypeInfoModule()  
-    #MessageOut('cgen.myOpenCached has been called ' + filename);
+  #echo("myOpenCached: ", filename)
+  #debug(module)
+  incl(module.flags, sfCached)
   var cfile = changeFileExt(completeCFilePath(filename), cExt)
   var cfilenoext = changeFileExt(cfile, "")
-  addFileToLink(cfilenoext)
   registerModuleToMain(module) 
-  # XXX: this cannot be right here, initalization has to be appended during
-  # the ``myClose`` call
-  result = nil
+  result = newModule(module, filename)
 
 proc shouldRecompile(code: PRope, cfile, cfilenoext: string): bool = 
   result = true
@@ -861,15 +862,33 @@ proc shouldRecompile(code: PRope, cfile, cfilenoext: string): bool =
     if ExistsFile(objFile) and os.FileNewer(objFile, cfile): result = false
   else: 
     writeRope(code, cfile)
+
+proc writeTypeInitCode(module : PSym) =
+  app(gTypeInitCode1, module.typeInitCode1)
+  app(gTypeInitCode2, module.typeInitCode2)
+  if sfMainModule in module.flags:
+    var cfilenoext = toGeneratedFile(joinPath(projectPath, "nim__dat.nim"), "")
+    var cfile = cfilenoext & ".c"
+    var a = getFileHeader(cfilenoext)
+    app(a, "#include \"nimbase.h\"" & tnl & tnl)
+    app(a, gTypeInitCode1)
+    app(a, "N_NOINLINE(void, nim__datInit)(void) {" & tnl)
+    app(a, gTypeInitCode2)
+    app(a, "}" & tnl)
+    if shouldRecompile(a, cfile, cfilenoext):
+      addFileToCompile(cfilenoext)
+    addFileToLink(cfilenoext)
   
 proc myProcess(b: PPassContext, n: PNode): PNode = 
   result = n
   if b == nil: return 
   var m = BModule(b)
+  if sfCached in m.module.flags: return
   m.initProc.options = gOptions
   genStmts(m.initProc, n)
 
 proc finishModule(m: BModule) = 
+  if sfCached in m.module.flags: return
   var i = 0
   while i <= high(m.forwardedProcs): 
     # Note: ``genProc`` may add to ``m.forwardedProcs``, so we cannot use
@@ -883,29 +902,31 @@ proc finishModule(m: BModule) =
   setlen(m.forwardedProcs, 0)
 
 proc writeModule(m: BModule) = 
-  # generate code for the init statements of the module:
-  genInitCode(m)
-  finishTypeDescriptions(m)
   var cfile = completeCFilePath(m.cfilename)
   var cfilenoext = changeFileExt(cfile, "")
-  if sfMainModule in m.module.flags: 
-    # generate main file:
-    app(m.s[cfsProcHeaders], mainModProcs)
-  var code = genModule(m, cfilenoext)
-  
-  when hasTinyCBackend:
-    if gCmd == cmdRun:
-      tccgen.compileCCode(ropeToStr(code))
-      return
-  
-  if shouldRecompile(code, changeFileExt(cfile, cExt), cfilenoext): 
-    addFileToCompile(cfilenoext)
+  if sfCached notin m.module.flags:
+    # generate code for the init statements of the module:
+    genInitCode(m)
+    finishTypeDescriptions(m)
+    if sfMainModule in m.module.flags: 
+      # generate main file:
+      app(m.s[cfsProcHeaders], mainModProcs)
+    var code = genModule(m, cfilenoext)
+    
+    when hasTinyCBackend:
+      if gCmd == cmdRun:
+        tccgen.compileCCode(ropeToStr(code))
+        return
+    
+    if shouldRecompile(code, changeFileExt(cfile, cExt), cfilenoext): 
+      addFileToCompile(cfilenoext)
   addFileToLink(cfilenoext)
 
 proc myClose(b: PPassContext, n: PNode): PNode = 
   result = n
   if b == nil: return 
   var m = BModule(b)
+  #echo("cgen myClose " & m.filename)
   if n != nil: 
     m.initProc.options = gOptions
     genStmts(m.initProc, n)
@@ -915,20 +936,28 @@ proc myClose(b: PPassContext, n: PNode): PNode =
     finishModule(m)
   if sfMainModule in m.module.flags: 
     var disp = generateMethodDispatchers()
-    for i in 0..sonsLen(disp)-1: genProcAux(gNimDat, disp.sons[i].sym)
+    for i in 0..sonsLen(disp)-1: genProcAux(m, disp.sons[i].sym)
     genMainProc(m) 
     # we need to process the transitive closure because recursive module
     # deps are allowed (and the system module is processed in the wrong
     # order anyway)
-    while gForwardedProcsCounter > 0: 
-      for i in countup(0, high(gPendingModules)): 
-        finishModule(gPendingModules[i])
-    for i in countup(0, high(gPendingModules)): writeModule(gPendingModules[i])
+    if optDeadCodeElim in gGlobalOptions:
+      while gForwardedProcsCounter > 0: 
+        for i in countup(0, high(gPendingModules)): 
+          finishModule(gPendingModules[i])
+      for i in countup(0, high(gPendingModules)): writeModule(gPendingModules[i])
     setlen(gPendingModules, 0)
   if not (optDeadCodeElim in gGlobalOptions) and
       not (sfDeadCodeElim in m.module.flags): 
     writeModule(m)
-  if sfMainModule in m.module.flags: writeMapping(gMapping)
+  if sfCached notin m.module.flags:
+    for i in countup(ctfsForwardTypes, ctfsVars):
+      app(m.module.typeInitCode1, m.ts[i])
+    for i in countup(ctfsTypeInit1, ctfsTypeInit3):
+      app(m.module.typeInitCode2, m.ts[i])
+  if sfMainModule in m.module.flags:
+    writeMapping(gMapping)
+  writeTypeInitCode(m.module)
   
 proc cgenPass(): TPass = 
   initPass(result)
@@ -937,5 +966,5 @@ proc cgenPass(): TPass =
   result.process = myProcess
   result.close = myClose
 
-InitIiTable(gToTypeInfoId)
-IntSetInit(gGeneratedSyms)
+InitXYTable(gToTypeInfoId)
+IdSetInit(gGeneratedSyms)

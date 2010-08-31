@@ -233,7 +233,7 @@ proc semAsgn(c: PContext, n: PNode): PNode =
   n.sons[0] = a
   n.sons[1] = semExprWithType(c, n.sons[1])
   var le = a.typ
-  if skipTypes(le, {tyGenericInst}).kind != tyVar and IsAssignable(a) == arNone: 
+  if skipTypes(le, {tyGenericInst}).kind != tyVar and isAssignable(a) == arNone: 
     # Direct assignment to a discriminant is allowed!
     liMessage(a.info, errXCannotBeAssignedTo, renderTree(a, {renderNoComments}))
   else: 
@@ -435,11 +435,11 @@ proc semRaise(c: PContext, n: PNode): PNode =
       liMessage(n.info, errExprCannotBeRaised)
   
 proc semTry(c: PContext, n: PNode): PNode = 
-  var check: TIntSet
+  var check: TIdSet
   result = n
   checkMinSonsLen(n, 2)
   n.sons[0] = semStmtScope(c, n.sons[0])
-  IntSetInit(check)
+  IdSetInit(check)
   for i in countup(1, sonsLen(n) - 1): 
     var a = n.sons[i]
     checkMinSonsLen(a, 1)
@@ -452,7 +452,7 @@ proc semTry(c: PContext, n: PNode): PNode =
           liMessage(a.sons[j].info, errExprCannotBeRaised)
         a.sons[j] = newNodeI(nkType, a.sons[j].info)
         a.sons[j].typ = typ
-        if IntSetContainsOrIncl(check, typ.id): 
+        if IdSetContainsOrIncl(check, typ.id): 
           liMessage(a.sons[j].info, errExceptionAlreadyHandled)
     elif a.kind != nkFinally: 
       illFormedAst(n) 
@@ -536,7 +536,7 @@ proc SemTypeSection(c: PContext, n: PNode): PNode =
       openScope(c.tab)
       pushOwner(s)
       s.typ.kind = tyGenericBody
-      if s.typ.containerID != 0: 
+      if s.typ.containerID != nilId: 
         InternalError(a.info, "semTypeSection: containerID")
       s.typ.containerID = getID()
       a.sons[1] = semGenericParamList(c, a.sons[1], s.typ)
@@ -778,10 +778,10 @@ proc evalInclude(c: PContext, n: PNode): PNode =
   for i in countup(0, sonsLen(n) - 1): 
     var f = getModuleFile(n.sons[i])
     var fileIndex = includeFilename(f)
-    if IntSetContainsOrIncl(c.includedFiles, fileIndex): 
+    if OrdSetContainsOrIncl(c.includedFiles, fileIndex): 
       liMessage(n.info, errRecursiveDependencyX, f)
     addSon(result, semStmt(c, gIncludeFile(f)))
-    IntSetExcl(c.includedFiles, fileIndex)
+    OrdSetExcl(c.includedFiles, fileIndex)
 
 proc semCommand(c: PContext, n: PNode): PNode =
   result = semExprNoType(c, n)

@@ -19,7 +19,7 @@ proc TableGetType*(tab: TIdTable, key: PType): PObject
 proc GetUniqueType*(key: PType): PType
 # implementation
 
-var gTypeTable: array[TTypeKind, TIdTable]
+var gTypeTable: array[TTypeKind, TIdTable] # Must be globally unique
 
 proc initTypeTables() = 
   for i in countup(low(TTypeKind), high(TTypeKind)): InitIdTable(gTypeTable[i])
@@ -32,33 +32,7 @@ proc GetUniqueType(key: PType): PType =
   result = key
   if key == nil: return 
   k = key.kind
-  case k #
-         #  case key.Kind of
-         #    tyEmpty, tyChar, tyBool, tyNil, tyPointer, tyString, tyCString, 
-         #    tyInt..tyFloat128, tyProc, tyAnyEnum: begin end;
-         #    tyNone, tyForward: 
-         #      InternalError('GetUniqueType: ' + typeToString(key));
-         #    tyGenericParam, tyGeneric, tyAbstract, tySequence,
-         #    tyOpenArray, tySet, tyVar, tyRef, tyPtr, tyArrayConstr,
-         #    tyArray, tyTuple, tyRange: begin
-         #      // we have to do a slow linear search because types may need
-         #      // to be compared by their structure:
-         #      if IdTableHasObjectAsKey(gTypeTable, key) then exit;
-         #      for h := 0 to high(gTypeTable.data) do begin
-         #        t := PType(gTypeTable.data[h].key);
-         #        if (t <> nil) and sameType(t, key) then begin result := t; exit end
-         #      end;
-         #      IdTablePut(gTypeTable, key, key);
-         #    end;
-         #    tyObject, tyEnum: begin
-         #      result := PType(IdTableGet(gTypeTable, key));
-         #      if result = nil then begin
-         #        IdTablePut(gTypeTable, key, key);
-         #        result := key;
-         #      end
-         #    end;
-         #    tyGenericInst, tyAbstract: result := GetUniqueType(lastSon(key));
-         #  end; 
+  case k
   of tyObject, tyEnum: 
     result = PType(IdTableGet(gTypeTable[k], key))
     if result == nil: 

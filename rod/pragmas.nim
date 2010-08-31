@@ -143,8 +143,9 @@ proc onOff(c: PContext, n: PNode, op: TOptions) =
   else: gOptions = gOptions - op
   
 proc pragmaDeadCodeElim(c: PContext, n: PNode) = 
-  if IsTurnedOn(c, n): incl(c.module.flags, sfDeadCodeElim)
-  else: excl(c.module.flags, sfDeadCodeElim)
+  return #XXX
+  #if IsTurnedOn(c, n): incl(c.module.flags, sfDeadCodeElim)
+  #else: excl(c.module.flags, sfDeadCodeElim)
   
 proc processCallConv(c: PContext, n: PNode) = 
   if (n.kind == nkExprColonExpr) and (n.sons[1].kind == nkIdent): 

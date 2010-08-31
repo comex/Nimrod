@@ -125,7 +125,7 @@ type
                               # needs so much look-ahead
   
 
-var gLinesCompiled*: int  # all lines that have been compiled
+var gLinesCompiled*: int  # safe: all lines that have been compiled
 
 proc pushInd*(L: var TLexer, indent: int)
 
@@ -170,6 +170,7 @@ proc pushInd(L: var TLexer, indent: int) =
 proc popInd(L: var TLexer) = 
   var length = len(L.indentStack)
   setlen(L.indentStack, length - 1)
+  assert(len(L.indentStack) > 0)
 
 proc findIdent(L: TLexer, indent: int): bool = 
   for i in countdown(len(L.indentStack) - 1, 0): 
@@ -583,7 +584,7 @@ proc getSymbol(L: var TLexer, tok: var TToken) =
   tok.ident = getIdent(addr(L.buf[L.bufpos]), pos - L.bufpos, h)
   L.bufpos = pos
   if (tok.ident.id < ord(tokKeywordLow) - ord(tkSymbol)) or
-      (tok.ident.id > ord(tokKeywordHigh) - ord(tkSymbol)): 
+     (tok.ident.id > ord(tokKeywordHigh) - ord(tkSymbol)): 
     tok.tokType = tkSymbol
   else: 
     tok.tokType = TTokType(tok.ident.id + ord(tkSymbol))
@@ -609,8 +610,10 @@ proc getOperator(L: var TLexer, tok: var TToken) =
   h = h xor (h shr 11)
   h = h +% h shl 15
   tok.ident = getIdent(addr(L.buf[L.bufpos]), pos - L.bufpos, h)
-  if (tok.ident.id < oprLow) or (tok.ident.id > oprHigh): tok.tokType = tkOpr
-  else: tok.tokType = TTokType(tok.ident.id - oprLow + ord(tkColon))
+  if (tok.ident.id < oprLow) or
+     (tok.ident.id > oprHigh): tok.tokType = tkOpr
+  else:
+    tok.tokType = TTokType(tok.ident.id - oprLow + ord(tkColon))
   L.bufpos = pos
 
 proc handleIndentation(L: var TLexer, tok: var TToken, indent: int) = 

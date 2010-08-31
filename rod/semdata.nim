@@ -41,15 +41,15 @@ type
                               # generic symbol and the instantiated symbol
     lastGenericIdx*: int      # used for the generics stack
     tab*: TSymTab             # each module has its own symbol table
-    AmbiguousSymbols*: TIntSet # ids of all ambiguous symbols (cannot
-                               # store this info in the syms themselves!)
+    AmbiguousSymbols*: TIdSet # ids of all ambiguous symbols (cannot
+                              # store this info in the syms themselves!)
     converters*: TSymSeq      # sequence of converters
     optionStack*: TLinkedList
     libs*: TLinkedList        # all libs used by this module
     fromCache*: bool          # is the module read from a cache?
     semConstExpr*: proc (c: PContext, n: PNode): PNode # for the pragmas
     semExpr*: proc (c: PContext, n: PNode): PNode      # for the pragmas
-    includedFiles*: TIntSet   # used to detect recursive include files
+    includedFiles*: TOrdSet[int] #used to detect recursive include files
     filename*: string         # the module's filename
     userPragmas*: TStrTable
   
@@ -80,7 +80,7 @@ proc PushOwner*(owner: PSym)
 proc PopOwner*()
 # implementation
 
-var gOwners: seq[PSym] = @[]
+var gOwners: seq[PSym] = @[] # Probably safe, this is a stack
 
 proc getCurrOwner(): PSym = 
   # owner stack (used for initializing the
@@ -116,7 +116,7 @@ proc newOptionEntry(): POptionEntry =
 proc newContext(module: PSym, nimfile: string): PContext = 
   new(result)
   InitSymTab(result.tab)
-  IntSetInit(result.AmbiguousSymbols)
+  IdSetInit(result.AmbiguousSymbols)
   initLinkedList(result.optionStack)
   initLinkedList(result.libs)
   append(result.optionStack, newOptionEntry())
@@ -124,7 +124,7 @@ proc newContext(module: PSym, nimfile: string): PContext =
   result.generics = newNode(nkStmtList)
   result.converters = @ []
   result.filename = nimfile
-  IntSetInit(result.includedFiles)
+  OrdSetInit(result.includedFiles)
   initStrTable(result.userPragmas)
 
 proc addConverter(c: PContext, conv: PSym) = 

@@ -122,7 +122,8 @@ proc whichKeyword(id: String): TSpecialWord =
 
 proc whichKeyword(id: PIdent): TSpecialWord = 
   if id.id < 0: result = wInvalid
-  else: result = TSpecialWord(id.id)
+  elif id.id <= int(high(TSpecialWord)): result = TSpecialWord(id.id)
+  else: result = wInvalid
   
 proc initSpecials() = 
   # initialize the keywords:

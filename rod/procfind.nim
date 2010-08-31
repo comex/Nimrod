@@ -11,7 +11,7 @@
 # This is needed for proper handling of forward declarations.
 
 import 
-  ast, astalgo, msgs, semdata, types, trees
+  ast, astalgo, msgs, semdata, types, trees, idents
 
 proc SearchForProc*(c: PContext, fn: PSym, tos: int): PSym
   # Searchs for the fn in the symbol table. If the parameter lists are exactly

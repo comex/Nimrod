@@ -52,7 +52,7 @@ proc newModule(filename: string): PSym =
   # We cannot call ``newSym`` here, because we have to circumvent the ID
   # mechanism, which we do in order to assign each module a persistent ID. 
   new(result)
-  result.id = - 1             # for better error checking
+  result.id = nilId             # for better error checking
   result.kind = skModule
   result.name = getIdent(splitFile(filename).name)
   if not isNimrodIdentifier(result.name.s):
@@ -83,7 +83,9 @@ proc CompileModule(filename: string, isMainFile, isSystemFile: bool): PSym =
   if isSystemFile: incl(result.flags, sfSystemModule)
   if (gCmd == cmdCompileToC) or (gCmd == cmdCompileToCpp): 
     rd = handleSymbolFile(result, f)
-    if result.id < 0: 
+    if rd != nil:
+      incl(result.flags, sfCached)
+    if result.id == nilId: 
       InternalError("handleSymbolFile should have set the module\'s ID")
   else: 
     result.id = getID()
@@ -183,7 +185,6 @@ proc MainCommand(cmd, filename: string) =
   if filename != "": 
     # current path is always looked first for modules
     prependStr(searchPaths, splitFile(filename).dir)
-  setID(100)
   passes.gIncludeFile = syntaxes.parseFile
   passes.gImportModule = importModule
   case whichKeyword(cmd)

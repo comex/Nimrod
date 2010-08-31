@@ -673,7 +673,7 @@ proc genStmts(p: BProc, t: PNode) =
   var 
     a: TLoc
     prc: PSym
-  #assert(t <> nil);
+  assert(t != nil)
   if inCheckpoint(t.info): MessageOut(renderTree(t))
   case t.kind
   of nkEmpty: 

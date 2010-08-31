@@ -114,7 +114,7 @@ proc lookUp(c: PContext, n: PNode): PSym =
     result = SymtabGet(c.Tab, n.ident)
     if result == nil: liMessage(n.info, errUndeclaredIdentifier, n.ident.s)
   else: InternalError(n.info, "lookUp")
-  if IntSetContains(c.AmbiguousSymbols, result.id): 
+  if IdSetContains(c.AmbiguousSymbols, result.id): 
     liMessage(n.info, errUseQualifier, result.name.s)
   if result.kind == skStub: loadStub(result)
   
@@ -124,7 +124,7 @@ proc QualifiedLookUp(c: PContext, n: PNode, ambiguousCheck: bool): PSym =
     result = SymtabGet(c.Tab, n.ident)
     if result == nil: 
       liMessage(n.info, errUndeclaredIdentifier, n.ident.s)
-    elif ambiguousCheck and IntSetContains(c.AmbiguousSymbols, result.id): 
+    elif ambiguousCheck and IdSetContains(c.AmbiguousSymbols, result.id): 
       liMessage(n.info, errUseQualifier, n.ident.s)
   of nkSym: 
     #
@@ -133,7 +133,7 @@ proc QualifiedLookUp(c: PContext, n: PNode, ambiguousCheck: bool): PSym =
     #        liMessage(n.info, errUndeclaredIdentifier, n.sym.name.s)
     #      else 
     result = n.sym
-    if ambiguousCheck and IntSetContains(c.AmbiguousSymbols, result.id): 
+    if ambiguousCheck and IdSetContains(c.AmbiguousSymbols, result.id): 
       liMessage(n.info, errUseQualifier, n.sym.name.s)
   of nkDotExpr: 
     result = nil
@@ -171,6 +171,8 @@ proc InitOverloadIter(o: var TOverloadIter, c: PContext, n: PNode): PSym =
       dec(o.stackPtr)
       if o.stackPtr < 0: break 
       result = InitIdentIter(o.it, c.tab.stack[o.stackPtr], n.ident)
+    while result != nil and sfFromGeneric in result.flags:
+      result = nextOverloadIter(o, c, n)
   of nkSym: 
     result = n.sym
     o.mode = oimDone #
@@ -236,5 +238,7 @@ proc nextOverloadIter(o: var TOverloadIter, c: PContext, n: PNode): PSym =
       inc(o.stackPtr)
     else: 
       result = nil
+  while result != nil and sfFromGeneric in result.flags:
+    result = nextOverloadIter(o, c, n)
   if (result != nil) and (result.kind == skStub): loadStub(result)
   

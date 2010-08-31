@@ -10,11 +10,11 @@
 # Implements a table from trees to trees. Does structural equavilent checking.
 
 import 
-  nhashes, ast, astalgo, types
+  nhashes, ast, astalgo, types, idents
 
-proc NodeTableGet*(t: TNodeTable, key: PNode): int
-proc NodeTablePut*(t: var TNodeTable, key: PNode, val: int)
-proc NodeTableTestOrSet*(t: var TNodeTable, key: PNode, val: int): int
+proc NodeTableGet*(t: TNodeTable, key: PNode): TId
+proc NodeTablePut*(t: var TNodeTable, key: PNode, val: TId)
+proc NodeTableTestOrSet*(t: var TNodeTable, key: PNode, val: TId): TId
 # implementation
 
 proc hashTree(n: PNode): THash = 
@@ -68,13 +68,13 @@ proc NodeTableRawGet(t: TNodeTable, k: THash, key: PNode): int =
     h = nextTry(h, high(t.data))
   result = - 1
 
-proc NodeTableGet(t: TNodeTable, key: PNode): int = 
+proc NodeTableGet(t: TNodeTable, key: PNode): TId = 
   var index: int
   index = NodeTableRawGet(t, hashTree(key), key)
   if index >= 0: result = t.data[index].val
-  else: result = low(int)
+  else: result = nilId
   
-proc NodeTableRawInsert(data: var TNodePairSeq, k: THash, key: PNode, val: int) = 
+proc NodeTableRawInsert(data: var TNodePairSeq, k: THash, key: PNode, val: TId) = 
   var h: THash
   h = k and high(data)
   while data[h].key != nil: h = nextTry(h, high(data))
@@ -83,7 +83,7 @@ proc NodeTableRawInsert(data: var TNodePairSeq, k: THash, key: PNode, val: int) 
   data[h].key = key
   data[h].val = val
 
-proc NodeTablePut(t: var TNodeTable, key: PNode, val: int) = 
+proc NodeTablePut(t: var TNodeTable, key: PNode, val: TId) = 
   var 
     index: int
     n: TNodePairSeq
@@ -103,7 +103,7 @@ proc NodeTablePut(t: var TNodeTable, key: PNode, val: int) =
     NodeTableRawInsert(t.data, k, key, val)
     inc(t.counter)
 
-proc NodeTableTestOrSet(t: var TNodeTable, key: PNode, val: int): int = 
+proc NodeTableTestOrSet(t: var TNodeTable, key: PNode, val: TId): TId = 
   var 
     index: int
     n: TNodePairSeq

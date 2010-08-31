@@ -81,10 +81,10 @@ type
                               # without extension)
     typeCache*: TIdTable      # cache the generated types
     forwTypeCache*: TIdTable  # cache for forward declarations of types
-    declaredThings*: TIntSet  # things we have declared in this .c file
-    declaredProtos*: TIntSet  # prototypes we have declared in this .c file
+    declaredThings*: TOrdSet[int]  # things we have declared in this .c file
+    declaredProtos*: TOrdSet[int]  # prototypes we have declared in this .c file
     headerFiles*: TLinkedList # needed headers to include
-    typeInfoMarker*: TIntSet  # needed for generating type information
+    typeInfoMarker*: TOrdSet[int]  # needed for generating type information
     initProc*: BProc          # code for init procedure
     typeStack*: TTypeSeq      # used for type generation
     dataCache*: TNodeTable
@@ -98,7 +98,7 @@ var
   mainModProcs, mainModInit: PRope # parts of the main module
   gMapping: PRope             # the generated mapping file (if requested)
   gProcProfile: Natural       # proc profile counter
-  gGeneratedSyms: TIntSet     # set of ID's of generated symbols
+  gGeneratedSyms: TOrdSet[int]# set of ID's of generated symbols
   gPendingModules: seq[BModule] = @[] # list of modules that are not
                                       # finished with code generation
   gForwardedProcsCounter: int = 0
@@ -532,7 +532,7 @@ proc genProcPrototype(m: BModule, sym: PSym) =
             [getTypeDesc(m, sym.loc.t), toRope(sym.id)])
       if gCmd == cmdCompileToLLVM: incl(sym.loc.flags, lfIndirect)
   else: 
-    if not IntSetContainsOrIncl(m.declaredProtos, sym.id): 
+    if not OrdSetContainsOrIncl(m.declaredProtos, sym.id): 
       appf(m.s[cfsProcHeaders], "$1;$n", [genProcHeader(m, sym)])
 
 proc genProcNoForward(m: BModule, prc: PSym) = 
@@ -546,10 +546,10 @@ proc genProcNoForward(m: BModule, prc: PSym) =
     # a check for ``m.declaredThings``.
     if not intSetContainsOrIncl(m.declaredThings, prc.id): genProcAux(m, prc)
   elif lfDynamicLib in prc.loc.flags: 
-    if not IntSetContainsOrIncl(gGeneratedSyms, prc.id): 
+    if not OrdSetContainsOrIncl(gGeneratedSyms, prc.id): 
       SymInDynamicLib(findPendingModule(m, prc), prc)
   elif not (sfImportc in prc.flags): 
-    if not IntSetContainsOrIncl(gGeneratedSyms, prc.id): 
+    if not OrdSetContainsOrIncl(gGeneratedSyms, prc.id): 
       genProcAux(findPendingModule(m, prc), prc)
   
 proc genProc(m: BModule, prc: PSym) = 
@@ -887,4 +887,4 @@ proc llvmgenPass(): TPass =
   result.close = myClose
 
 InitIiTable(gToTypeInfoId)
-IntSetInit(gGeneratedSyms)
+OrdSetInit(gGeneratedSyms)

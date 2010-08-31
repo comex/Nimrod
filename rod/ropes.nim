@@ -59,7 +59,7 @@
 #
 
 import 
-  msgs, strutils, platform, nhashes, crc
+  msgs, strutils, platform, nhashes, crc, ast
 
 const 
   CacheLeafs* = true
@@ -89,6 +89,7 @@ proc prepend*(a: var PRope, b: PRope)
 proc toRope*(s: string): PRope
 proc toRopeF*(r: BiggestFloat): PRope
 proc toRope*(i: BiggestInt): PRope
+proc toRope*(i: TId): PRope
 proc ropeLen*(a: PRope): int
 proc WriteRope*(head: PRope, filename: string)
 proc writeRopeIfNotEqual*(r: PRope, filename: string): bool
@@ -271,6 +272,7 @@ proc con(a: openarray[PRope]): PRope =
 
 proc toRope(i: BiggestInt): PRope = result = toRope($i)
 proc toRopeF(r: BiggestFloat): PRope = result = toRope($r)
+proc toRope(i: TId): PRope = result = toRope($i)
 proc app(a: var PRope, b: PRope) = a = con(a, b)
 proc app(a: var PRope, b: string) = a = con(a, b)
 proc prepend(a: var PRope, b: PRope) = a = con(b, a)

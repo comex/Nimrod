@@ -432,7 +432,7 @@ proc getMagicOp(call: PNode): TMagic =
   else: 
     result = mNone
   
-proc gatherVars(c: PTransf, n: PNode, marked: var TIntSet, owner: PSym, 
+proc gatherVars(c: PTransf, n: PNode, marked: var TIdSet, owner: PSym, 
                 container: PNode) = 
   # gather used vars for closure generation
   if n == nil: return 
@@ -445,7 +445,7 @@ proc gatherVars(c: PTransf, n: PNode, marked: var TIntSet, owner: PSym,
     of skTemp, skForVar, skParam: found = true
     else: nil
     if found and (owner.id != s.owner.id) and
-        not IntSetContainsOrIncl(marked, s.id): 
+        not IdSetContainsOrIncl(marked, s.id): 
       incl(s.flags, sfInClosure)
       addSon(container, copyNode(n)) # DON'T make a copy of the symbol!
   of nkEmpty..pred(nkSym), succ(nkSym)..nkNilLit: 
@@ -471,9 +471,9 @@ proc indirectAccess(a, b: PSym): PNode =
   result.typ = y.typ
 
 proc transformLambda(c: PTransf, n: PNode): PNode = 
-  var marked: TIntSet
+  var marked: TIdSet
   result = n
-  IntSetInit(marked)
+  IdSetInit(marked)
   if (n.sons[namePos].kind != nkSym): InternalError(n.info, "transformLambda")
   var s = n.sons[namePos].sym
   var closure = newNodeI(nkRecList, n.sons[codePos].info)

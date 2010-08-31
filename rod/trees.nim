@@ -10,7 +10,7 @@
 # tree helper routines
 
 import 
-  ast, astalgo, scanner, msgs, strutils
+  ast, astalgo, scanner, msgs, strutils, idents
 
 proc getMagic*(op: PNode): TMagic
 

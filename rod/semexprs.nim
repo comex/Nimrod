@@ -288,7 +288,7 @@ proc fixAbstractType(c: PContext, n: PNode) =
         changeType(it.sons[1], s)
         n.sons[i] = it.sons[1]
     of nkBracket: 
-      # an implicitely constructed array (passed to an open array):
+      # an implicitly constructed array (passed to an open array):
       n.sons[i] = semArrayConstr(c, it)
     else: 
       if (it.typ == nil): 
@@ -683,7 +683,6 @@ proc builtinFieldAccess(c: PContext, n: PNode, flags: TExprFlags): PNode =
       n.typ = f.typ
       result = n
       markUsed(n, f)
-
 proc semFieldAccess(c: PContext, n: PNode, flags: TExprFlags): PNode = 
   # this is difficult, because the '.' is used in many different contexts
   # in Nimrod. We first allow types in the semantic checking.
@@ -874,11 +873,11 @@ proc checkPar(n: PNode): TParKind =
           return paNone
 
 proc semTupleFieldsConstr(c: PContext, n: PNode): PNode = 
-  var ids: TIntSet
+  var ids: TOrdSet[int]
   result = newNodeI(nkPar, n.info)
   var typ = newTypeS(tyTuple, c)
   typ.n = newNodeI(nkRecList, n.info) # nkIdentDefs
-  IntSetInit(ids)
+  OrdSetInit(ids)
   for i in countup(0, sonsLen(n) - 1): 
     if (n.sons[i].kind != nkExprColonExpr) or
         not (n.sons[i].sons[0].kind in {nkSym, nkIdent}): 
@@ -886,7 +885,7 @@ proc semTupleFieldsConstr(c: PContext, n: PNode): PNode =
     var id: PIdent
     if n.sons[i].sons[0].kind == nkIdent: id = n.sons[i].sons[0].ident
     else: id = n.sons[i].sons[0].sym.name
-    if IntSetContainsOrIncl(ids, id.id): 
+    if OrdSetContainsOrIncl(ids, id.id): 
       liMessage(n.sons[i].info, errFieldInitTwice, id.s)
     n.sons[i].sons[1] = semExprWithType(c, n.sons[i].sons[1])
     var f = newSymS(skField, n.sons[i].sons[0], c)

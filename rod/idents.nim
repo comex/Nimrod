@@ -15,16 +15,12 @@ import
   nhashes, strutils
 
 type 
-  TIdObj* = object of TObject
-    id*: int                  # unique id; use this for comparisons and not the pointers
-  
-  PIdObj* = ref TIdObj
   PIdent* = ref TIdent
-  TIdent*{.acyclic.} = object of TIdObj
+  TIdent*{.acyclic.} = object 
+    id*: int
     s*: string
     next*: PIdent             # for hash-table chaining
     h*: THash                 # hash value of s
-  
 
 proc getIdent*(identifier: string): PIdent
 proc getIdent*(identifier: string, h: THash): PIdent
@@ -85,16 +81,17 @@ proc getIdent(identifier: string): PIdent =
 proc getIdent(identifier: string, h: THash): PIdent = 
   result = getIdent(cstring(identifier), len(identifier), h)
 
-var wordCounter: int = 1
+var wordCounter: int32 = 1
 
 proc getIdent(identifier: cstring, length: int, h: THash): PIdent = 
   var 
-    idx, id: int
+    idx : int
+    id : int
     last: PIdent
   idx = h and high(buckets)
   result = buckets[idx]
   last = nil
-  id = 0
+  id = -1
   while result != nil: 
     if cmpExact(cstring(result.s), identifier, length) == 0: 
       if last != nil: 
@@ -104,17 +101,7 @@ proc getIdent(identifier: cstring, length: int, h: THash): PIdent =
         buckets[idx] = result
       return 
     elif cmpIgnoreStyle(cstring(result.s), identifier, length) == 0: 
-      #if (id <> 0) and (id <> result.id) then begin
-      #        result := buckets[idx];
-      #        writeln('current id ', id);
-      #        for i := 0 to len-1 do write(identifier[i]);
-      #        writeln;
-      #        while result <> nil do begin
-      #          writeln(result.s, '  ', result.id);
-      #          result := result.next
-      #        end
-      #      end;
-      assert((id == 0) or (id == result.id))
+      assert((id == -1) or (id == result.id))
       id = result.id
     last = result
     result = result.next
@@ -124,9 +111,9 @@ proc getIdent(identifier: cstring, length: int, h: THash): PIdent =
   for i in countup(0, length + 0 - 1): result.s[i] = identifier[i - 0]
   result.next = buckets[idx]
   buckets[idx] = result
-  if id == 0: 
+  if id == -1: 
     inc(wordCounter)
-    result.id = - wordCounter
+    result.id = wordCounter
   else: 
     result.id = id            #  writeln('new word ', result.s);
   

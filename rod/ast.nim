@@ -9,8 +9,15 @@
 
 # abstract syntax tree + symbol table
 
+# up here to avoid circularity with ropes
+type
+  TId*{.final.} = tuple[module: int32, num: int32]
+
+proc `$`*(a: TId): string =
+  return "_" & $a.module & "_" & $a.num
+
 import 
-  msgs, nhashes, nversion, options, strutils, crc, ropes, idents, lists
+  msgs, nhashes, nversion, options, strutils, crc, ropes, idents, lists, math
 
 const 
   ImportTablePos* = 0
@@ -220,7 +227,8 @@ type
     sfThreadVar,      # variable is a thread variable
     sfMerge,          # proc can be merged with itself
     sfDeadCodeElim,   # dead code elimination for the module is turned on
-    sfBorrow          # proc is borrowed
+    sfBorrow,         # proc is borrowed
+    sfCached          # module was taken from cache
 
   TSymFlags* = set[TSymFlag]
 
@@ -268,7 +276,7 @@ type
     tfNoSideEffect,   # procedure type does not allow side effects
     tfFinal,          # is the object final?
     tfAcyclic,        # type is acyclic (for GC optimization)
-    tfEnumHasWholes   # enum cannot be mapped into a range
+    tfEnumHasWholes,  # enum cannot be mapped into a range
 
   TTypeFlags* = set[TTypeFlag]
 
@@ -341,6 +349,11 @@ type
     mEqIdent, mEqNimrodNode, mNHint, mNWarning, mNError
 
 type 
+  TIdObj* = object of TObject
+    id*: TId                  # unique id; use this for comparisons and not the pointers
+  
+  PIdObj* = ref TIdObj
+
   PNode* = ref TNode
   PNodePtr* = ptr PNode
   TNodeSeq* = seq[PNode]
@@ -445,6 +458,9 @@ type
     annex*: PLib              # additional fields (seldom used, so we use a
                               # reference to another object to safe space)
   
+    typeInitCode1*: PRope
+    typeInitCode2*: PRope
+
   TTypeSeq* = seq[PType]
   TType* = object of TIdObj   # types are identical iff they have the
                               # same id; there may be multiple copies of a type
@@ -464,7 +480,7 @@ type
     size*: BiggestInt         # the size of the type in bytes
                               # -1 means that the size is unkwown
     align*: int               # the type's alignment requirements
-    containerID*: int         # used for type checking of generics
+    containerID*: TId         # used for type checking of generics
     loc*: TLoc
 
   TPair*{.final.} = object 
@@ -496,7 +512,7 @@ type
   TNodePair*{.final.} = object 
     h*: THash                 # because it is expensive to compute!
     key*: PNode
-    val*: int
+    val*: TId
 
   TNodePairSeq* = seq[TNodePair]
   TNodeTable*{.final.} = object # the same as table[PNode] of int;
@@ -538,15 +554,22 @@ const
   resultPos* = 5
   dispatcherPos* = 6
 
-var gId*: int
+var nilId* : TId
 
-proc getID*(): int
-proc setID*(id: int)
+proc `==`*(a: TId, b: TId): bool {.inline, nosideeffect.} =
+  return a.module == b.module and a.num == b.num
+
+var gId*: TId = (1'i32, 0'i32)
+
+proc getID*(): TId
+proc getModuleID*(filename: string): TId
+proc ungetID*(id: TId)
+proc setID*(id: TId)
 proc IDsynchronizationPoint*(idRange: int)
 
 # creator procs:
-proc NewSym*(symKind: TSymKind, Name: PIdent, owner: PSym): PSym
-proc NewType*(kind: TTypeKind, owner: PSym): PType
+proc newSym*(symKind: TSymKind, Name: PIdent, owner: PSym): PSym
+proc newType*(kind: TTypeKind, owner: PSym): PType
 proc newNode*(kind: TNodeKind): PNode
 proc newIntNode*(kind: TNodeKind, intVal: BiggestInt): PNode
 proc newIntTypeNode*(kind: TNodeKind, intVal: BiggestInt, typ: PType): PNode
@@ -607,7 +630,7 @@ type
   TBitScalar* = int
 
 const 
-  InitIntSetSize* = 8         # must be a power of two!
+  InitOrdSetSize* = 8         # must be a power of two!
   TrunkShift* = 9
   BitsPerTrunk* = 1 shl TrunkShift # needs to be a power of 2 and divisible by 64
   TrunkMask* = BitsPerTrunk - 1
@@ -616,46 +639,161 @@ const
   IntMask* = 1 shl IntShift - 1
 
 type 
-  PTrunk* = ref TTrunk
-  TTrunk*{.final.} = object 
-    next*: PTrunk             # all nodes are connected with this pointer
-    key*: int                 # start address at bit 0
+  TTrunk*{.final.}[T] = object 
+    key*: T                 # start address at bit 0
     bits*: array[0..IntsPerTrunk - 1, TBitScalar] # a bit vector
+  PTrunk*[T] = ref TTrunk[T]
+  # BUG: This has to be global or else errors occur
+  TTrunkSeq*{.final.}[T] = seq[PTrunk[T]]
   
-  TTrunkSeq* = seq[PTrunk]
-  TIntSet*{.final.} = object 
+  TOrdSet*{.final.}[T] = object 
     counter*, max*: int
-    head*: PTrunk
-    data*: TTrunkSeq
+    data*: TTrunkSeq[T]
+  
+  TIdSet*{.final.} = object
+    ordSet*: TOrdSet[int64]
 
+# moved up due to template bug
+proc mustRehash(length, counter: int): bool = 
+  assert(length > counter)
+  result = (length * 2 < counter * 3) or (length - counter < 4)
 
-proc IntSetContains*(s: TIntSet, key: int): bool
-proc IntSetIncl*(s: var TIntSet, key: int)
-proc IntSetExcl*(s: var TIntSet, key: int)
-proc IntSetInit*(s: var TIntSet)
-proc IntSetContainsOrIncl*(s: var TIntSet, key: int): bool
+proc nextTry(h, maxHash: THash): THash = 
+  result = ((5 * h) + 1) and maxHash 
+  # For any initial h in range(maxHash), repeating that maxHash times
+  # generates each int in range(maxHash) exactly once (see any text on
+  # random-number generation for proof).
+  
+proc OrdSetInit*[T](s: var TOrdSet[T]) = 
+  newSeq(s.data, InitOrdSetSize)
+  s.max = InitOrdSetSize - 1
+  s.counter = 0
+
+proc OrdSetGet[T](s: TOrdSet[T], key: T): PTrunk[T] = 
+  var h = int(key and s.max)
+  while s.data[h] != nil: 
+    if s.data[h].key == key: 
+      return s.data[h]
+    h = nextTry(h, s.max)
+  result = nil
+
+proc OrdSetRawInsert[T](s: TOrdSet[T], data: var TTrunkSeq[T], desc: PTrunk[T]) = 
+  var h = int(desc.key and s.max)
+  while data[h] != nil: 
+    assert(data[h] != desc)
+    h = nextTry(h, s.max)
+  assert(data[h] == nil)
+  data[h] = desc
+
+proc OrdSetEnlarge[T](s: var TOrdSet[T]) = 
+  var 
+    n: TTrunkSeq[T]
+    oldMax: int
+  oldMax = s.max
+  s.max = ((s.max + 1) * 2) - 1
+  newSeq(n, s.max + 1)
+  for i in countup(0, oldmax): 
+    if s.data[i] != nil: OrdSetRawInsert(s, n, s.data[i])
+  swap(s.data, n)
+
+proc OrdSetPut[T](s: var TOrdSet[T], key: T): PTrunk[T] = 
+  var h = int(key and s.max)
+  while s.data[h] != nil: 
+    if s.data[h].key == key: 
+      return s.data[h]
+    h = nextTry(h, s.max)
+  if mustRehash(s.max + 1, s.counter): OrdSetEnlarge(s)
+  inc(s.counter)
+  h = int(key and s.max)
+  while s.data[h] != nil: h = nextTry(h, s.max)
+  assert(s.data[h] == nil)
+  new(result)
+  result.key = key
+  s.data[h] = result
+
+proc OrdSetContains*[T](s: TOrdSet[T], key: T): bool = 
+  var 
+    u: TBitScalar
+    t: PTrunk[T]
+  t = OrdSetGet(s, `shr`(key, TrunkShift))
+  if t != nil: 
+    u = TBitScalar(key) and TrunkMask
+    result = (t.bits[`shr`(u, IntShift)] and `shl`(1, u and IntMask)) != 0
+  else: 
+    result = false
+  
+proc OrdSetIncl*[T](s: var TOrdSet[T], key: T) = 
+  var 
+    u: TBitScalar
+    t: PTrunk[T]
+  t = OrdSetPut(s, `shr`(key, TrunkShift))
+  u = TBitScalar(key) and TrunkMask
+  t.bits[`shr`(u, IntShift)] = t.bits[`shr`(u, IntShift)] or
+      `shl`(1, u and IntMask)
+
+proc OrdSetExcl*[T](s: var TOrdSet[T], key: T) = 
+  var 
+    u: TBitScalar
+    t: PTrunk[T]
+  t = OrdSetGet(s, `shr`(key, TrunkShift))
+  if t != nil: 
+    u = TBitScalar(key) and TrunkMask
+    t.bits[`shr`(u, IntShift)] = t.bits[`shr`(u, IntShift)] and
+        not `shl`(1, u and IntMask)
+
+proc OrdSetContainsOrIncl*[T](s: var TOrdSet[T], key: T): bool = 
+  var 
+    u: TBitScalar
+    t: PTrunk[T]
+  t = OrdSetGet(s, `shr`(key, TrunkShift))
+  if t != nil: 
+    u = TBitScalar(key) and TrunkMask
+    result = (t.bits[`shr`(u, IntShift)] and `shl`(1, u and IntMask)) != 0
+    if not result: 
+      t.bits[`shr`(u, IntShift)] = t.bits[`shr`(u, IntShift)] or
+          `shl`(1, u and IntMask)
+  else: 
+    OrdSetIncl(s, key)
+    result = false
+
 const 
   debugIds* = false
 
 proc registerID*(id: PIdObj)
 # implementation
 
-var usedIds: TIntSet
+var usedModuleIds: TOrdSet[int32]
+OrdSetInit(usedModuleIds)
 
 proc registerID(id: PIdObj) = 
-  if debugIDs: 
-    if (id.id == - 1) or IntSetContainsOrIncl(usedIds, id.id): 
-      InternalError("ID already used: " & $(id.id))
+  nil
+  #when debugIDs: 
+  #  if (id.id == - 1) or OrdSetContainsOrIncl(usedIds, id.id): 
+  #    InternalError("ID already used: " & $(id.id))
   
-proc getID(): int = 
+proc getID(): TId = 
   result = gId
-  inc(gId)
+  inc(gId.num)
 
-proc setId(id: int) = 
-  gId = max(gId, id + 1)
+randomize()
+
+proc getModuleID(filename : string): TId = 
+  var modId : int32 = (int32(strCrc32(filename)) and 0x7fffffff'i32)
+  while OrdSetContainsOrIncl(usedModuleIds, modId):
+    modId = random(high(int32))
+  result = (-2'i32, modId)
+  gId = (modId, 1'i32)
+
+proc ungetID(id : TId) =
+  if gId == id:
+    dec(gId.num)
+
+proc setId(id: TId) = 
+  if id.module == gId.module:
+    gId.num = max(gId.num, id.num + 1)
 
 proc IDsynchronizationPoint(idRange: int) = 
-  gId = (gId div IdRange + 1) * IdRange + 1
+  gId.num = (gId.num div IdRange + 1) * IdRange + 1
 
 proc leValue(a, b: PNode): bool = 
   # a <= b?
@@ -759,7 +897,7 @@ proc newNodeIT(kind: TNodeKind, info: TLineInfo, typ: PType): PNode =
   result.info = info
   result.typ = typ
 
-proc NewType(kind: TTypeKind, owner: PSym): PType = 
+proc newType(kind: TTypeKind, owner: PSym): PType = 
   new(result)
   result.kind = kind
   result.owner = owner
@@ -989,109 +1127,3 @@ proc getStrOrChar*(a: PNode): string =
     internalError(a.info, "getStrOrChar")
     result = ""
   
-proc mustRehash(length, counter: int): bool = 
-  assert(length > counter)
-  result = (length * 2 < counter * 3) or (length - counter < 4)
-
-proc nextTry(h, maxHash: THash): THash = 
-  result = ((5 * h) + 1) and maxHash 
-  # For any initial h in range(maxHash), repeating that maxHash times
-  # generates each int in range(maxHash) exactly once (see any text on
-  # random-number generation for proof).
-  
-proc IntSetInit(s: var TIntSet) = 
-  newSeq(s.data, InitIntSetSize)
-  s.max = InitIntSetSize - 1
-  s.counter = 0
-  s.head = nil
-
-proc IntSetGet(t: TIntSet, key: int): PTrunk = 
-  var h = key and t.max
-  while t.data[h] != nil: 
-    if t.data[h].key == key: 
-      return t.data[h]
-    h = nextTry(h, t.max)
-  result = nil
-
-proc IntSetRawInsert(t: TIntSet, data: var TTrunkSeq, desc: PTrunk) = 
-  var h = desc.key and t.max
-  while data[h] != nil: 
-    assert(data[h] != desc)
-    h = nextTry(h, t.max)
-  assert(data[h] == nil)
-  data[h] = desc
-
-proc IntSetEnlarge(t: var TIntSet) = 
-  var 
-    n: TTrunkSeq
-    oldMax: int
-  oldMax = t.max
-  t.max = ((t.max + 1) * 2) - 1
-  newSeq(n, t.max + 1)
-  for i in countup(0, oldmax): 
-    if t.data[i] != nil: IntSetRawInsert(t, n, t.data[i])
-  swap(t.data, n)
-
-proc IntSetPut(t: var TIntSet, key: int): PTrunk = 
-  var h = key and t.max
-  while t.data[h] != nil: 
-    if t.data[h].key == key: 
-      return t.data[h]
-    h = nextTry(h, t.max)
-  if mustRehash(t.max + 1, t.counter): IntSetEnlarge(t)
-  inc(t.counter)
-  h = key and t.max
-  while t.data[h] != nil: h = nextTry(h, t.max)
-  assert(t.data[h] == nil)
-  new(result)
-  result.next = t.head
-  result.key = key
-  t.head = result
-  t.data[h] = result
-
-proc IntSetContains(s: TIntSet, key: int): bool = 
-  var 
-    u: TBitScalar
-    t: PTrunk
-  t = IntSetGet(s, `shr`(key, TrunkShift))
-  if t != nil: 
-    u = key and TrunkMask
-    result = (t.bits[`shr`(u, IntShift)] and `shl`(1, u and IntMask)) != 0
-  else: 
-    result = false
-  
-proc IntSetIncl(s: var TIntSet, key: int) = 
-  var 
-    u: TBitScalar
-    t: PTrunk
-  t = IntSetPut(s, `shr`(key, TrunkShift))
-  u = key and TrunkMask
-  t.bits[`shr`(u, IntShift)] = t.bits[`shr`(u, IntShift)] or
-      `shl`(1, u and IntMask)
-
-proc IntSetExcl(s: var TIntSet, key: int) = 
-  var 
-    u: TBitScalar
-    t: PTrunk
-  t = IntSetGet(s, `shr`(key, TrunkShift))
-  if t != nil: 
-    u = key and TrunkMask
-    t.bits[`shr`(u, IntShift)] = t.bits[`shr`(u, IntShift)] and
-        not `shl`(1, u and IntMask)
-
-proc IntSetContainsOrIncl(s: var TIntSet, key: int): bool = 
-  var 
-    u: TBitScalar
-    t: PTrunk
-  t = IntSetGet(s, `shr`(key, TrunkShift))
-  if t != nil: 
-    u = key and TrunkMask
-    result = (t.bits[`shr`(u, IntShift)] and `shl`(1, u and IntMask)) != 0
-    if not result: 
-      t.bits[`shr`(u, IntShift)] = t.bits[`shr`(u, IntShift)] or
-          `shl`(1, u and IntMask)
-  else: 
-    IntSetIncl(s, key)
-    result = false
-
-if debugIDs: IntSetInit(usedIds)

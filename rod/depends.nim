@@ -21,7 +21,7 @@ type
     filename*: string
   PGen = ref TGen
 
-var gDotGraph: PRope # the generated DOT file; we need a global variable
+var gDotGraph: PRope # probably safe: the generated DOT file; we need a global variable
 
 proc addDependencyAux(importing, imported: string) = 
   appf(gDotGraph, "$1 -> $2;$n", [toRope(importing), toRope(imported)]) 

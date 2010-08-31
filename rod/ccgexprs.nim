@@ -123,13 +123,15 @@ proc genSetNode(p: BProc, n: PNode): PRope =
   var size = int(getSize(n.typ))
   toBitSet(n, cs)
   if size > 8:
-    var id = NodeTableTestOrSet(p.module.dataCache, n, gid)
+    var newid = getID()
+    var id = NodeTableTestOrSet(p.module.dataCache, n, newid)
     result = con("TMP", toRope(id))
-    if id == gid:
+    if id == newid:
       # not found in cache:
-      inc(gid)
       appf(p.module.s[cfsData], "static NIM_CONST $1 $2 = $3;",
            [getTypeDesc(p.module, n.typ), result, genRawSetData(cs, size)])
+    else:
+      ungetID(newid) 
   else:
     result = genRawSetData(cs, size)
 
@@ -152,11 +154,7 @@ proc getStorageLoc(n: PNode): TStorageLoc =
       else: result = OnStack
     else: result = OnUnknown
   of nkDerefExpr, nkHiddenDeref:
-    case n.sons[0].typ.kind
-    of tyVar: result = OnUnknown
-    of tyPtr: result = OnStack
-    of tyRef: result = OnHeap
-    else: InternalError(n.info, "getStorageLoc")
+    result = getStorageLoc(n, n.sons[0].typ)
   of nkBracketExpr, nkDotExpr, nkObjDownConv, nkObjUpConv:
     result = getStorageLoc(n.sons[0])
   else: result = OnUnknown
@@ -551,6 +549,7 @@ proc genRecordFieldAux(p: BProc, e: PNode, d, a: var TLoc): PType =
 proc genRecordField(p: BProc, e: PNode, d: var TLoc) =
   var a: TLoc
   var ty = genRecordFieldAux(p, e, d, a)
+
   var r = rdLoc(a)
   var f = e.sons[1].sym
   if ty.n == nil:
@@ -600,7 +599,7 @@ proc genCheckedRecordField(p: BProc, e: PNode, d: var TLoc) =
     f, field, op: PSym
     ty: PType
     r, strLit: PRope
-    id: int
+    id: TId
     it: PNode
   if optFieldCheck in p.options:
     ty = genRecordFieldAux(p, e.sons[0], d, a)
@@ -1016,13 +1015,10 @@ proc genNewFinalize(p: BProc, e: PNode) =
   InitLocExpr(p, e.sons[1], a)
   # This is a little hack:
   # XXX this is also a bug, if the finalizer expression produces side-effects
-  oldModule = p.module
-  p.module = gNimDat
   InitLocExpr(p, e.sons[2], f)
-  p.module = oldModule
   initLoc(b, locExpr, a.t, OnHeap)
   ti = genTypeInfo(p.module, refType)
-  appf(gNimDat.s[cfsTypeInit3], "$1->finalizer = (void*)$2;$n", [ti, rdLoc(f)])
+  appf(p.module.ts[ctfsTypeInit3], "$1->finalizer = (void*)$2;$n", [ti, rdLoc(f)])
   b.r = ropecg(p.module, "($1) #newObj($2, sizeof($3))", [
       getTypeDesc(p.module, refType),
       ti, getTypeDesc(p.module, skipTypes(reftype.sons[0], abstractRange))])
@@ -1475,13 +1471,15 @@ proc handleConstExpr(p: BProc, n: PNode, d: var TLoc): bool =
   if (nfAllConst in n.flags) and (d.k == locNone) and (sonsLen(n) > 0):
     var t = getUniqueType(n.typ)
     discard getTypeDesc(p.module, t) # so that any fields are initialized
-    var id = NodeTableTestOrSet(p.module.dataCache, n, gid)
+    var newid = getID()
+    var id = NodeTableTestOrSet(p.module.dataCache, n, newid)
     fillLoc(d, locData, t, con("TMP", toRope(id)), OnHeap)
-    if id == gid:
+    if id == newid:
       # expression not found in the cache:
-      inc(gid)
       appf(p.module.s[cfsData], "NIM_CONST $1 $2 = $3;$n",
            [getTypeDesc(p.module, t), d.r, genConstExpr(p, n)])
+    else:
+      ungetID(newid)
     result = true
   else:
     result = false

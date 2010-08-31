@@ -52,6 +52,9 @@ proc initCandidate(c: var TCandidate, callee: PSym, binding: PNode) =
   initIdTable(c.bindings)
   if binding != nil:
     var typeParams = callee.ast[genericParamsPos]
+    if typeParams == nil:
+      debug(callee)
+      InternalError("wtf")
     for i in 1..min(sonsLen(typeParams), sonsLen(binding)-1):
       var formalTypeParam = typeParams.sons[i-1].typ
       #debug(formalTypeParam)
@@ -94,7 +97,6 @@ proc getNotFoundError(c: PContext, n: PNode): string =
   # in case of an error).
   result = msgKindToString(errTypeMismatch)
   for i in countup(1, sonsLen(n) - 1): 
-    #debug(n.sons[i].typ);
     add(result, typeToString(n.sons[i].typ))
     if i != sonsLen(n) - 1: add(result, ", ")
   add(result, ')')
@@ -572,8 +574,8 @@ proc matches(c: PContext, n: PNode, m: var TCandidate) =
   m.call.typ = base(m.callee) # may be nil
   var formalLen = sonsLen(m.callee.n)
   addSon(m.call, copyTree(n.sons[0]))
-  var marker: TIntSet
-  IntSetInit(marker)
+  var marker: TOrdSet[int]
+  OrdSetInit(marker)
   var container: PNode = nil # constructed container
   var formal: PSym = nil
   while a < sonsLen(n): 
@@ -589,7 +591,7 @@ proc matches(c: PContext, n: PNode, m: var TCandidate) =
         # no error message!
         m.state = csNoMatch
         return 
-      if IntSetContainsOrIncl(marker, formal.position): 
+      if OrdSetContainsOrIncl(marker, formal.position): 
         # already in namedParams:
         liMessage(n.sons[a].info, errCannotBindXTwice, formal.name.s)
         m.state = csNoMatch
@@ -634,7 +636,7 @@ proc matches(c: PContext, n: PNode, m: var TCandidate) =
         if m.callee.n.sons[f].kind != nkSym: 
           InternalError(n.sons[a].info, "matches")
         formal = m.callee.n.sons[f].sym
-        if IntSetContainsOrIncl(marker, formal.position): 
+        if OrdSetContainsOrIncl(marker, formal.position): 
           # already in namedParams:
           liMessage(n.sons[a].info, errCannotBindXTwice, formal.name.s)
           m.state = csNoMatch
@@ -658,7 +660,7 @@ proc matches(c: PContext, n: PNode, m: var TCandidate) =
   f = 1
   while f < sonsLen(m.callee.n): 
     formal = m.callee.n.sons[f].sym
-    if not IntSetContainsOrIncl(marker, formal.position): 
+    if not OrdSetContainsOrIncl(marker, formal.position): 
       if formal.ast == nil: 
         if formal.typ.kind == tyOpenArray:
           container = newNodeI(nkBracket, n.info)
@@ -674,6 +676,7 @@ proc matches(c: PContext, n: PNode, m: var TCandidate) =
     inc(f)
 
 proc sameMethodDispatcher(a, b: PSym): bool = 
+  if a.id == b.id: return true # XXX this is bad
   result = false
   if a.kind == skMethod and b.kind == skMethod: 
     var aa = lastSon(a.ast)
@@ -715,6 +718,8 @@ proc semDirectCallWithBinding(c: PContext, n, f: PNode, filter: TSymKinds,
     if x.state != csMatch: 
       InternalError(n.info, "x.state is not csMatch") #writeMatches(x);
                                                       #writeMatches(y);
+    #debug(x.calleeSym)
+    #debug(y.calleeSym)
     liMessage(n.Info, errGenerated, msgKindToString(errAmbiguousCallXYZ) % [
       getProcHeader(x.calleeSym), getProcHeader(y.calleeSym), 
       x.calleeSym.Name.s])

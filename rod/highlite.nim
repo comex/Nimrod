@@ -72,7 +72,7 @@ proc deinitGeneralTokenizer(g: var TGeneralTokenizer) =
 proc nimGetKeyword(id: string): TTokenClass = 
   var i = getIdent(id)
   if (i.id >= ord(tokKeywordLow) - ord(tkSymbol)) and
-      (i.id <= ord(tokKeywordHigh) - ord(tkSymbol)): 
+     (i.id <= ord(tokKeywordHigh) - ord(tkSymbol)): 
     result = gtKeyword
   else: 
     result = gtIdentifier

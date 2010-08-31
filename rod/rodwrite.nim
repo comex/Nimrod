@@ -28,7 +28,8 @@ type
     modDeps*: PRope
     interf*: PRope
     compilerProcs*: PRope
-    index*, imports*: TIndex
+    index*: TIndex[TId, int]
+    imports*: TIndex[TId, TId]
     converters*: PRope
     init*: PRope
     data*: PRope
@@ -36,6 +37,7 @@ type
     sstack*: TSymSeq          # a stack of symbols to process
     tstack*: TTypeSeq         # a stack of types to process
     files*: TStringSeq
+    nodes: seq[PNode] # a raw list of nodes to process
 
   PRodWriter = ref TRodWriter
 
@@ -72,38 +74,39 @@ proc newRodWriter(modfilename: string, crc: TCrc32, module: PSym): PRodWriter =
   new(result)
   result.sstack = @ []
   result.tstack = @ []
-  InitIITable(result.index.tab)
-  InitIITable(result.imports.tab)
+  InitXYTable(result.index.tab)
+  InitXYTable(result.imports.tab)
   result.filename = modfilename
   result.crc = crc
   result.module = module
   result.defines = getDefines()
   result.options = options.gOptions
   result.files = @ []
+  result.nodes = @ []
 
 proc addModDep(w: PRodWriter, dep: string) = 
   if w.modDeps != nil: app(w.modDeps, " ")
-  app(w.modDeps, encodeInt(fileIdx(w, dep)))
+  app(w.modDeps, encode(fileIdx(w, dep)))
 
 const 
   rodNL = "\x0A"
 
 proc addInclDep(w: PRodWriter, dep: string) = 
-  app(w.inclDeps, encodeInt(fileIdx(w, dep)))
+  app(w.inclDeps, encode(fileIdx(w, dep)))
   app(w.inclDeps, " ")
-  app(w.inclDeps, encodeInt(crcFromFile(dep)))
+  app(w.inclDeps, encode(crcFromFile(dep)))
   app(w.inclDeps, rodNL)
 
 proc pushType(w: PRodWriter, t: PType) = 
   # check so that the stack does not grow too large:
-  if IiTableGet(w.index.tab, t.id) == invalidKey: 
+  if XYTableGet(w.index.tab, t.id) == InvalidKeyInt: 
     var L = len(w.tstack)
     setlen(w.tstack, L + 1)
     w.tstack[L] = t
 
 proc pushSym(w: PRodWriter, s: PSym) = 
   # check so that the stack does not grow too large:
-  if IiTableGet(w.index.tab, s.id) == invalidKey: 
+  if XYTableGet(w.index.tab, s.id) == InvalidKeyInt:
     var L = len(w.sstack)
     setlen(w.sstack, L + 1)
     w.sstack[L] = s
@@ -113,27 +116,27 @@ proc encodeNode(w: PRodWriter, fInfo: TLineInfo, n: PNode): PRope =
     # nil nodes have to be stored too:
     return toRope("()")
   result = toRope("(")
-  app(result, encodeInt(ord(n.kind))) 
+  app(result, encode(ord(n.kind))) 
   # we do not write comments for now
   # Line information takes easily 20% or more of the filesize! Therefore we
   # omit line information if it is the same as the father's line information:
   if (finfo.fileIndex != n.info.fileIndex): 
-    appf(result, "?$1,$2,$3", [encodeInt(n.info.col), encodeInt(n.info.line), 
-                               encodeInt(fileIdx(w, toFilename(n.info)))])
+    appf(result, "?$1,$2,$3", [encode(n.info.col), encode(n.info.line), 
+                               encode(fileIdx(w, toFilename(n.info)))])
   elif (finfo.line != n.info.line): 
-    appf(result, "?$1,$2", [encodeInt(n.info.col), encodeInt(n.info.line)])
+    appf(result, "?$1,$2", [encode(n.info.col), encode(n.info.line)])
   elif (finfo.col != n.info.col): 
-    appf(result, "?$1", [encodeInt(n.info.col)]) 
+    appf(result, "?$1", [encode(n.info.col)]) 
   # No need to output the file index, as this is the serialization of one
   # file.
   var f = n.flags * PersistentNodeFlags
-  if f != {}: appf(result, "$$$1", [encodeInt(cast[int32](f))])
+  if f != {}: appf(result, "$$$1", [encode(cast[int32](f))])
   if n.typ != nil: 
-    appf(result, "^$1", [encodeInt(n.typ.id)])
+    appf(result, "^$1", [encode(n.typ.id)])
     pushType(w, n.typ)
   case n.kind
   of nkCharLit..nkInt64Lit: 
-    if n.intVal != 0: appf(result, "!$1", [encodeInt(n.intVal)])
+    if n.intVal != 0: appf(result, "!$1", [encode(n.intVal)])
   of nkFloatLit..nkFloat64Lit: 
     if n.floatVal != 0.0: appf(result, "!$1", [encodeStr(w, $(n.floatVal))])
   of nkStrLit..nkTripleStrLit: 
@@ -141,7 +144,7 @@ proc encodeNode(w: PRodWriter, fInfo: TLineInfo, n: PNode): PRope =
   of nkIdent: 
     appf(result, "!$1", [encodeStr(w, n.ident.s)])
   of nkSym: 
-    appf(result, "!$1", [encodeInt(n.sym.id)])
+    appf(result, "!$1", [encode(n.sym.id)])
     pushSym(w, n.sym)
   else: 
     for i in countup(0, sonsLen(n) - 1): 
@@ -150,14 +153,14 @@ proc encodeNode(w: PRodWriter, fInfo: TLineInfo, n: PNode): PRope =
 
 proc encodeLoc(w: PRodWriter, loc: TLoc): PRope = 
   result = nil
-  if loc.k != low(loc.k): app(result, encodeInt(ord(loc.k)))
-  if loc.s != low(loc.s): appf(result, "*$1", [encodeInt(ord(loc.s))])
-  if loc.flags != {}: appf(result, "$$$1", [encodeInt(cast[int32](loc.flags))])
+  if loc.k != low(loc.k): app(result, encode(ord(loc.k)))
+  if loc.s != low(loc.s): appf(result, "*$1", [encode(ord(loc.s))])
+  if loc.flags != {}: appf(result, "$$$1", [encode(cast[int32](loc.flags))])
   if loc.t != nil: 
-    appf(result, "^$1", [encodeInt(loc.t.id)])
+    appf(result, "^$1", [encode(loc.t.id)])
     pushType(w, loc.t)
   if loc.r != nil: appf(result, "!$1", [encodeStr(w, ropeToStr(loc.r))])
-  if loc.a != 0: appf(result, "?$1", [encodeInt(loc.a)])
+  if loc.a != 0: appf(result, "?$1", [encode(loc.a)])
   if result != nil: result = ropef("<$1>", [result])
   
 proc encodeType(w: PRodWriter, t: PType): PRope = 
@@ -166,32 +169,32 @@ proc encodeType(w: PRodWriter, t: PType): PRope =
     return toRope("[]")
   result = nil
   if t.kind == tyForward: InternalError("encodeType: tyForward")
-  app(result, encodeInt(ord(t.kind)))
-  appf(result, "+$1", [encodeInt(t.id)])
+  app(result, encode(ord(t.kind)))
+  appf(result, "+$1", [encode(t.id)])
   if t.n != nil: app(result, encodeNode(w, UnknownLineInfo(), t.n))
-  if t.flags != {}: appf(result, "$$$1", [encodeInt(cast[int32](t.flags))])
+  if t.flags != {}: appf(result, "$$$1", [encode(cast[int32](t.flags))])
   if t.callConv != low(t.callConv): 
-    appf(result, "?$1", [encodeInt(ord(t.callConv))])
+    appf(result, "?$1", [encode(ord(t.callConv))])
   if t.owner != nil: 
-    appf(result, "*$1", [encodeInt(t.owner.id)])
+    appf(result, "*$1", [encode(t.owner.id)])
     pushSym(w, t.owner)
   if t.sym != nil: 
-    appf(result, "&$1", [encodeInt(t.sym.id)])
+    appf(result, "&$1", [encode(t.sym.id)])
     pushSym(w, t.sym)
-  if t.size != - 1: appf(result, "/$1", [encodeInt(t.size)])
-  if t.align != 2: appf(result, "=$1", [encodeInt(t.align)])
-  if t.containerID != 0: appf(result, "@$1", [encodeInt(t.containerID)])
+  if t.size != - 1: appf(result, "/$1", [encode(t.size)])
+  if t.align != 2: appf(result, "=$1", [encode(t.align)])
+  if t.containerID != nilID: appf(result, "@$1", [encode(t.containerID)])
   app(result, encodeLoc(w, t.loc))
   for i in countup(0, sonsLen(t) - 1): 
     if t.sons[i] == nil: 
       app(result, "^()")
     else: 
-      appf(result, "^$1", [encodeInt(t.sons[i].id)])
+      appf(result, "^$1", [encode(t.sons[i].id)])
       pushType(w, t.sons[i])
 
 proc encodeLib(w: PRodWriter, lib: PLib, info: TLineInfo): PRope = 
   result = nil
-  appf(result, "|$1", [encodeInt(ord(lib.kind))])
+  appf(result, "|$1", [encode(ord(lib.kind))])
   appf(result, "|$1", [encodeStr(w, ropeToStr(lib.name))])
   appf(result, "|$1", [encodeNode(w, info, lib.path)])
 
@@ -204,23 +207,23 @@ proc encodeSym(w: PRodWriter, s: PSym): PRope =
     # nil nodes have to be stored too:
     return toRope("{}")
   result = nil
-  app(result, encodeInt(ord(s.kind)))
-  appf(result, "+$1", [encodeInt(s.id)])
+  app(result, encode(ord(s.kind)))
+  appf(result, "+$1", [encode(s.id)])
   appf(result, "&$1", [encodeStr(w, s.name.s)])
   if s.typ != nil: 
-    appf(result, "^$1", [encodeInt(s.typ.id)])
+    appf(result, "^$1", [encode(s.typ.id)])
     pushType(w, s.typ)
   if s.info.col == int16(- 1): col = nil
-  else: col = encodeInt(s.info.col)
+  else: col = encode(s.info.col)
   if s.info.line == int16(- 1): line = nil
-  else: line = encodeInt(s.info.line)
+  else: line = encode(s.info.line)
   appf(result, "?$1,$2,$3", 
-       [col, line, encodeInt(fileIdx(w, toFilename(s.info)))])
+       [col, line, encode(fileIdx(w, toFilename(s.info)))])
   if s.owner != nil: 
-    appf(result, "*$1", [encodeInt(s.owner.id)])
+    appf(result, "*$1", [encode(s.owner.id)])
     pushSym(w, s.owner)
-  if s.flags != {}: appf(result, "$$$1", [encodeInt(cast[int32](s.flags))])
-  if s.magic != mNone: appf(result, "@$1", [encodeInt(ord(s.magic))])
+  if s.flags != {}: appf(result, "$$$1", [encode(cast[int32](s.flags))])
+  if s.magic != mNone: appf(result, "@$1", [encode(ord(s.magic))])
   if (s.ast != nil): 
     if not astNeeded(s): 
       codeAst = s.ast.sons[codePos]
@@ -229,25 +232,22 @@ proc encodeSym(w: PRodWriter, s: PSym): PRope =
     if codeAst != nil: 
       s.ast.sons[codePos] = codeAst
   if s.options != w.options: 
-    appf(result, "!$1", [encodeInt(cast[int32](s.options))])
-  if s.position != 0: appf(result, "%$1", [encodeInt(s.position)])
-  if s.offset != - 1: appf(result, "`$1", [encodeInt(s.offset)])
+    appf(result, "!$1", [encode(cast[int32](s.options))])
+  if s.position != 0: appf(result, "%$1", [encode(s.position)])
+  if s.offset != - 1: appf(result, "`$1", [encode(s.offset)])
   app(result, encodeLoc(w, s.loc))
   if s.annex != nil: app(result, encodeLib(w, s.annex, s.info))
+    
   
-proc addToIndex(w: var TIndex, key, val: int) = 
-  if key - w.lastIdxKey == 1: 
-    # we do not store a key-diff of 1 to safe space
-    app(w.r, encodeInt(val - w.lastIdxVal))
-    app(w.r, rodNL)
-  else: 
-    appf(w.r, "$1 $2" & rodNL, 
-         [encodeInt(key - w.lastIdxKey), encodeInt(val - w.lastIdxVal)])
-  w.lastIdxKey = key
-  w.lastIdxVal = val
-  IiTablePut(w.tab, key, val)
+proc addToIndex[X, Y](w: var TIndex[X, Y], key: X, val: Y) =
+  # screw compression
+  app(w.r, encode(key))
+  app(w.r, "=")
+  app(w.r, encode(val))
+  app(w.r, "=")
+  XYTablePut(w.tab, key, val)
 
-var debugWritten: TIntSet
+var debugWritten: TOrdSet[int]
 
 proc symStack(w: PRodWriter) = 
   var 
@@ -256,7 +256,7 @@ proc symStack(w: PRodWriter) =
   i = 0
   while i < len(w.sstack): 
     s = w.sstack[i]
-    if IiTableGet(w.index.tab, s.id) == invalidKey: 
+    if XYTableGet(w.index.tab, s.id) == InvalidKeyInt:
       m = getModule(s)
       if m == nil: InternalError("symStack: module nil: " & s.name.s)
       if (m.id == w.module.id) or (sfFromGeneric in s.flags): 
@@ -266,15 +266,15 @@ proc symStack(w: PRodWriter) =
         app(w.data, encodeSym(w, s))
         app(w.data, rodNL)
         if sfInInterface in s.flags: 
-          appf(w.interf, "$1 $2" & rodNL, [encode(s.name.s), encodeInt(s.id)])
+          appf(w.interf, "$1 $2" & rodNL, [encode(s.name.s), encode(s.id)])
         if sfCompilerProc in s.flags: 
           appf(w.compilerProcs, "$1 $2" & rodNL, 
-               [encode(s.name.s), encodeInt(s.id)])
+               [encode(s.name.s), encode(s.id)])
         if s.kind == skConverter: 
           if w.converters != nil: app(w.converters, " ")
-          app(w.converters, encodeInt(s.id))
-      elif IiTableGet(w.imports.tab, s.id) == invalidKey: 
-        addToIndex(w.imports, s.id, m.id) #if not IntSetContains(debugWritten, s.id) then begin 
+          app(w.converters, encode(s.id))
+      elif XYTableGet(w.imports.tab, s.id) == InvalidKeyTId:
+        addToIndex(w.imports, s.id, m.id) #if not OrdSetContains(debugWritten, s.id) then begin 
                                           #  MessageOut(w.filename);
                                           #  debug(s.owner);
                                           #  debug(s);
@@ -287,7 +287,7 @@ proc typeStack(w: PRodWriter) =
   var i, L: int
   i = 0
   while i < len(w.tstack): 
-    if IiTableGet(w.index.tab, w.tstack[i].id) == invalidKey: 
+    if XYTableGet(w.index.tab, w.tstack[i].id) == InvalidKeyInt:
       L = ropeLen(w.data)
       addToIndex(w.index, w.tstack[i].id, L)
       app(w.data, encodeType(w, w.tstack[i]))
@@ -310,7 +310,7 @@ proc addInterfaceSym(w: PRodWriter, s: PSym) =
     rawAddInterfaceSym(w, s)
 
 proc addStmt(w: PRodWriter, n: PNode) = 
-  app(w.init, encodeInt(ropeLen(w.data)))
+  app(w.init, encode(ropeLen(w.data)))
   app(w.init, rodNL)
   app(w.data, encodeNode(w, UnknownLineInfo(), n))
   app(w.data, rodNL)
@@ -323,13 +323,19 @@ proc writeRod(w: PRodWriter) =
   app(content, toRope(FileVersion))
   app(content, rodNL)
   app(content, toRope("ID:"))
-  app(content, encodeInt(w.module.id))
+  app(content, encode(w.module.id))
   app(content, rodNL)
   app(content, toRope("CRC:"))
-  app(content, encodeInt(w.crc))
+  app(content, encode(w.crc))
   app(content, rodNL)
+  app(content, toRope("TIC(" & rodNL))
+  app(content, encode(ropeToStr(w.module.typeInitCode1)))
+  app(content, rodNL)
+  app(content, encode(ropeToStr(w.module.typeInitCode2)))
+  app(content, rodNL)
+  app(content, toRope(')' & rodNL))
   app(content, toRope("OPTIONS:"))
-  app(content, encodeInt(cast[int32](w.options)))
+  app(content, encode(cast[int32](w.options)))
   app(content, rodNL)
   app(content, toRope("DEFINES:"))
   app(content, w.defines)
@@ -375,14 +381,18 @@ proc writeRod(w: PRodWriter) =
 proc process(c: PPassContext, n: PNode): PNode = 
   var 
     w: PRodWriter
-    a: PNode
-    s: PSym
   result = n
   if c == nil: return 
   w = PRodWriter(c)
+  w.nodes.add(n)
+
+proc processReal(w : PRodWriter, n : PNode) =
+  var
+    a: PNode
+    s: PSym
   case n.kind
   of nkStmtList: 
-    for i in countup(0, sonsLen(n) - 1): discard process(c, n.sons[i])
+    for i in countup(0, sonsLen(n) - 1): processReal(w, n.sons[i])
   of nkTemplateDef, nkMacroDef: 
     s = n.sons[namePos].sym
     addInterfaceSym(w, s)
@@ -435,13 +445,15 @@ proc process(c: PPassContext, n: PNode): PNode =
     nil
 
 proc myOpen(module: PSym, filename: string): PPassContext = 
-  if module.id < 0: InternalError("rodwrite: module ID not set")
+  if module.id == nilId: InternalError("rodwrite: module ID not set")
   var w = newRodWriter(filename, rodread.GetCRC(filename), module)
-  rawAddInterfaceSym(w, module)
   result = w
 
 proc myClose(c: PPassContext, n: PNode): PNode = 
   var w = PRodWriter(c)
+  for node in w.nodes.items:
+    processReal(w, node)
+  rawAddInterfaceSym(w, w.module)
   writeRod(w)
   result = n
 
@@ -452,4 +464,4 @@ proc rodwritePass(): TPass =
     result.close = myClose
     result.process = process
 
-IntSetInit(debugWritten)
+OrdSetInit(debugWritten)

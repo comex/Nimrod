@@ -31,6 +31,11 @@ proc ObjectSetIncl*(t: var TObjectSet, obj: PObject)
 proc ObjectSetContainsOrIncl*(t: var TObjectSet, obj: PObject): bool
   # more are not needed ...
 
+proc IdSetInit*(t: var TIdSet)
+proc IdSetContains*(t: TIdSet, id: TId): bool
+proc IdSetIncl*(t: var TIdSet, id: TId)
+proc IdSetContainsOrIncl*(t: var TIdSet, id: TId): bool
+
 # ----------------------- (key, val)-Hashtables ----------------------------
 proc TablePut*(t: var TTable, key, val: PObject)
 proc TableGet*(t: TTable, key: PObject): PObject
@@ -107,7 +112,7 @@ proc debug*(n: PNode)
 
 # --------------------------- ident tables ----------------------------------
 proc IdTableGet*(t: TIdTable, key: PIdObj): PObject
-proc IdTableGet*(t: TIdTable, key: int): PObject
+proc IdTableGet*(t: TIdTable, key: TId): PObject
 proc IdTablePut*(t: var TIdTable, key: PIdObj, val: PObject)
 proc IdTableHasObjectAsKey*(t: TIdTable, key: PIdObj): bool
   # checks if `t` contains the `key` (compared by the pointer value, not only
@@ -124,23 +129,36 @@ proc getModule*(s: PSym): PSym
 proc mustRehash*(length, counter: int): bool
 proc nextTry*(h, maxHash: THash): THash
 
-# ------------- table[int, int] ---------------------------------------------
-const 
-  InvalidKey* = low(int)
+# ------------- table[X, Y] -------------------------------------------------
+# this is such to work around generics issues
+var InvalidKeyInt* : int = -1
+var InvalidKeyTId* : TId = nilId
+var InvalidValueInt*: int = -1
+var InvalidValueTId*: TId = nilId
+
+proc GetInvalidKey*(a : var int) =
+  a = InvalidKeyInt
+proc GetInvalidKey*(a : var TId) =
+  a = InvalidKeyTId
+proc GetInvalidValue*(a : var int) =
+  a = InvalidValueInt
+proc GetInvalidValue*(a : var TId) =
+  a = InvalidValuetId
 
 type 
-  TIIPair*{.final.} = object 
-    key*, val*: int
+  TXYPair*{.final.}[X, Y] = object 
+    key*: X
+    val*: Y
 
-  TIIPairSeq* = seq[TIIPair]
-  TIITable*{.final.} = object # table[int, int]
+  TXYPairSeq*[X, Y] = seq[TXYPair[X, Y]]
+  TXYTable*{.final.}[X, Y] = object # table[X, Y]
     counter*: int
-    data*: TIIPairSeq
+    data*: TXYPairSeq[X, Y]
 
 
-proc initIITable*(x: var TIITable)
-proc IITableGet*(t: TIITable, key: int): int
-proc IITablePut*(t: var TIITable, key, val: int)
+proc initXYTable*[X, Y](t: var TXYTable[X, Y])
+proc XYTableGet*[X, Y](t: TXYTable[X, Y], key: X): Y
+proc XYTablePut*[X, Y](t: var TXYTable[X, Y], key: X, val: Y)
 
 # implementation
 
@@ -228,10 +246,10 @@ proc lineInfoToStr(info: TLineInfo): PRope =
                                   toRope(toLinenumber(info)), 
                                   toRope(toColumn(info))])
 
-proc treeToYamlAux(n: PNode, marker: var TIntSet, indent, maxRecDepth: int): PRope
-proc symToYamlAux(n: PSym, marker: var TIntSet, indent, maxRecDepth: int): PRope
-proc typeToYamlAux(n: PType, marker: var TIntSet, indent, maxRecDepth: int): PRope
-proc strTableToYaml(n: TStrTable, marker: var TIntSet, indent: int, 
+proc treeToYamlAux(n: PNode, marker: var TIdSet, indent, maxRecDepth: int): PRope
+proc symToYamlAux(n: PSym, marker: var TIdSet, indent, maxRecDepth: int): PRope
+proc typeToYamlAux(n: PType, marker: var TIdSet, indent, maxRecDepth: int): PRope
+proc strTableToYaml(n: TStrTable, marker: var TIdSet, indent: int, 
                     maxRecDepth: int): PRope = 
   var 
     istr: PRope
@@ -263,11 +281,11 @@ proc ropeConstr(indent: int, c: openarray[PRope]): PRope =
     inc(i, 2)
   appf(result, "$n$1}", [spaces(indent)])
 
-proc symToYamlAux(n: PSym, marker: var TIntSet, indent: int, 
+proc symToYamlAux(n: PSym, marker: var TIdSet, indent: int, 
                   maxRecDepth: int): PRope = 
   if n == nil: 
     result = toRope("null")
-  elif IntSetContainsOrIncl(marker, n.id): 
+  elif IdSetContainsOrIncl(marker, n.id): 
     result = ropef("\"$1 @$2\"", [toRope(n.name.s), toRope(
         strutils.toHex(cast[TAddress](n), sizeof(n) * 2))])
   else: 
@@ -284,11 +302,11 @@ proc symToYamlAux(n: PSym, marker: var TIntSet, indent: int,
                                  flagsToStr(n.options), toRope("position"), 
                                  toRope(n.position)])
 
-proc typeToYamlAux(n: PType, marker: var TIntSet, indent: int, 
+proc typeToYamlAux(n: PType, marker: var TIdSet, indent: int, 
                    maxRecDepth: int): PRope = 
   if n == nil: 
     result = toRope("null")
-  elif intSetContainsOrIncl(marker, n.id): 
+  elif IdSetContainsOrIncl(marker, n.id): 
     result = ropef("\"$1 @$2\"", [toRope($n.kind), toRope(
         strutils.toHex(cast[TAddress](n), sizeof(n) * 2))])
   else: 
@@ -312,7 +330,7 @@ proc typeToYamlAux(n: PType, marker: var TIntSet, indent: int,
                                  toRope("align"), toRope(n.align), 
                                  toRope("sons"), result])
 
-proc treeToYamlAux(n: PNode, marker: var TIntSet, indent: int, 
+proc treeToYamlAux(n: PNode, marker: var TIdSet, indent: int, 
                    maxRecDepth: int): PRope = 
   var istr: PRope
   if n == nil: 
@@ -351,18 +369,18 @@ proc treeToYamlAux(n: PNode, marker: var TIntSet, indent: int,
     appf(result, "$n$1}", [spaces(indent)])
 
 proc treeToYaml(n: PNode, indent: int = 0, maxRecDepth: int = - 1): PRope = 
-  var marker: TIntSet
-  IntSetInit(marker)
+  var marker: TIdSet
+  IdSetInit(marker)
   result = treeToYamlAux(n, marker, indent, maxRecDepth)
 
 proc typeToYaml(n: PType, indent: int = 0, maxRecDepth: int = - 1): PRope = 
-  var marker: TIntSet
-  IntSetInit(marker)
+  var marker: TIdSet
+  IdSetInit(marker)
   result = typeToYamlAux(n, marker, indent, maxRecDepth)
 
 proc symToYaml(n: PSym, indent: int = 0, maxRecDepth: int = - 1): PRope = 
-  var marker: TIntSet
-  IntSetInit(marker)
+  var marker: TIdSet
+  IdSetInit(marker)
   result = symToYamlAux(n, marker, indent, maxRecDepth)
 
 proc debugType(n: PType): PRope = 
@@ -489,6 +507,22 @@ proc objectSetContainsOrIncl(t: var TObjectSet, obj: PObject): bool =
   inc(t.counter)
   result = false
 
+proc idToInt64(a: TId): int64 {.inline.} =
+  var b = a
+  return (cast[ptr int64](addr(b)))^
+
+proc IdSetInit(t: var TIdSet) =
+  OrdSetInit(t.ordSet)
+
+proc IdSetContains*(t: TIdSet, id: TId): bool =
+  return OrdSetContains(t.ordSet, idToInt64(id))
+
+proc IdSetIncl*(t: var TIdSet, id: TId) =
+  OrdSetIncl(t.ordSet, idToInt64(id))
+
+proc IdSetContainsOrIncl*(t: var TIdSet, id: TId): bool =
+  return OrdSetContainsOrIncl(t.ordSet, idToInt64(id))
+
 proc TableRawGet(t: TTable, key: PObject): int = 
   var h: THash
   h = hashNode(key) and high(t.data) # start with real hash value
@@ -496,7 +530,7 @@ proc TableRawGet(t: TTable, key: PObject): int =
     if (t.data[h].key == key): 
       return h
     h = nextTry(h, high(t.data))
-  result = - 1
+  result = -1
 
 proc TableSearch(t: TTable, key, closure: PObject, comparator: TCmpProc): PObject = 
   var h: THash
@@ -682,9 +716,9 @@ proc hasEmptySlot(data: TIdPairSeq): bool =
       return true
   result = false
 
-proc IdTableRawGet(t: TIdTable, key: int): int = 
+proc IdTableRawGet(t: TIdTable, key: TId): int = 
   var h: THash
-  h = key and high(t.data)    # start with real hash value
+  h = key.num and high(t.data)    # start with real hash value
   while t.data[h].key != nil: 
     if (t.data[h].key.id == key): 
       return h
@@ -703,7 +737,7 @@ proc IdTableGet(t: TIdTable, key: PIdObj): PObject =
   if index >= 0: result = t.data[index].val
   else: result = nil
   
-proc IdTableGet(t: TIdTable, key: int): PObject = 
+proc IdTableGet(t: TIdTable, key: TId): PObject = 
   var index: int
   index = IdTableRawGet(t, key)
   if index >= 0: result = t.data[index].val
@@ -711,7 +745,7 @@ proc IdTableGet(t: TIdTable, key: int): PObject =
   
 proc IdTableRawInsert(data: var TIdPairSeq, key: PIdObj, val: PObject) = 
   var h: THash
-  h = key.id and high(data)
+  h = key.id.num and high(data)
   while data[h].key != nil: 
     assert(data[h].key.id != key.id)
     h = nextTry(h, high(data))
@@ -743,7 +777,7 @@ proc writeIdNodeTable(t: TIdNodeTable) =
 
 proc IdNodeTableRawGet(t: TIdNodeTable, key: PIdObj): int = 
   var h: THash
-  h = key.id and high(t.data) # start with real hash value
+  h = key.id.num and high(t.data) # start with real hash value
   while t.data[h].key != nil: 
     if (t.data[h].key.id == key.id): 
       return h
@@ -758,7 +792,7 @@ proc IdNodeTableGet(t: TIdNodeTable, key: PIdObj): PNode =
   
 proc IdNodeTableRawInsert(data: var TIdNodePairSeq, key: PIdObj, val: PNode) = 
   var h: THash
-  h = key.id and high(data)
+  h = key.id.num and high(data)
   while data[h].key != nil: 
     assert(data[h].key.id != key.id)
     h = nextTry(h, high(data))
@@ -784,51 +818,64 @@ proc IdNodeTablePut(t: var TIdNodeTable, key: PIdObj, val: PNode) =
     IdNodeTableRawInsert(t.data, key, val)
     inc(t.counter)
 
-proc initIITable(x: var TIITable) = 
-  x.counter = 0
-  newSeq(x.data, startSize)
-  for i in countup(0, startSize - 1): x.data[i].key = InvalidKey
+proc initXYTable[X, Y](t: var TXYTable[X, Y]) = 
+  t.counter = 0
+  newSeq(t.data, startSize)
+  for i in countup(0, startSize - 1): GetInvalidKey(t.data[i].key)
+
+proc XYTableValueToHash(x : TId): int {.inline.} =
+  return x.num
+
+proc XYTableValueToHash(x : int): int {.inline.} =
+  return x
   
-proc IITableRawGet(t: TIITable, key: int): int = 
+proc XYTableRawGet[X, Y](t: TXYTable[X, Y], key: X) : int =
   var h: THash
-  h = key and high(t.data)    # start with real hash value
-  while t.data[h].key != InvalidKey: 
+  h = XYTableValueToHash(key) and high(t.data)    # start with real hash value
+  var ik : X
+  GetInvalidKey(ik)
+  while t.data[h].key != ik:
     if (t.data[h].key == key): 
       return h
     h = nextTry(h, high(t.data))
-  result = - 1
+  result = -1
 
-proc IITableGet(t: TIITable, key: int): int = 
+proc XYTableGet[X, Y](t: TXYTable[X, Y], key: X): Y = 
   var index: int
-  index = IITableRawGet(t, key)
+  index = XYTableRawGet(t, key)
   if index >= 0: result = t.data[index].val
-  else: result = InvalidKey
+  else: GetInvalidKey(result)
   
-proc IITableRawInsert(data: var TIIPairSeq, key, val: int) = 
-  var h: THash
-  h = key and high(data)
-  while data[h].key != InvalidKey: 
+proc XYTableRawInsert[X, Y](data: var TXYPairSeq[X, Y], key: X, val: Y) =
+  var
+    h: THash
+    ik : X
+  h = XYTableValueToHash(key) and high(data)
+  GetInvalidKey(ik)
+  while data[h].key != ik: 
     assert(data[h].key != key)
     h = nextTry(h, high(data))
-  assert(data[h].key == InvalidKey)
+  assert(data[h].key == ik)
   data[h].key = key
   data[h].val = val
 
-proc IITablePut(t: var TIITable, key, val: int) = 
+proc XYTablePut[X, Y](t: var TXYTable[X, Y], key: X, val: Y) =
   var 
     index: int
-    n: TIIPairSeq
-  index = IITableRawGet(t, key)
+    n: TXYPairSeq[X, Y]
+    ik : X
+  GetInvalidKey(ik)
+  index = XYTableRawGet(t, key)
   if index >= 0: 
-    assert(t.data[index].key != InvalidKey)
+    assert(t.data[index].key != ik)
     t.data[index].val = val
   else: 
     if mustRehash(len(t.data), t.counter): 
       newSeq(n, len(t.data) * growthFactor)
-      for i in countup(0, high(n)): n[i].key = InvalidKey
+      for i in countup(0, high(n)): n[i].key = ik
       for i in countup(0, high(t.data)): 
-        if t.data[i].key != InvalidKey: 
-          IITableRawInsert(n, t.data[i].key, t.data[i].val)
+        if t.data[i].key != ik: 
+          XYTableRawInsert(n, t.data[i].key, t.data[i].val)
       swap(t.data, n)
-    IITableRawInsert(t.data, key, val)
+    XYTableRawInsert(t.data, key, val)
     inc(t.counter)

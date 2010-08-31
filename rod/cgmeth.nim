@@ -51,7 +51,7 @@ proc methodCall(n: PNode): PNode =
   for i in countup(1, sonsLen(result) - 1): 
     result.sons[i] = genConv(result.sons[i], disp.typ.sons[i], true)
   
-var gMethods: seq[TSymSeq]
+var gMethods: seq[TSymSeq] # Safe?
 
 proc sameMethodBucket(a, b: PSym): bool = 
   var aa, bb: PType
@@ -89,7 +89,7 @@ proc methodDef(s: PSym) =
       add(gMethods[i], s)     # store a symbol to the dispatcher:
       addSon(s.ast, lastSon(gMethods[i][0].ast))
       return 
-  add(gMethods, @ [s])        # create a new dispatcher:
+  add(gMethods, @[s])        # create a new dispatcher:
   disp = copySym(s)
   disp.typ = copyType(disp.typ, disp.typ.owner, false)
   if disp.typ.callConv == ccInline: disp.typ.callConv = ccDefault
@@ -109,20 +109,20 @@ proc relevantCol(methods: TSymSeq, col: int): bool =
       if not SameType(methods[i].typ.sons[col], t): 
         return true
   
-proc cmpSignatures(a, b: PSym, relevantCols: TIntSet): int = 
+proc cmpSignatures(a, b: PSym, relevantCols: TOrdSet[int]): int = 
   var 
     d: int
     aa, bb: PType
   result = 0
   for col in countup(1, sonsLen(a.typ) - 1): 
-    if intSetContains(relevantCols, col): 
+    if OrdSetContains(relevantCols, col): 
       aa = skipTypes(a.typ.sons[col], skipPtrs)
       bb = skipTypes(b.typ.sons[col], skipPtrs)
       d = inheritanceDiff(aa, bb)
       if (d != high(int)): 
         return d
   
-proc sortBucket(a: var TSymSeq, relevantCols: TIntSet) = 
+proc sortBucket(a: var TSymSeq, relevantCols: TOrdSet[int]) = 
   # we use shellsort here; fast and simple
   var 
     N, j, h: int
@@ -144,7 +144,7 @@ proc sortBucket(a: var TSymSeq, relevantCols: TIntSet) =
       a[j] = v
     if h == 1: break 
   
-proc genDispatcher(methods: TSymSeq, relevantCols: TIntSet): PSym = 
+proc genDispatcher(methods: TSymSeq, relevantCols: TOrdSet[int]): PSym = 
   var 
     disp, cond, call, ret, a, isn: PNode
     base, curr, ands, iss: PSym
@@ -159,7 +159,7 @@ proc genDispatcher(methods: TSymSeq, relevantCols: TIntSet): PSym =
     curr = methods[meth]      # generate condition:
     cond = nil
     for col in countup(1, paramLen - 1): 
-      if IntSetContains(relevantCols, col): 
+      if OrdSetContains(relevantCols, col): 
         isn = newNodeIT(nkCall, base.info, getSysType(tyBool))
         addSon(isn, newSymNode(iss))
         addSon(isn, newSymNode(base.typ.n.sons[col].sym))
@@ -192,13 +192,13 @@ proc genDispatcher(methods: TSymSeq, relevantCols: TIntSet): PSym =
   result.ast.sons[codePos] = disp
 
 proc generateMethodDispatchers(): PNode = 
-  var relevantCols: TIntSet
+  var relevantCols: TOrdSet[int]
   result = newNode(nkStmtList)
   for bucket in countup(0, len(gMethods) - 1): 
-    IntSetInit(relevantCols)
+    OrdSetInit(relevantCols)
     for col in countup(1, sonsLen(gMethods[bucket][0].typ) - 1): 
-      if relevantCol(gMethods[bucket], col): IntSetIncl(relevantCols, col)
+      if relevantCol(gMethods[bucket], col): OrdSetIncl(relevantCols, col)
     sortBucket(gMethods[bucket], relevantCols)
     addSon(result, newSymNode(genDispatcher(gMethods[bucket], relevantCols)))
 
-gMethods = @ []
+gMethods = @[]

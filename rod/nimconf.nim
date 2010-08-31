@@ -33,7 +33,7 @@ proc parseAtom(L: var TLexer, tok: PToken): bool =
     result = parseExpr(L, tok)
     if tok.tokType == tkParRi: ppGetTok(L, tok)
     else: lexMessage(L, errTokenExpected, "\')\'")
-  elif tok.ident.id == ord(wNot): 
+  elif tok.ident.id == ord(wNot):
     ppGetTok(L, tok)
     result = not parseAtom(L, tok)
   else: 

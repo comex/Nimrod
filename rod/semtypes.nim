@@ -187,12 +187,12 @@ proc semTuple(c: PContext, n: PNode, prev: PType): PType =
   var 
     length, counter: int
     typ: PType
-    check: TIntSet
+    check: TOrdSet[int]
     a: PNode
     field: PSym
   result = newOrPrevType(tyTuple, prev, c)
   result.n = newNodeI(nkRecList, n.info)
-  IntSetInit(check)
+  OrdSetInit(check)
   counter = 0
   for i in countup(0, sonsLen(n) - 1): 
     a = n.sons[i]
@@ -208,7 +208,7 @@ proc semTuple(c: PContext, n: PNode, prev: PType): PType =
       field.typ = typ
       field.position = counter
       inc(counter)
-      if IntSetContainsOrIncl(check, field.name.id): 
+      if OrdSetContainsOrIncl(check, field.name.id): 
         liMessage(a.sons[j].info, errAttemptToRedefine, field.name.s)
       addSon(result.n, newSymNode(field))
       addSon(result, typ)
@@ -220,7 +220,7 @@ proc semGeneric(c: PContext, n: PNode, s: PSym, prev: PType): PType =
   if (s.typ == nil) or (s.typ.kind != tyGenericBody): 
     liMessage(n.info, errCannotInstantiateX, s.name.s)
   result = newOrPrevType(tyGenericInvokation, prev, c)
-  if (s.typ.containerID == 0): InternalError(n.info, "semtypes.semGeneric")
+  if (s.typ.containerID == nilId): InternalError(n.info, "semtypes.semGeneric")
   if sonsLen(n) != sonsLen(s.typ): liMessage(n.info, errWrongNumberOfArguments)
   addSon(result, s.typ)
   isConcrete = true           # iterate over arguments:
@@ -295,9 +295,9 @@ proc SemCaseBranch(c: PContext, t, branch: PNode, branchIndex: int,
       inc(covered)
     checkForOverlap(c, t, branch.sons[i], branchIndex)
 
-proc semRecordNodeAux(c: PContext, n: PNode, check: var TIntSet, pos: var int, 
+proc semRecordNodeAux(c: PContext, n: PNode, check: var TOrdSet[int], pos: var int, 
                       father: PNode, rectype: PSym)
-proc semRecordCase(c: PContext, n: PNode, check: var TIntSet, pos: var int, 
+proc semRecordCase(c: PContext, n: PNode, check: var TOrdSet[int], pos: var int, 
                    father: PNode, rectype: PSym) = 
   var 
     covered: biggestint
@@ -335,7 +335,7 @@ proc semRecordCase(c: PContext, n: PNode, check: var TIntSet, pos: var int,
     liMessage(a.info, errNotAllCasesCovered)
   addSon(father, a)
 
-proc semRecordNodeAux(c: PContext, n: PNode, check: var TIntSet, pos: var int, 
+proc semRecordNodeAux(c: PContext, n: PNode, check: var TOrdSet[int], pos: var int, 
                       father: PNode, rectype: PSym) = 
   var 
     length: int
@@ -393,14 +393,14 @@ proc semRecordNodeAux(c: PContext, n: PNode, check: var TIntSet, pos: var int,
         f.loc.r = toRope(f.name.s)
         f.flags = f.flags + ({sfImportc, sfExportc} * rectype.flags)
       inc(pos)
-      if IntSetContainsOrIncl(check, f.name.id): 
+      if OrdSetContainsOrIncl(check, f.name.id): 
         liMessage(n.sons[i].info, errAttemptToRedefine, f.name.s)
       if a == nil: addSon(father, newSymNode(f))
       else: addSon(a, newSymNode(f))
     if a != nil: addSon(father, a)
   else: illFormedAst(n)
   
-proc addInheritedFieldsAux(c: PContext, check: var TIntSet, pos: var int, 
+proc addInheritedFieldsAux(c: PContext, check: var TOrdSet[int], pos: var int, 
                            n: PNode) = 
   case n.kind
   of nkRecCase: 
@@ -415,11 +415,11 @@ proc addInheritedFieldsAux(c: PContext, check: var TIntSet, pos: var int,
     for i in countup(0, sonsLen(n) - 1): 
       addInheritedFieldsAux(c, check, pos, n.sons[i])
   of nkSym: 
-    IntSetIncl(check, n.sym.name.id)
+    OrdSetIncl(check, n.sym.name.id)
     inc(pos)
   else: InternalError(n.info, "addInheritedFieldsAux()")
   
-proc addInheritedFields(c: PContext, check: var TIntSet, pos: var int, 
+proc addInheritedFields(c: PContext, check: var TOrdSet[int], pos: var int, 
                         obj: PType) = 
   if (sonsLen(obj) > 0) and (obj.sons[0] != nil): 
     addInheritedFields(c, check, pos, obj.sons[0])
@@ -427,10 +427,10 @@ proc addInheritedFields(c: PContext, check: var TIntSet, pos: var int,
 
 proc semObjectNode(c: PContext, n: PNode, prev: PType): PType = 
   var 
-    check: TIntSet
+    check: TOrdSet[int]
     base: PType
     pos: int
-  IntSetInit(check)
+  OrdSetInit(check)
   pos = 0 # n.sons[0] contains the pragmas (if any). We process these later...
   checkSonsLen(n, 3)
   if n.sons[1] != nil: 
@@ -448,10 +448,10 @@ proc semObjectNode(c: PContext, n: PNode, prev: PType): PType =
     liMessage(n.sons[1].info, errInheritanceOnlyWithNonFinalObjects)
   
 proc addTypeVarsOfGenericBody(c: PContext, t: PType, genericParams: PNode, 
-                              cl: var TIntSet): PType = 
+                              cl: var TIdSet): PType = 
   result = t
   if t == nil: return 
-  if IntSetContainsOrIncl(cl, t.id): return 
+  if IdSetContainsOrIncl(cl, t.id): return 
   case t.kind
   of tyGenericBody: 
     #debug(t)
@@ -461,7 +461,7 @@ proc addTypeVarsOfGenericBody(c: PContext, t: PType, genericParams: PNode,
       if t.sons[i].kind != tyGenericParam: 
         InternalError("addTypeVarsOfGenericBody")
       # do not declare ``TKey`` twice:
-      #if not IntSetContainsOrIncl(cl, t.sons[i].sym.ident.id):
+      #if not OrdSetContainsOrIncl(cl, t.sons[i].sym.ident.id):
       var s = copySym(t.sons[i].sym)
       s.position = sonsLen(genericParams)
       addDecl(c, s)
@@ -479,7 +479,7 @@ proc addTypeVarsOfGenericBody(c: PContext, t: PType, genericParams: PNode,
     for i in countup(0, sonsLen(t) - 1): 
       t.sons[i] = addTypeVarsOfGenericBody(c, t.sons[i], genericParams, cl)
   
-proc paramType(c: PContext, n, genericParams: PNode, cl: var TIntSet): PType = 
+proc paramType(c: PContext, n, genericParams: PNode, cl: var TIdSet): PType = 
   result = semTypeNode(c, n, nil)
   if (genericParams != nil) and (sonsLen(genericParams) == 0): 
     result = addTypeVarsOfGenericBody(c, result, genericParams, cl)
@@ -489,12 +489,13 @@ proc semProcTypeNode(c: PContext, n, genericParams: PNode, prev: PType): PType =
   var 
     def, res: PNode
     typ: PType
-    check, cl: TIntSet
+    check: TOrdSet[int]
+    cl: TIdSet
   checkMinSonsLen(n, 1)
   result = newOrPrevType(tyProc, prev, c)
   result.callConv = lastOptionEntry(c).defaultCC
   result.n = newNodeI(nkFormalParams, n.info)
-  if (genericParams != nil) and (sonsLen(genericParams) == 0): IntSetInit(cl)
+  if (genericParams != nil) and (sonsLen(genericParams) == 0): IdSetInit(cl)
   if n.sons[0] == nil: 
     addSon(result, nil)       # return type
     addSon(result.n, newNodeI(nkType, n.info)) 
@@ -504,7 +505,7 @@ proc semProcTypeNode(c: PContext, n, genericParams: PNode, prev: PType): PType =
     addSon(result, nil)
     res = newNodeI(nkType, n.info)
     addSon(result.n, res)
-  IntSetInit(check)
+  OrdSetInit(check)
   var counter = 0
   for i in countup(1, sonsLen(n) - 1): 
     var a = n.sons[i]
@@ -532,7 +533,7 @@ proc semProcTypeNode(c: PContext, n, genericParams: PNode, prev: PType): PType =
       arg.position = counter
       inc(counter)
       arg.ast = copyTree(def)
-      if IntSetContainsOrIncl(check, arg.name.id): 
+      if OrdSetContainsOrIncl(check, arg.name.id): 
         liMessage(a.sons[j].info, errAttemptToRedefine, arg.name.s)
       addSon(result.n, newSymNode(arg))
       addSon(result, typ)
