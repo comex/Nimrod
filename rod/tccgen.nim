@@ -28,9 +28,13 @@ proc addFile(filename: string) =
     rawMessage(errCannotOpenFile, filename)
 
 proc setupEnvironment = 
-  #defineSymbol(gTinyC, "__x86_64__", nil)
-  #defineSymbol(gTinyC, "__linux__", nil)
-  #defineSymbol(gTinyC, "__linux", nil)
+  when defined(amd64):
+    defineSymbol(gTinyC, "__x86_64__", nil)
+  elif defined(i386):
+    defineSymbol(gTinyC, "__i386__", nil)  
+  when defined(linux):
+    defineSymbol(gTinyC, "__linux__", nil)
+    defineSymbol(gTinyC, "__linux", nil)
   var nimrodDir = getPrefixDir()
 
   addIncludePath(gTinyC, libpath)
@@ -38,7 +42,6 @@ proc setupEnvironment =
     addSysincludePath(gTinyC, nimrodDir / "tinyc/win32/include")
   addSysincludePath(gTinyC, nimrodDir / "tinyc/include")
   when defined(windows): 
-    defineSymbol(gTinyC, "__i386__", nil)
     defineSymbol(gTinyC, "_WIN32", nil)
     # we need Mingw's headers too:
     var gccbin = getConfigVar("gcc.path") % ["nimrod", nimrodDir]

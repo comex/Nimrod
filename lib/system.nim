@@ -1307,6 +1307,12 @@ when not defined(EcmaScript) and not defined(NimrodVM):
   proc unlikely*(val : bool) : bool {.importc: "unlikely", nodecl, nosideeffect}
 
 
+  proc atomicInc*(memLoc: var int, x: int): int {.inline.}
+    ## atomic increment of `memLoc`. Returns the value after the operation.
+  
+  proc atomicDec*(memLoc: var int, x: int): int {.inline.}
+    ## atomic decrement of `memLoc`. Returns the value after the operation.
+
   proc initGC()
 
   proc initStackBottom() {.inline.} = 

@@ -441,4 +441,14 @@ struct NimException {
 #define unlikely(x) (x)
 #endif
 
+#if defined(_MSCVER) && defined(__i386__)
+__declspec(naked) int __fastcall NimXadd(volatile int* pNum, int val) {
+  __asm {
+    lock xadd dword ptr [ECX], EDX
+    mov EAX, EDX
+    ret
+  }
+}
+#endif
+
 #endif

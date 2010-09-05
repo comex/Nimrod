@@ -464,6 +464,8 @@ proc addTypeVarsOfGenericBody(c: PContext, t: PType, genericParams: PNode,
       #if not OrdSetContainsOrIncl(cl, t.sons[i].sym.ident.id):
       var s = copySym(t.sons[i].sym)
       s.position = sonsLen(genericParams)
+      if s.typ == nil or s.typ.kind != tyGenericParam: 
+        InternalError("addTypeVarsOfGenericBody 2")
       addDecl(c, s)
       addSon(genericParams, newSymNode(s))
       addSon(result, t.sons[i])
@@ -496,15 +498,9 @@ proc semProcTypeNode(c: PContext, n, genericParams: PNode, prev: PType): PType =
   result.callConv = lastOptionEntry(c).defaultCC
   result.n = newNodeI(nkFormalParams, n.info)
   if (genericParams != nil) and (sonsLen(genericParams) == 0): IdSetInit(cl)
-  if n.sons[0] == nil: 
-    addSon(result, nil)       # return type
-    addSon(result.n, newNodeI(nkType, n.info)) 
-    # BUGFIX: nkType must exist!
-    # XXX but it does not, if n.sons[paramsPos] == nil?
-  else: 
-    addSon(result, nil)
-    res = newNodeI(nkType, n.info)
-    addSon(result.n, res)
+  addSon(result, nil) # return type
+  res = newNodeI(nkType, n.info)
+  addSon(result.n, res)
   OrdSetInit(check)
   var counter = 0
   for i in countup(1, sonsLen(n) - 1): 
@@ -542,9 +538,8 @@ proc semProcTypeNode(c: PContext, n, genericParams: PNode, prev: PType): PType =
     res.typ = result.sons[0]
 
 proc semStmtListType(c: PContext, n: PNode, prev: PType): PType = 
-  var length: int
   checkMinSonsLen(n, 1)
-  length = sonsLen(n)
+  var length = sonsLen(n)
   for i in countup(0, length - 2): 
     n.sons[i] = semStmt(c, n.sons[i])
   if length > 0: 
