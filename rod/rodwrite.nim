@@ -329,10 +329,9 @@ proc writeRod(w: PRodWriter) =
   app(content, encode(w.crc))
   app(content, rodNL)
   app(content, toRope("TIC(" & rodNL))
-  app(content, encode(ropeToStr(w.module.typeInitCode1)))
-  app(content, rodNL)
-  app(content, encode(ropeToStr(w.module.typeInitCode2)))
-  app(content, rodNL)
+  for s in w.module.typeInitCode.items:
+    app(content, encode(ropeToStr(s)))
+    app(content, rodNL)
   app(content, toRope(')' & rodNL))
   app(content, toRope("OPTIONS:"))
   app(content, encode(cast[int32](w.options)))

@@ -844,7 +844,7 @@ proc genInitCode(m: BModule) =
   app(prc, '}' & tnl & tnl)
   app(m.s[cfsProcs], prc)
 
-var gTypeInitCode1, gTypeInitCode2 : PRope
+var gTypeInitCode : array[low(TCTypeFileSection)..high(TCTypeFileSection), PRope]
 
 proc genModule(m: BModule, cfilenoext: string): PRope = 
   result = getFileHeader(cfilenoext)
@@ -889,7 +889,6 @@ proc myOpen(module: PSym, filename: string): PPassContext =
   #echo("myOpen: ", filename)
   result = newModule(module, filename)
 
-proc writeTypeInitCode(module : PSym)
 proc myOpenCached(module: PSym, filename: string, 
                   rd: PRodReader): PPassContext = 
   #echo("myOpenCached: ", filename)
@@ -909,21 +908,20 @@ proc shouldRecompile(code: PRope, cfile, cfilenoext: string): bool =
   else: 
     writeRope(code, cfile)
 
-proc writeTypeInitCode(module : PSym) =
-  app(gTypeInitCode1, module.typeInitCode1)
-  app(gTypeInitCode2, module.typeInitCode2)
-  if sfMainModule in module.flags:
-    var cfilenoext = toGeneratedFile(joinPath(projectPath, "nim__dat.nim"), "")
-    var cfile = cfilenoext & ".c"
-    var a = getFileHeader(cfilenoext)
-    app(a, "#include \"nimbase.h\"" & tnl & tnl)
-    app(a, gTypeInitCode1)
-    app(a, "N_NOINLINE(void, nim__datInit)(void) {" & tnl)
-    app(a, gTypeInitCode2)
-    app(a, "}" & tnl)
-    if shouldRecompile(a, cfile, cfilenoext):
-      addFileToCompile(cfilenoext)
-    addFileToLink(cfilenoext)
+proc finishTypeInitCode() =
+  var cfilenoext = toGeneratedFile(joinPath(projectPath, "nim__dat.nim"), "")
+  var cfile = cfilenoext & ".c"
+  var a = getFileHeader(cfilenoext)
+  app(a, "#include \"nimbase.h\"" & tnl & tnl)
+  for i in ctfsForwardTypes..ctfsVars:
+    app(a, gTypeInitCode[i])
+  app(a, "N_NOINLINE(void, nim__datInit)(void) {" & tnl)
+  for i in ctfsTypeInit1..ctfsTypeInit3:
+    app(a, gTypeInitCode[i])
+  app(a, "}" & tnl)
+  if shouldRecompile(a, cfile, cfilenoext):
+    addFileToCompile(cfilenoext)
+  addFileToLink(cfilenoext)
   
 proc myProcess(b: PPassContext, n: PNode): PNode = 
   result = n
@@ -957,6 +955,9 @@ proc writeModule(m: BModule) =
     if sfMainModule in m.module.flags: 
       # generate main file:
       app(m.s[cfsProcHeaders], mainModProcs)
+    m.module.typeInitCode = @[]
+    for i in countup(ctfsForwardTypes, ctfsTypeInit3):
+      m.module.typeInitCode.add(m.ts[i])
     var code = genModule(m, cfilenoext)
     
     when hasTinyCBackend:
@@ -967,6 +968,10 @@ proc writeModule(m: BModule) =
     if shouldRecompile(code, changeFileExt(cfile, cExt), cfilenoext): 
       addFileToCompile(cfilenoext)
   addFileToLink(cfilenoext)
+  var i = low(TCTypeFileSection)
+  for r in m.module.typeInitCode.items:
+    app(gTypeInitCode[i], r)
+    inc(i)
 
 proc myClose(b: PPassContext, n: PNode): PNode = 
   result = n
@@ -992,18 +997,15 @@ proc myClose(b: PPassContext, n: PNode): PNode =
         for i in countup(0, high(gPendingModules)): 
           finishModule(gPendingModules[i])
       for i in countup(0, high(gPendingModules)): writeModule(gPendingModules[i])
+      finishTypeInitCode()
     setlen(gPendingModules, 0)
   if not (optDeadCodeElim in gGlobalOptions) and
       not (sfDeadCodeElim in m.module.flags): 
     writeModule(m)
-  if sfCached notin m.module.flags:
-    for i in countup(ctfsForwardTypes, ctfsVars):
-      app(m.module.typeInitCode1, m.ts[i])
-    for i in countup(ctfsTypeInit1, ctfsTypeInit3):
-      app(m.module.typeInitCode2, m.ts[i])
   if sfMainModule in m.module.flags:
     writeMapping(gMapping)
-  writeTypeInitCode(m.module)
+    if optDeadCodeElim notin gGlobalOptions:
+      finishTypeInitCode()
   
 proc cgenPass(): TPass = 
   initPass(result)

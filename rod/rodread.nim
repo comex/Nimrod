@@ -121,12 +121,12 @@ type
     line*: int                # only used for debugging, but is always in the code
     moduleID*: TId
     syms*: TIdTable           # already processed symbols
-    typeInitCode1*, typeInitCode2*: PRope
+    typeInitCode*: seq[PRope]
   
   PRodReader* = ref TRodReader
 
 const 
-  FileVersion* = "1012"       # modify this if the rod-format changes!
+  FileVersion* = "1013"       # modify this if the rod-format changes!
 
 var rodCompilerprocs*: TStrTable
 
@@ -624,15 +624,16 @@ proc processRodFile(r: PRodReader, crc: TCrc32) =
       inc(r.pos)              # skip ':'
       if int(crc) != decodeInt(r): r.reason = rrCrcChange
     elif section == "TIC":
-      inc(r.pos, 2)           # skip "(\10"
+      r.typeInitCode = @[]
+      inc(r.pos)           # skip "("
+      while true:
+        inc(r.pos)
+        inc(r.line)
+        if r.s[r.pos] == ')': break
+        r.typeInitCode.add(toRope(decode(r)))
+        assert(r.s[r.pos] == '\x0A')
+      inc(r.pos, 2)
       inc(r.line)
-      r.typeInitCode1 = toRope(decode(r))
-      assert(r.s[r.pos] == '\x0A')
-      inc(r.pos)
-      inc(r.line)
-      r.typeInitCode2 = toRope(decode(r))
-      inc(r.pos, 3)
-      inc(r.line, 2)
     elif section == "ID": 
       inc(r.pos)              # skip ':'
       r.moduleID = decodeId(r)
@@ -888,8 +889,7 @@ proc handleSymbolFile(module: PSym, filename: string): PRodReader =
   result = gMods[idx].rd
   if result != nil: 
     module.id = result.moduleID
-    module.typeInitCode1 = result.typeInitCode1
-    module.typeInitCode2 = result.typeInitCode2
+    module.typeInitCode = result.typeInitCode
     IdTablePut(result.syms, module, module)
     processInterf(result, module)
     processCompilerProcs(result, module)

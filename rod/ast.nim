@@ -9,13 +9,6 @@
 
 # abstract syntax tree + symbol table
 
-# up here to avoid circularity with ropes
-type
-  TId*{.final.} = tuple[module: int32, num: int32]
-
-proc `$`*(a: TId): string =
-  return "_" & $a.module & "_" & $a.num
-
 import 
   msgs, nhashes, nversion, options, strutils, crc, ropes, idents, lists, math
 
@@ -349,6 +342,7 @@ type
     mEqIdent, mEqNimrodNode, mNHint, mNWarning, mNError
 
 type 
+  TId*{.final.} = tuple[module: int32, num: int32]
   TIdObj* = object of TObject
     id*: TId                  # unique id; use this for comparisons and not the pointers
   
@@ -457,9 +451,7 @@ type
     loc*: TLoc
     annex*: PLib              # additional fields (seldom used, so we use a
                               # reference to another object to safe space)
-  
-    typeInitCode1*: PRope
-    typeInitCode2*: PRope
+    typeInitCode*: seq[PRope]
 
   TTypeSeq* = seq[PType]
   TType* = object of TIdObj   # types are identical iff they have the
@@ -553,6 +545,12 @@ const
   codePos* = 4
   resultPos* = 5
   dispatcherPos* = 6
+
+proc `$`*(a: TId): string =
+  return "_" & $a.module & "_" & $a.num
+
+proc toRope*(i: TId): PRope
+proc toRope(i: TId): PRope = result = toRope($i)
 
 var nilId* : TId
 
