@@ -26,6 +26,9 @@ proc genLineDir(p: BProc, t: PNode) =
       ((p.prc == nil) or not (sfPure in p.prc.flags)): 
     appf(p.s[cpsStmts], "F.line = $1;F.filename = $2;$n", 
         [toRope(line), makeCString(toFilename(t.info).extractFilename)])
+  else:
+    appf(p.s[cpsStmts], "/* $2:$1 */$n",
+        [toRope(line), makeCString(toFilename(t.info).extractFilename)])
 
 proc finishTryStmt(p: BProc, howMany: int) = 
   for i in countup(1, howMany): 
