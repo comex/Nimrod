@@ -706,6 +706,12 @@ proc parseTypeDescKAux(p: var TParser, kind: TNodeKind): PNode =
   optInd(p, result)
   addSon(result, parseTypeDesc(p))
 
+proc parseStmtKAux(p: var TParser, kind: TNodeKind): PNode = 
+  result = newNodeP(kind, p)
+  getTok(p)
+  optInd(p, result)
+  addSon(result, parseStmt(p))
+
 proc parseExpr(p: var TParser): PNode = 
   #
   #expr ::= lowestExpr
@@ -722,7 +728,7 @@ proc parseExpr(p: var TParser): PNode =
   of tkConst: result = parseTypeDescKAux(p, nkConstTy)
   of tkRef: result = parseTypeDescKAux(p, nkRefTy)
   of tkPtr: result = parseTypeDescKAux(p, nkPtrTy)
-  of tkType: result = parseTypeDescKAux(p, nkTypeOfExpr)
+  of tkType: result = parseStmtKAux(p, nkTypeOfExpr)
   of tkTuple: result = parseTuple(p)
   of tkProc: result = parseProcExpr(p, true)
   of tkIf: result = parseIfExpr(p)

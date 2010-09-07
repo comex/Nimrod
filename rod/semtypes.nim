@@ -569,7 +569,7 @@ proc semTypeNode(c: PContext, n: PNode, prev: PType): PType =
   if n == nil: return 
   case n.kind
   of nkTypeOfExpr: 
-    result = semExprWithType(c, n, {efAllowType}).typ
+    result = semExprWithType(c, n.sons[0], {efAllowType}).typ
   of nkPar: 
     if sonsLen(n) == 1: result = semTypeNode(c, n.sons[0], prev)
     else: liMessage(n.info, errTypeExpected)
