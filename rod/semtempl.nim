@@ -7,36 +7,6 @@
 #    distribution, for details about the copyright.
 #
 
-proc isExpr(n: PNode): bool = 
-  # returns true if ``n`` looks like an expression
-  if n == nil: 
-    return false
-  case n.kind
-  of nkIdent..nkNilLit: 
-    result = true
-  of nkCall..nkPassAsOpenArray: 
-    for i in countup(0, sonsLen(n) - 1): 
-      if not isExpr(n.sons[i]): 
-        return false
-    result = true
-  else: result = false
-  
-proc isTypeDesc(n: PNode): bool = 
-  # returns true if ``n`` looks like a type desc
-  if n == nil: 
-    return false
-  case n.kind
-  of nkIdent, nkSym, nkType: 
-    result = true
-  of nkDotExpr, nkBracketExpr: 
-    for i in countup(0, sonsLen(n) - 1): 
-      if not isTypeDesc(n.sons[i]): 
-        return false
-    result = true
-  of nkTypeOfExpr..nkEnumTy: 
-    result = true
-  else: result = false
-  
 proc evalTemplateAux(c: PContext, templ, actual: PNode, sym: PSym): PNode = 
   var p: PSym
   if templ == nil: 
