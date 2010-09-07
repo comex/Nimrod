@@ -451,4 +451,9 @@ __declspec(naked) int __fastcall NimXadd(volatile int* pNum, int val) {
 }
 #endif
 
+#ifdef __GNUC__
+/* Ugly hack because some platforms put underscores before their function names and some don't (and asm statements have to care) */
+void raiseOverflow() asm("raiseOverflow") __attribute__((noinline));
+#endif
+
 #endif

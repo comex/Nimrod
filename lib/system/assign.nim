@@ -93,7 +93,7 @@ proc objectInitAux(dest: Pointer, n: ptr TNimNode) =
   var d = cast[TAddress](dest)
   case n.kind
   of nkNone: assert(false)
-  of nkSLot: objectInit(cast[pointer](d +% n.offset), n.typ)
+  of nkSlot: objectInit(cast[pointer](d +% n.offset), n.typ)
   of nkList:
     for i in 0..n.len-1:
       objectInitAux(dest, n.sons[i])

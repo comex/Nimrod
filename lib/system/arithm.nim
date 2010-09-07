@@ -103,7 +103,7 @@ elif asmVersion and (defined(i386) or defined(x8664)) and (defined(gcc) or defin
     asm """
       "addl %1, %0\n"
       "jno 1f\n"
-      "call _raiseOverflow\n"
+      "call _`raiseOverflow`\n"
       "1: \n"
       :"+r"(`result`)
       :"g"(`b`)
@@ -114,7 +114,7 @@ elif asmVersion and (defined(i386) or defined(x8664)) and (defined(gcc) or defin
     asm """
       "subl %1, %0\n"
       "jno 1f\n"
-      "call _raiseOverflow\n"
+      "call _`raiseOverflow`\n"
       "1: \n"
       :"+r"(`result`)
       :"g"(`b`)
@@ -125,7 +125,7 @@ elif asmVersion and (defined(i386) or defined(x8664)) and (defined(gcc) or defin
     asm """
       "imull %1, %0\n"
       "jno 1f\n"
-      "call _raiseOverflow\n"
+      "call _`raiseOverflow`\n"
       "1: \n"
       :"+r"(`result`)
       :"g"(`b`)
@@ -159,7 +159,7 @@ elif asmVersion and (defined(i386) or defined(x8664)) and (defined(gcc) or defin
       asm """
         "addq %1, %0\n"
         "jno 1f\n"
-        "call _raiseOverflow\n"
+        "call _`raiseOverflow`\n"
         "1: \n"
         :"+r"(`result`)
         :"g"(`b`)
@@ -170,7 +170,7 @@ elif asmVersion and (defined(i386) or defined(x8664)) and (defined(gcc) or defin
     asm """
       "subq %1, %0\n"
       "jno 1f\n"
-      "call _raiseOverflow\n"
+      "call _`raiseOverflow`\n"
       "1: \n"
       :"+r"(`result`)
       :"g"(`b`)
@@ -181,7 +181,7 @@ elif asmVersion and (defined(i386) or defined(x8664)) and (defined(gcc) or defin
     asm """
       "imulq %1, %0\n"
       "jno 1f\n"
-      "call _raiseOverflow\n"
+      "call _`raiseOverflow`\n"
       "1: \n"
       :"+r"(`result`)
       :"g"(`b`)
