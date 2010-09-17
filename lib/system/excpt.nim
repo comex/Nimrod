@@ -20,6 +20,23 @@ else:
   proc writeToStdErr(msg: CString) =
     discard MessageBoxA(0, msg, nil, 0)
 
+when defined(macosx) or defined(linux):
+  const have_backtrace = true
+  type
+    TDl_info* {.importc: "Dl_info", header: "<dlfcn.h>", final, pure.} = object
+      dli_fname*: CString
+      dli_fbase*: pointer
+      dli_sname*: CString
+      dli_saddr*: pointer
+
+  proc backtrace*(symbols: ptr pointer, size: int): int {.
+    importc: "backtrace", header: "<execinfo.h>".}
+
+  proc dladdr*(addr1: pointer, info: ptr TDl_info): int {.
+    importc: "dladdr", header: "<dlfcn.h>".}
+else:
+  const have_backtrace = false
+
 proc raiseException(e: ref E_Base, ename: CString) {.compilerproc.}
 proc reraiseException() {.compilerproc.}
 
@@ -67,6 +84,8 @@ var
   framePtr {.exportc.}: PFrame
 
   tempFrames: array [0..127, PFrame] # cannot be allocated on the stack!
+  tempAddresses: array [0..127, pointer] # ditto
+  tempDlInfo: TDl_info
   
   stackTraceNewLine* = "\n" ## undocumented feature; it is replaced by ``<br>``
                             ## for CGI applications
@@ -113,10 +132,40 @@ proc auxWriteStackTrace(f: PFrame, s: var string) =
       add(s, tempFrames[j].procname)
     add(s, stackTraceNewLine)
 
+when have_backtrace:
+  proc auxWriteStackTraceWithBacktrace(s : var string) =
+    # This is allowed to be expensive since it only happens during crashes (but this way you don't need manual stack tracing)
+    var size = backtrace(cast[ptr pointer](addr(tempAddresses)), 128)
+    var enabled = false
+    for i in 0..size-1:
+      var dlresult = dladdr(tempAddresses[i], addr(tempDlInfo))
+      if enabled:
+        if dlresult != 0:
+          var oldLen = s.len
+          add(s, tempDlInfo.dli_fname)
+          if tempDlInfo.dli_sname != nil:
+            for k in 1..max(1, 25-(s.len-oldLen)): add(s, ' ')
+            add(s, tempDlInfo.dli_sname)
+        else:
+          add(s, '?')
+        add(s, stackTraceNewLine)
+      else:
+        if dlresult != 0 and tempDlInfo.dli_sname != nil and $tempDlInfo.dli_sname == "signalHandler":
+          # Once we're past signalHandler, we're at what the user is interested in
+          enabled = true
+    #framePtr
+
+
 proc rawWriteStackTrace(s: var string) =
   if framePtr == nil:
-    add(s, "No stack traceback available")
-    add(s, stackTraceNewLine)
+    when have_backtrace: # ask Araq how to make this actually detect
+      add(s, "Traceback from system (most recent call last)")
+      add(s, stackTraceNewLine)
+      auxWriteStackTraceWithBacktrace(s)
+    else:
+      add(s, "No stack traceback available")
+      add(s, stackTraceNewLine)
+      auxWriteStackTrace(framePtr, s)
   else:
     add(s, "Traceback (most recent call last)")
     add(s, stackTraceNewLine)
