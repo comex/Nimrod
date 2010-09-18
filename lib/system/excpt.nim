@@ -164,10 +164,14 @@ when have_backtrace:
 
 proc rawWriteStackTrace(s: var string) =
   when compileOption("stacktrace") or compileOption("linetrace"):
-    var cond = (framePtr != nil)
+    var haveFrame = (framePtr != nil)
   else:
-    var cond = false
-  if cond:
+    var haveFrame = false
+  if haveFrame:
+      add(s, "Traceback (most recent call last)")
+      add(s, stackTraceNewLine)
+      auxWriteStackTrace(framePtr, s)
+  else:
     when have_backtrace: # ask Araq how to make this actually detect
       add(s, "Traceback from system (most recent call last)")
       add(s, stackTraceNewLine)
@@ -175,10 +179,6 @@ proc rawWriteStackTrace(s: var string) =
     else:
       add(s, "No stack traceback available")
       add(s, stackTraceNewLine)
-  else:
-      add(s, "Traceback (most recent call last)")
-      add(s, stackTraceNewLine)
-      auxWriteStackTrace(framePtr, s)
 
 proc quitOrDebug() {.inline.} =
   when not defined(endb):
