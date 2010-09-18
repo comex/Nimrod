@@ -52,14 +52,14 @@ proc initCandidate(c: var TCandidate, callee: PSym, binding: PNode) =
   initIdTable(c.bindings)
   if binding != nil:
     var typeParams = callee.ast[genericParamsPos]
-    if typeParams == nil:
-      debug(callee)
-      debug(callee.ast)
-      InternalError("wtf")
-    for i in 1..min(sonsLen(typeParams), sonsLen(binding)-1):
-      var formalTypeParam = typeParams.sons[i-1].typ
-      #debug(formalTypeParam)
-      IdTablePut(c.bindings, formalTypeParam, binding[i].typ)
+    if typeParams != nil:
+      #debug(callee)
+      #debug(callee.ast)
+      #InternalError("wtf")
+      for i in 1..min(sonsLen(typeParams), sonsLen(binding)-1):
+        var formalTypeParam = typeParams.sons[i-1].typ
+        #debug(formalTypeParam)
+        IdTablePut(c.bindings, formalTypeParam, binding[i].typ)
 
 proc copyCandidate(a: var TCandidate, b: TCandidate) = 
   a.exactMatches = b.exactMatches
@@ -697,7 +697,7 @@ proc semDirectCallWithBinding(c: PContext, n, f: PNode, filter: TSymKinds,
   initCandidate(x, sym, initialBinding)
   initCandidate(y, sym, initialBinding)
   while sym != nil: 
-    if sym.kind in filter: 
+    if sym.kind in filter and not (sfCached in sym.flags and sfFromGeneric in sym.flags): 
       initCandidate(z, sym, initialBinding)
       z.calleeSym = sym
       matches(c, n, z)
