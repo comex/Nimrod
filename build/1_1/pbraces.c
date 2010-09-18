@@ -5,40 +5,41 @@ typedef long int NI;
 typedef unsigned long int NU;
 #include "nimbase.h"
 
-typedef struct TY49523 TY49523;
-typedef struct TY74011 TY74011;
-typedef struct TY70267 TY70267;
-typedef struct TY70263 TY70263;
+typedef struct TY50525 TY50525;
+typedef struct TY76011 TY76011;
+typedef struct TY72267 TY72267;
+typedef struct TY72263 TY72263;
 typedef struct TNimType TNimType;
 typedef struct TNimNode TNimNode;
-typedef struct TY48011 TY48011;
+typedef struct TY49011 TY49011;
 typedef struct NimStringDesc NimStringDesc;
 typedef struct TGenericSeq TGenericSeq;
-typedef struct TY41532 TY41532;
-typedef struct TY49549 TY49549;
-typedef struct TY49545 TY49545;
-typedef struct TY49517 TY49517;
-typedef struct TY10202 TY10202;
-typedef struct TY10218 TY10218;
-typedef struct TY10590 TY10590;
-typedef struct TY10214 TY10214;
-typedef struct TY10210 TY10210;
-typedef struct TY10588 TY10588;
-typedef struct TY69015 TY69015;
+typedef struct TY42532 TY42532;
+typedef struct TY50551 TY50551;
+typedef struct TY50547 TY50547;
+typedef struct TY50519 TY50519;
+typedef struct TY10602 TY10602;
+typedef struct TY8004 TY8004;
+typedef struct TY10990 TY10990;
+typedef struct TY10618 TY10618;
+typedef struct TY10614 TY10614;
+typedef struct TY10610 TY10610;
+typedef struct TY10988 TY10988;
+typedef struct TY71015 TY71015;
 typedef struct TNimObject TNimObject;
-typedef struct TY68013 TY68013;
-typedef struct TY70281 TY70281;
-typedef struct TY48005 TY48005;
-typedef struct TY49547 TY49547;
-typedef struct TY49537 TY49537;
-typedef struct TY46008 TY46008;
-typedef struct TY49527 TY49527;
-typedef struct TY49525 TY49525;
-typedef struct TY49541 TY49541;
-typedef struct TY37013 TY37013;
-struct TY74011 {
-TY70267* Lex;
-TY70263* Tok;
+typedef struct TY70013 TY70013;
+typedef struct TY72434 TY72434;
+typedef struct TY49005 TY49005;
+typedef struct TY50549 TY50549;
+typedef struct TY50539 TY50539;
+typedef struct TY47008 TY47008;
+typedef struct TY50529 TY50529;
+typedef struct TY50527 TY50527;
+typedef struct TY50543 TY50543;
+typedef struct TY38013 TY38013;
+struct TY76011 {
+TY72267* Lex;
+TY72263* Tok;
 };
 struct TNimType {
 NI size;
@@ -57,26 +58,26 @@ struct NimStringDesc {
   TGenericSeq Sup;
 TY239 data;
 };
-struct TY70263 {
+struct TY72263 {
 TNimType* m_type;
 NU8 Toktype;
 NI Indent;
-TY48011* Ident;
+TY49011* Ident;
 NI64 Inumber;
 NF64 Fnumber;
 NU8 Base;
 NimStringDesc* Literal;
-TY70263* Next;
+TY72263* Next;
 };
-struct TY41532 {
+struct TY42532 {
 NI16 Line;
 NI16 Col;
 NI32 Fileindex;
 };
-struct TY49523 {
-TY49549* Typ;
+struct TY50525 {
+TY50551* Typ;
 NimStringDesc* Comment;
-TY41532 Info;
+TY42532 Info;
 NU8 Flags;
 NU8 Kind;
 union {
@@ -86,30 +87,40 @@ struct {NF64 Floatval;
 } S2;
 struct {NimStringDesc* Strval;
 } S3;
-struct {TY49545* Sym;
+struct {TY50547* Sym;
 } S4;
-struct {TY48011* Ident;
+struct {TY49011* Ident;
 } S5;
-struct {TY49517* Sons;
+struct {TY50519* Sons;
 } S6;
 } KindU;
 };
-struct TY10202 {
+typedef NU8 TY50999[16];
+struct TY10602 {
 NI Refcount;
 TNimType* Typ;
 };
-struct TY10218 {
+typedef N_STDCALL_PTR(void, TY8016) (TY8004* L_8018);
+struct TY10618 {
 NI Len;
 NI Cap;
-TY10202** D;
+TY10602** D;
 };
-struct TY10214 {
+struct TY10614 {
 NI Counter;
 NI Max;
-TY10210* Head;
-TY10210** Data;
+TY10610* Head;
+TY10610** Data;
 };
-struct TY10588 {
+struct TY8004 {
+void* Debuginfo;
+NI32 Lockcount;
+NI32 Recursioncount;
+NI Owningthread;
+NI Locksemaphore;
+NI32 Reserved;
+};
+struct TY10988 {
 NI Stackscans;
 NI Cyclecollections;
 NI Maxthreshold;
@@ -117,31 +128,34 @@ NI Maxstacksize;
 NI Maxstackcells;
 NI Cycletablesize;
 };
-struct TY10590 {
-TY10218 Zct;
-TY10218 Decstack;
-TY10214 Cycleroots;
-TY10218 Tempstack;
-TY10588 Stat;
+struct TY10990 {
+TY10618 Zct;
+TY10618 Decstack;
+TY10614 Cycleroots;
+TY10618 Tempstack;
+TY8004 Cyclerootslock;
+TY8004 Zctlock;
+TY10988 Stat;
 };
-typedef N_NIMCALL_PTR(TY49523*, TY77051) (TY74011* P_77053);
+typedef N_STDCALL_PTR(void, TY8020) (TY8004* L_8022);
+typedef N_NIMCALL_PTR(TY50525*, TY79057) (TY76011* P_79059);
 struct TNimObject {
 TNimType* m_type;
 };
-struct TY69015 {
+struct TY71015 {
   TNimObject Sup;
 NI Bufpos;
 NCSTRING Buf;
 NI Buflen;
-TY68013* Stream;
+TY70013* Stream;
 NI Linenumber;
 NI Sentinel;
 NI Linestart;
 };
-struct TY70267 {
-  TY69015 Sup;
+struct TY72267 {
+  TY71015 Sup;
 NimStringDesc* Filename;
-TY70281* Indentstack;
+TY72434* Indentstack;
 NI Dedent;
 NI Indentahead;
 };
@@ -153,67 +167,67 @@ NCSTRING name;
 NI len;
 TNimNode** sons;
 };
-struct TY48005 {
+struct TY49005 {
   TNimObject Sup;
 NI Id;
 };
-struct TY48011 {
-  TY48005 Sup;
+struct TY49011 {
+  TY49005 Sup;
 NimStringDesc* S;
-TY48011* Next;
+TY49011* Next;
 NI H;
 };
-struct TY49537 {
+struct TY50539 {
 NU8 K;
 NU8 S;
 NU8 Flags;
-TY49549* T;
-TY46008* R;
+TY50551* T;
+TY47008* R;
 NI A;
 };
-struct TY49549 {
-  TY48005 Sup;
+struct TY50551 {
+  TY49005 Sup;
 NU8 Kind;
-TY49547* Sons;
-TY49523* N;
+TY50549* Sons;
+TY50525* N;
 NU8 Flags;
 NU8 Callconv;
-TY49545* Owner;
-TY49545* Sym;
+TY50547* Owner;
+TY50547* Sym;
 NI64 Size;
 NI Align;
 NI Containerid;
-TY49537 Loc;
+TY50539 Loc;
 };
-struct TY49527 {
+struct TY50529 {
 TNimType* m_type;
 NI Counter;
-TY49525* Data;
+TY50527* Data;
 };
-struct TY49545 {
-  TY48005 Sup;
+struct TY50547 {
+  TY49005 Sup;
 NU8 Kind;
 NU8 Magic;
-TY49549* Typ;
-TY48011* Name;
-TY41532 Info;
-TY49545* Owner;
+TY50551* Typ;
+TY49011* Name;
+TY42532 Info;
+TY50547* Owner;
 NU32 Flags;
-TY49527 Tab;
-TY49523* Ast;
+TY50529 Tab;
+TY50525* Ast;
 NU32 Options;
 NI Position;
 NI Offset;
-TY49537 Loc;
-TY49541* Annex;
+TY50539 Loc;
+TY50543* Annex;
 };
-typedef NI TY8214[16];
-struct TY10210 {
-TY10210* Next;
+typedef NI TY8614[16];
+struct TY10610 {
+TY10610* Next;
 NI Key;
-TY8214 Bits;
+TY8614 Bits;
 };
-struct TY68013 {
+struct TY70013 {
   TNimObject Sup;
 NU8 Kind;
 FILE* F;
@@ -221,532 +235,1703 @@ NimStringDesc* S;
 NI Rd;
 NI Wr;
 };
-struct TY46008 {
+struct TY47008 {
   TNimObject Sup;
-TY46008* Left;
-TY46008* Right;
+TY47008* Left;
+TY47008* Right;
 NI Length;
 NimStringDesc* Data;
 };
-struct TY37013 {
+struct TY38013 {
   TNimObject Sup;
-TY37013* Prev;
-TY37013* Next;
+TY38013* Prev;
+TY38013* Next;
 };
-struct TY49541 {
-  TY37013 Sup;
+struct TY50543 {
+  TY38013 Sup;
 NU8 Kind;
 NIM_BOOL Generated;
-TY46008* Name;
-TY49523* Path;
+TY47008* Name;
+TY50525* Path;
 };
-struct TY49517 {
+struct TY50519 {
   TGenericSeq Sup;
-  TY49523* data[SEQ_DECL_SIZE];
+  TY50525* data[SEQ_DECL_SIZE];
 };
-struct TY70281 {
+struct TY72434 {
   TGenericSeq Sup;
   NI data[SEQ_DECL_SIZE];
 };
-struct TY49547 {
+struct TY50549 {
   TGenericSeq Sup;
-  TY49549* data[SEQ_DECL_SIZE];
+  TY50551* data[SEQ_DECL_SIZE];
 };
-struct TY49525 {
+struct TY50527 {
   TGenericSeq Sup;
-  TY49545* data[SEQ_DECL_SIZE];
+  TY50547* data[SEQ_DECL_SIZE];
 };
-N_NIMCALL(TY49523*, Newnodep_74052)(NU8 Kind_74054, TY74011 P_74055);
-N_NIMCALL(void, Gettok_74038)(TY74011* P_74041);
-N_NIMCALL(TY49523*, Complexorsimplestmt_77336)(TY74011* P_77339);
-N_NIMCALL(TY49523*, Parseiforwhen_76849)(TY74011* P_76852, NU8 Kind_76853);
-N_NIMCALL(void, Optind_74100)(TY74011* P_74103, TY49523* N_74104);
-N_NIMCALL(void, Eat_74087)(TY74011* P_74090, NU8 Toktype_74091);
-N_NIMCALL(void, Addson_49821)(TY49523* Father_49823, TY49523* Son_49824);
-N_NIMCALL(TY49523*, Parseexpr_76012)(TY74011* P_76015);
-N_NIMCALL(TY49523*, Parsetypedesckaux_76691)(TY74011* P_76694, NU8 Kind_76695);
-N_NIMCALL(TY49523*, Parsetypedesc_76020)(TY74011* P_76023);
-N_NIMCALL(TY49523*, Parseprocexpr_76664)(TY74011* P_76667, NIM_BOOL Isexpr_76668);
-N_NIMCALL(TY41532, Parlineinfo_74084)(TY74011 P_74086);
-N_NIMCALL(TY49523*, Parseparamlist_76024)(TY74011* P_76027);
-N_NIMCALL(TY49523*, Parseidentcolonequals_76503)(TY74011* P_76506, NU8 Flags_76507);
-N_NIMCALL(TY49523*, Identwithpragma_76482)(TY74011* P_76485);
-N_NIMCALL(TY49523*, Identvis_76467)(TY74011* P_76470);
-N_NIMCALL(TY49523*, Parsesymbol_74114)(TY74011* P_74117);
-N_NIMCALL(TY49523*, Newidentnodep_74071)(TY48011* Ident_74073, TY74011 P_74074);
-N_NIMCALL(TY49523*, Parsepragma_76397)(TY74011* P_76400);
-N_NIMCALL(TY49523*, Exprcoloneqexpr_76144)(TY74011* P_76147, NU8 Kind_76148, NU8 Tok_76149);
-N_NIMCALL(void, Optpar_74096)(TY74011* P_74099);
-N_NIMCALL(void, Parmessage_74042)(TY74011 P_74044, NU8 Msg_74045, NimStringDesc* Arg_74046);
-N_NIMCALL(NimStringDesc*, Toktostr_70323)(TY70263* Tok_70325);
-static N_INLINE(void, asgnRefNoCycle)(void** Dest_11416, void* Src_11417);
-static N_INLINE(TY10202*, Usrtocell_10622)(void* Usr_10624);
-static N_INLINE(void, Rtladdzct_11256)(TY10202* C_11258);
-N_NOINLINE(void, Addzct_10611)(TY10218* S_10614, TY10202* C_10615);
-N_NIMCALL(TY49523*, Newnodei_49735)(NU8 Kind_49737, TY41532 Info_49738);
-N_NIMCALL(TY49523*, Parsestmt_76016)(TY74011* P_76019);
-N_NIMCALL(TY49523*, Simplestmt_77314)(TY74011* P_77317);
-N_NIMCALL(TY49523*, Parsereturnorraise_76831)(TY74011* P_76834, NU8 Kind_76835);
-N_NIMCALL(TY49523*, Parseyieldordiscard_76837)(TY74011* P_76840, NU8 Kind_76841);
-N_NIMCALL(TY49523*, Parsebreakorcontinue_76843)(TY74011* P_76846, NU8 Kind_76847);
-N_NIMCALL(TY49523*, Parseimportorincludestmt_76798)(TY74011* P_76801, NU8 Kind_76802);
-N_NIMCALL(TY49523*, Newstrnodep_74066)(NU8 Kind_74068, NimStringDesc* Strval_74069, TY74011 P_74070);
-N_NIMCALL(TY49523*, Parsefromstmt_76815)(TY74011* P_76818);
-N_NIMCALL(TY49523*, Newcommentstmt_77045)(TY74011* P_77048);
-N_NIMCALL(NIM_BOOL, Isexprstart_76716)(TY74011 P_76718);
-N_NIMCALL(TY49523*, Parseexprstmt_76720)(TY74011* P_76723);
-N_NIMCALL(TY49523*, Lowestexpr_76375)(TY74011* P_76378);
-N_NIMCALL(TY70263*, Lowestexpraux_76357)(TY74011* P_76360, TY49523** V_76362, NI Limit_76363);
-N_NIMCALL(TY49523*, Primary_76323)(TY74011* P_76326);
-N_NIMCALL(TY49523*, Identorliteral_76313)(TY74011* P_76316);
-N_NIMCALL(TY49523*, Accexpr_74118)(TY74011* P_74121);
-N_NIMCALL(TY49523*, Newintnodep_74056)(NU8 Kind_74058, NI64 Intval_74059, TY74011 P_74060);
-N_NIMCALL(void, Setbaseflags_74110)(TY49523* N_74112, NU8 Base_74113);
-N_NIMCALL(TY49523*, Newfloatnodep_74061)(NU8 Kind_74063, NF64 Floatval_74064, TY74011 P_74065);
-N_NIMCALL(TY49523*, Exprcoloneqexprlist_76294)(TY74011* P_76297, NU8 Kind_76298, NU8 Elemkind_76299, NU8 Endtok_76300, NU8 Septok_76301);
-N_NIMCALL(void, Exprcoloneqexprlistaux_76248)(TY74011* P_76251, NU8 Elemkind_76252, NU8 Endtok_76253, NU8 Septok_76254, TY49523* Result_76255);
-N_NIMCALL(TY49523*, Parsecast_76303)(TY74011* P_76306);
-N_NIMCALL(TY49523*, Parseaddr_76308)(TY74011* P_76311);
-N_NIMCALL(TY49523*, Indexexprlist_76100)(TY74011* P_76103, TY49523* First_76104);
-N_NIMCALL(TY49523*, Indexexpr_76066)(TY74011* P_76069);
-N_NIMCALL(TY49523*, Dotdotexpr_76060)(TY74011* P_76063, TY49523* First_76064);
-N_NIMCALL(TY49523*, Optexpr_76028)(TY74011* P_76031);
-N_NIMCALL(void, unsureAsgnRef)(void** Dest_11422, void* Src_11423);
-N_NIMCALL(NI, Getprecedence_74032)(TY70263* Tok_74034);
-N_NIMCALL(NI, Sonslen_49801)(TY49523* N_49803);
-N_NIMCALL(void, Skipcomment_74047)(TY74011* P_74050, TY49523* Node_74051);
-N_NIMCALL(void, Exprlistaux_76161)(TY74011* P_76164, NU8 Elemkind_76165, NU8 Endtok_76166, NU8 Septok_76167, TY49523* Result_76168);
-N_NIMCALL(void, Qualifiedidentlistaux_76213)(TY74011* P_76216, NU8 Endtok_76217, TY49523* Result_76218);
-N_NIMCALL(TY49523*, Qualifiedident_76198)(TY74011* P_76201);
-N_NIMCALL(TY49523*, Parsetuple_76580)(TY74011* P_76583);
-N_NIMCALL(TY49523*, Parseifexpr_76381)(TY74011* P_76384);
-N_NIMCALL(TY49523*, Parsewhile_76875)(TY74011* P_76878);
-N_NIMCALL(TY49523*, Parsecase_76880)(TY74011* P_76883);
-N_NIMCALL(TY49523*, Parsetry_76906)(TY74011* P_76909);
-N_NIMCALL(TY49523*, Parsefor_76942)(TY74011* P_76945);
-N_NIMCALL(TY49523*, Parseblock_76958)(TY74011* P_76961);
-N_NIMCALL(TY49523*, Parseasm_76963)(TY74011* P_76966);
-N_NIMCALL(TY49523*, Parseroutine_77012)(TY74011* P_77015, NU8 Kind_77016);
-N_NIMCALL(TY49523*, Parsegenericparamlist_76977)(TY74011* P_76980);
-N_NIMCALL(void, Indandcomment_74105)(TY74011* P_74108, TY49523* N_74109);
-N_NIMCALL(TY49523*, Parseconstsection_77080)(TY74011* P_77083);
-N_NIMCALL(TY49523*, Parseconstant_77066)(TY74011* P_77069);
-N_NIMCALL(TY49523*, Parsesection_77055)(TY74011* P_77058, NU8 Kind_77059, TY77051 Defparser_77060);
-N_NIMCALL(void, Pushind_70286)(TY70267* L_70289, NI Indent_70290);
-N_NIMCALL(void, Popind_70291)(TY70267* L_70294);
-N_NIMCALL(TY49523*, Parsevariable_77299)(TY74011* P_77302);
-N_NIMCALL(TY49523*, Parsevartuple_77265)(TY74011* P_77268);
-STRING_LITERAL(TMP190861, ".}", 2);
-STRING_LITERAL(TMP190862, ")", 1);
-STRING_LITERAL(TMP190863, "", 0);
-STRING_LITERAL(TMP190864, "except", 6);
-extern TY10590 Gch_10608;
-N_NIMCALL(TY49523*, Identvis_76467)(TY74011* P_76470) {
-TY49523* Result_76471;
-TY49523* A_76472;
-TY49523* LOC4;
-Result_76471 = 0;
-A_76472 = 0;
-A_76472 = Parsesymbol_74114(P_76470);
-if (!((*(*P_76470).Tok).Toktype == ((NU8) 99))) goto LA2;
-Result_76471 = Newnodep_74052(((NU8) 29), (*P_76470));
-LOC4 = Newidentnodep_74071((*(*P_76470).Tok).Ident, (*P_76470));
-Addson_49821(Result_76471, LOC4);
-Addson_49821(Result_76471, A_76472);
-Gettok_74038(P_76470);
+N_NIMCALL(TY50525*, Optexpr_78028)(TY76011* P_78031);
+N_NIMCALL(TY50525*, Dotdotexpr_78060)(TY76011* P_78063, TY50525* First_78064);
+N_NIMCALL(TY50525*, Newnodep_76052)(NU8 Kind_76054, TY76011 P_76055);
+N_NIMCALL(void, Addson_50823)(TY50525* Father_50825, TY50525* Son_50826);
+N_NIMCALL(void, Gettok_76038)(TY76011* P_76041);
+N_NIMCALL(void, Optind_76100)(TY76011* P_76103, TY50525* N_76104);
+N_NIMCALL(TY50525*, Indexexpr_78066)(TY76011* P_78069);
+N_NIMCALL(TY50525*, Indexexprlist_78100)(TY76011* P_78103, TY50525* First_78104);
+N_NIMCALL(void, Optpar_76096)(TY76011* P_76099);
+N_NIMCALL(void, Eat_76087)(TY76011* P_76090, NU8 Toktype_76091);
+N_NIMCALL(TY50525*, Exprcoloneqexpr_78144)(TY76011* P_78147, NU8 Kind_78148, NU8 Tok_78149);
+N_NIMCALL(void, Exprlistaux_78161)(TY76011* P_78164, NU8 Elemkind_78165, NU8 Endtok_78166, NU8 Septok_78167, TY50525* Result_78168);
+N_NIMCALL(TY50525*, Qualifiedident_78198)(TY76011* P_78201);
+N_NIMCALL(TY50525*, Parsesymbol_76114)(TY76011* P_76117);
+N_NIMCALL(TY50525*, Newnodei_50737)(NU8 Kind_50739, TY42532 Info_50740);
+N_NIMCALL(void, Qualifiedidentlistaux_78213)(TY76011* P_78216, NU8 Endtok_78217, TY50525* Result_78218);
+N_NIMCALL(void, Exprcoloneqexprlistaux_78248)(TY76011* P_78251, NU8 Elemkind_78252, NU8 Endtok_78253, NU8 Septok_78254, TY50525* Result_78255);
+N_NIMCALL(TY50525*, Exprcoloneqexprlist_78294)(TY76011* P_78297, NU8 Kind_78298, NU8 Elemkind_78299, NU8 Endtok_78300, NU8 Septok_78301);
+N_NIMCALL(TY50525*, Parsecast_78303)(TY76011* P_78306);
+N_NIMCALL(TY50525*, Parseaddr_78308)(TY76011* P_78311);
+N_NIMCALL(TY50525*, Identorliteral_78313)(TY76011* P_78316);
+N_NIMCALL(TY50525*, Newidentnodep_76071)(TY49011* Ident_76073, TY76011 P_76074);
+N_NIMCALL(TY50525*, Accexpr_76118)(TY76011* P_76121);
+N_NIMCALL(TY50525*, Newintnodep_76056)(NU8 Kind_76058, NI64 Intval_76059, TY76011 P_76060);
+N_NIMCALL(void, Setbaseflags_76110)(TY50525* N_76112, NU8 Base_76113);
+N_NIMCALL(TY50525*, Newfloatnodep_76061)(NU8 Kind_76063, NF64 Floatval_76064, TY76011 P_76065);
+N_NIMCALL(TY50525*, Newstrnodep_76066)(NU8 Kind_76068, NimStringDesc* Strval_76069, TY76011 P_76070);
+N_NOINLINE(void, raiseIndexError)(void);
+N_NIMCALL(void, Parmessage_76042)(TY76011 P_76044, NU8 Msg_76045, NimStringDesc* Arg_76046);
+N_NIMCALL(NimStringDesc*, Toktostr_72323)(TY72263* Tok_72325);
+N_NIMCALL(TY50525*, Primary_78323)(TY76011* P_78326);
+N_NIMCALL(TY72263*, Lowestexpraux_78357)(TY76011* P_78360, TY50525** V_78362, NI Limit_78363);
+N_NIMCALL(void, unsureAsgnRef)(void** Dest_11826, void* Src_11827);
+N_NIMCALL(NI, Getprecedence_76032)(TY72263* Tok_76034);
+N_NIMCALL(TY50525*, Lowestexpr_78375)(TY76011* P_78378);
+N_NIMCALL(TY50525*, Parseifexpr_78381)(TY76011* P_78384);
+N_NIMCALL(TY50525*, Parsepragma_78397)(TY76011* P_78400);
+N_NIMCALL(TY50525*, Identvis_78468)(TY76011* P_78471);
+N_NIMCALL(TY50525*, Identwithpragma_78483)(TY76011* P_78486);
+N_NIMCALL(TY50525*, Parseidentcolonequals_78504)(TY76011* P_78507, NU8 Flags_78508);
+N_NIMCALL(TY50525*, Parsetuple_78581)(TY76011* P_78584);
+N_NIMCALL(TY50525*, Parseparamlist_78024)(TY76011* P_78027);
+N_NOINLINE(void, raiseFieldError)(NimStringDesc* F_5475);
+static N_INLINE(void, asgnRefNoCycle)(void** Dest_11818, void* Src_11819);
+static N_INLINE(TY10602*, Usrtocell_11036)(void* Usr_11038);
+static N_INLINE(NI, Atomicinc_3001)(NI* Memloc_3004, NI X_3005);
+static N_INLINE(NI, Atomicdec_3006)(NI* Memloc_3009, NI X_3010);
+static N_INLINE(void, Rtladdzct_11658)(TY10602* C_11660);
+N_NOINLINE(void, Addzct_11025)(TY10618* S_11028, TY10602* C_11029);
+N_NIMCALL(TY50525*, Parseprocexpr_78668)(TY76011* P_78671, NIM_BOOL Isexpr_78672);
+N_NIMCALL(TY42532, Parlineinfo_76084)(TY76011 P_76086);
+N_NIMCALL(TY50525*, Parsetypedesckaux_78695)(TY76011* P_78698, NU8 Kind_78699);
+N_NIMCALL(TY50525*, Parseexpr_78012)(TY76011* P_78015);
+N_NIMCALL(TY50525*, Parsetypedesc_78020)(TY76011* P_78023);
+N_NIMCALL(NIM_BOOL, Isexprstart_78720)(TY76011 P_78722);
+N_NIMCALL(TY50525*, Parseexprstmt_78724)(TY76011* P_78727);
+N_NIMCALL(NI, Sonslen_50803)(TY50525* N_50805);
+N_NIMCALL(void, Skipcomment_76047)(TY76011* P_76050, TY50525* Node_76051);
+N_NIMCALL(TY50525*, Parseimportorincludestmt_78802)(TY76011* P_78805, NU8 Kind_78806);
+N_NIMCALL(TY50525*, Parsefromstmt_78819)(TY76011* P_78822);
+N_NIMCALL(TY50525*, Parsereturnorraise_78835)(TY76011* P_78838, NU8 Kind_78839);
+N_NIMCALL(TY50525*, Parseyieldordiscard_78841)(TY76011* P_78844, NU8 Kind_78845);
+N_NIMCALL(TY50525*, Parsebreakorcontinue_78847)(TY76011* P_78850, NU8 Kind_78851);
+N_NIMCALL(TY50525*, Parseiforwhen_78853)(TY76011* P_78856, NU8 Kind_78857);
+N_NIMCALL(TY50525*, Parsewhile_78879)(TY76011* P_78882);
+N_NIMCALL(TY50525*, Parsecase_78884)(TY76011* P_78887);
+N_NIMCALL(TY50525*, Parsetry_78910)(TY76011* P_78913);
+N_NIMCALL(TY50525*, Parsefor_78947)(TY76011* P_78950);
+N_NIMCALL(TY50525*, Parseblock_78963)(TY76011* P_78966);
+N_NIMCALL(TY50525*, Parseasm_78968)(TY76011* P_78971);
+N_NIMCALL(TY50525*, Parsegenericparamlist_78983)(TY76011* P_78986);
+N_NIMCALL(TY50525*, Parseroutine_79018)(TY76011* P_79021, NU8 Kind_79022);
+N_NIMCALL(void, Indandcomment_76105)(TY76011* P_76108, TY50525* N_76109);
+N_NIMCALL(TY50525*, Newcommentstmt_79051)(TY76011* P_79054);
+N_NOINLINE(void, raiseOverflow)(void);
+N_NIMCALL(TY50525*, Parsesection_79061)(TY76011* P_79064, NU8 Kind_79065, TY79057 Defparser_79066);
+N_NIMCALL(void, Pushind_72286)(TY72267* L_72289, NI Indent_72290);
+N_NIMCALL(void, Popind_72291)(TY72267* L_72294);
+N_NIMCALL(TY50525*, Parseconstant_79072)(TY76011* P_79075);
+N_NIMCALL(TY50525*, Parseconstsection_79086)(TY76011* P_79089);
+N_NIMCALL(TY50525*, Parseenum_79119)(TY76011* P_79122);
+N_NIMCALL(TY50525*, Parseobjectwhen_79158)(TY76011* P_79161);
+N_NIMCALL(TY50525*, Parseobjectcase_79183)(TY76011* P_79186);
+N_NIMCALL(TY50525*, Parseobjectpart_79154)(TY76011* P_79157);
+N_NIMCALL(TY50525*, Parseobject_79218)(TY76011* P_79221);
+N_NIMCALL(TY50525*, Parsedistinct_79242)(TY76011* P_79245);
+N_NIMCALL(TY50525*, Parsetypedef_79247)(TY76011* P_79250);
+N_NIMCALL(TY50525*, Parsevartuple_79271)(TY76011* P_79274);
+N_NIMCALL(TY50525*, Parsevariable_79305)(TY76011* P_79308);
+N_NIMCALL(TY50525*, Simplestmt_79320)(TY76011* P_79323);
+N_NIMCALL(TY50525*, Parsetype_79336)(TY76011* P_79339);
+N_NIMCALL(TY50525*, Complexorsimplestmt_79342)(TY76011* P_79345);
+N_NIMCALL(TY50525*, Parsestmt_78016)(TY76011* P_78019);
+N_NIMCALL(TY50525*, Parseall_78004)(TY76011* P_78007);
+N_NIMCALL(TY50525*, Parsetoplevelstmt_78008)(TY76011* P_78011);
+STRING_LITERAL(TMP78467, ".}", 2);
+STRING_LITERAL(TMP78665, ")", 1);
+static NIM_CONST TY50999 TMP78666 = {
+0xEC, 0xFF, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00,
+0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00}
+;STRING_LITERAL(TMP78667, "sons", 4);
+STRING_LITERAL(TMP78946, "except", 6);
+STRING_LITERAL(TMP78982, "", 0);
+extern TY8016 Dl_8015;
+extern TY10990 Gch_11010;
+extern TY8020 Dl_8019;
+N_NIMCALL(TY50525*, Optexpr_78028)(TY76011* P_78031) {
+TY50525* Result_78032;
+NIM_BOOL LOC2;
+NIM_BOOL LOC3;
+volatile struct {TFrame* prev;NCSTRING procname;NI line;NCSTRING filename;NI len;
+} F;
+F.procname = "optExpr";
+F.prev = framePtr;
+F.filename = "rod/pbraces.nim";
+F.line = 0;
+framePtr = (TFrame*)&F;
+F.len = 0;
+Result_78032 = 0;
+F.line = 26;F.filename = "pbraces.nim";
+LOC3 = !(((*(*P_78031).Tok).Toktype == ((NU8) 92)));
+if (!(LOC3)) goto LA4;
+LOC3 = !(((*(*P_78031).Tok).Toktype == ((NU8) 83)));
+LA4: ;
+LOC2 = LOC3;
+if (!(LOC2)) goto LA5;
+LOC2 = !(((*(*P_78031).Tok).Toktype == ((NU8) 97)));
+LA5: ;
+if (!LOC2) goto LA6;
+F.line = 28;F.filename = "pbraces.nim";
+Result_78032 = Parseexpr_78012(P_78031);
+goto LA1;
+LA6: ;
+F.line = 30;F.filename = "pbraces.nim";
+Result_78032 = NIM_NIL;
+LA1: ;
+framePtr = framePtr->prev;
+return Result_78032;
+}
+N_NIMCALL(TY50525*, Dotdotexpr_78060)(TY76011* P_78063, TY50525* First_78064) {
+TY50525* Result_78065;
+TY50525* LOC1;
+volatile struct {TFrame* prev;NCSTRING procname;NI line;NCSTRING filename;NI len;
+} F;
+F.procname = "dotdotExpr";
+F.prev = framePtr;
+F.filename = "rod/pbraces.nim";
+F.line = 0;
+framePtr = (TFrame*)&F;
+F.len = 0;
+Result_78065 = 0;
+F.line = 33;F.filename = "pbraces.nim";
+Result_78065 = Newnodep_76052(((NU8) 35), (*P_78063));
+F.line = 34;F.filename = "pbraces.nim";
+Addson_50823(Result_78065, First_78064);
+F.line = 35;F.filename = "pbraces.nim";
+Gettok_76038(P_78063);
+F.line = 36;F.filename = "pbraces.nim";
+Optind_76100(P_78063, Result_78065);
+F.line = 37;F.filename = "pbraces.nim";
+LOC1 = 0;
+LOC1 = Optexpr_78028(P_78063);
+Addson_50823(Result_78065, LOC1);
+framePtr = framePtr->prev;
+return Result_78065;
+}
+N_NIMCALL(TY50525*, Indexexpr_78066)(TY76011* P_78069) {
+TY50525* Result_78070;
+TY50525* A_78071;
+TY50525* B_78072;
+TY50525* LOC7;
+volatile struct {TFrame* prev;NCSTRING procname;NI line;NCSTRING filename;NI len;
+} F;
+F.procname = "indexExpr";
+F.prev = framePtr;
+F.filename = "rod/pbraces.nim";
+F.line = 0;
+framePtr = (TFrame*)&F;
+F.len = 0;
+Result_78070 = 0;
+A_78071 = 0;
+B_78072 = 0;
+F.line = 42;F.filename = "pbraces.nim";
+if (!((*(*P_78069).Tok).Toktype == ((NU8) 97))) goto LA2;
+F.line = 43;F.filename = "pbraces.nim";
+Result_78070 = Dotdotexpr_78060(P_78069, NIM_NIL);
 goto LA1;
 LA2: ;
-Result_76471 = A_76472;
-LA1: ;
-return Result_76471;
+F.line = 45;F.filename = "pbraces.nim";
+A_78071 = Parseexpr_78012(P_78069);
+F.line = 46;F.filename = "pbraces.nim";
+switch ((*(*P_78069).Tok).Toktype) {
+case ((NU8) 95):
+F.line = 48;F.filename = "pbraces.nim";
+Result_78070 = Newnodep_76052(((NU8) 23), (*P_78069));
+F.line = 49;F.filename = "pbraces.nim";
+Addson_50823(Result_78070, A_78071);
+F.line = 50;F.filename = "pbraces.nim";
+Gettok_76038(P_78069);
+F.line = 51;F.filename = "pbraces.nim";
+if (!((*(*P_78069).Tok).Toktype == ((NU8) 97))) goto LA5;
+F.line = 52;F.filename = "pbraces.nim";
+LOC7 = 0;
+LOC7 = Dotdotexpr_78060(P_78069, NIM_NIL);
+Addson_50823(Result_78070, LOC7);
+goto LA4;
+LA5: ;
+F.line = 54;F.filename = "pbraces.nim";
+B_78072 = Parseexpr_78012(P_78069);
+F.line = 55;F.filename = "pbraces.nim";
+if (!((*(*P_78069).Tok).Toktype == ((NU8) 97))) goto LA9;
+F.line = 55;F.filename = "pbraces.nim";
+B_78072 = Dotdotexpr_78060(P_78069, B_78072);
+LA9: ;
+F.line = 56;F.filename = "pbraces.nim";
+Addson_50823(Result_78070, B_78072);
+LA4: ;
+break;
+case ((NU8) 97):
+F.line = 58;F.filename = "pbraces.nim";
+Result_78070 = Dotdotexpr_78060(P_78069, A_78071);
+break;
+default:
+F.line = 59;F.filename = "pbraces.nim";
+Result_78070 = A_78071;
+break;
 }
-N_NIMCALL(TY49523*, Exprcoloneqexpr_76144)(TY74011* P_76147, NU8 Kind_76148, NU8 Tok_76149) {
-TY49523* Result_76150;
-TY49523* A_76151;
-TY49523* LOC4;
-Result_76150 = 0;
-A_76151 = 0;
-A_76151 = Parseexpr_76012(P_76147);
-if (!((*(*P_76147).Tok).Toktype == Tok_76149)) goto LA2;
-Result_76150 = Newnodep_74052(Kind_76148, (*P_76147));
-Gettok_74038(P_76147);
-Addson_49821(Result_76150, A_76151);
-LOC4 = Parseexpr_76012(P_76147);
-Addson_49821(Result_76150, LOC4);
+LA1: ;
+framePtr = framePtr->prev;
+return Result_78070;
+}
+N_NIMCALL(TY50525*, Indexexprlist_78100)(TY76011* P_78103, TY50525* First_78104) {
+TY50525* Result_78105;
+TY50525* A_78106;
+NIM_BOOL LOC2;
+NIM_BOOL LOC3;
+volatile struct {TFrame* prev;NCSTRING procname;NI line;NCSTRING filename;NI len;
+} F;
+F.procname = "indexExprList";
+F.prev = framePtr;
+F.filename = "rod/pbraces.nim";
+F.line = 0;
+framePtr = (TFrame*)&F;
+F.len = 0;
+Result_78105 = 0;
+A_78106 = 0;
+F.line = 63;F.filename = "pbraces.nim";
+Result_78105 = Newnodep_76052(((NU8) 33), (*P_78103));
+F.line = 64;F.filename = "pbraces.nim";
+Addson_50823(Result_78105, First_78104);
+F.line = 65;F.filename = "pbraces.nim";
+Gettok_76038(P_78103);
+F.line = 66;F.filename = "pbraces.nim";
+Optind_76100(P_78103, Result_78105);
+F.line = 67;F.filename = "pbraces.nim";
+while (1) {
+LOC3 = !(((*(*P_78103).Tok).Toktype == ((NU8) 83)));
+if (!(LOC3)) goto LA4;
+LOC3 = !(((*(*P_78103).Tok).Toktype == ((NU8) 1)));
+LA4: ;
+LOC2 = LOC3;
+if (!(LOC2)) goto LA5;
+LOC2 = !(((*(*P_78103).Tok).Toktype == ((NU8) 103)));
+LA5: ;
+if (!LOC2) goto LA1;
+F.line = 69;F.filename = "pbraces.nim";
+A_78106 = Indexexpr_78066(P_78103);
+F.line = 70;F.filename = "pbraces.nim";
+Addson_50823(Result_78105, A_78106);
+F.line = 71;F.filename = "pbraces.nim";
+if (!!(((*(*P_78103).Tok).Toktype == ((NU8) 92)))) goto LA7;
+F.line = 71;F.filename = "pbraces.nim";
+goto LA1;
+LA7: ;
+F.line = 72;F.filename = "pbraces.nim";
+Gettok_76038(P_78103);
+F.line = 73;F.filename = "pbraces.nim";
+Optind_76100(P_78103, A_78106);
+} LA1: ;
+F.line = 74;F.filename = "pbraces.nim";
+Optpar_76096(P_78103);
+F.line = 75;F.filename = "pbraces.nim";
+Eat_76087(P_78103, ((NU8) 83));
+framePtr = framePtr->prev;
+return Result_78105;
+}
+N_NIMCALL(TY50525*, Exprcoloneqexpr_78144)(TY76011* P_78147, NU8 Kind_78148, NU8 Tok_78149) {
+TY50525* Result_78150;
+TY50525* A_78151;
+TY50525* LOC4;
+volatile struct {TFrame* prev;NCSTRING procname;NI line;NCSTRING filename;NI len;
+} F;
+F.procname = "exprColonEqExpr";
+F.prev = framePtr;
+F.filename = "rod/pbraces.nim";
+F.line = 0;
+framePtr = (TFrame*)&F;
+F.len = 0;
+Result_78150 = 0;
+A_78151 = 0;
+F.line = 79;F.filename = "pbraces.nim";
+A_78151 = Parseexpr_78012(P_78147);
+F.line = 80;F.filename = "pbraces.nim";
+if (!((*(*P_78147).Tok).Toktype == Tok_78149)) goto LA2;
+F.line = 81;F.filename = "pbraces.nim";
+Result_78150 = Newnodep_76052(Kind_78148, (*P_78147));
+F.line = 82;F.filename = "pbraces.nim";
+Gettok_76038(P_78147);
+F.line = 83;F.filename = "pbraces.nim";
+Addson_50823(Result_78150, A_78151);
+F.line = 84;F.filename = "pbraces.nim";
+LOC4 = 0;
+LOC4 = Parseexpr_78012(P_78147);
+Addson_50823(Result_78150, LOC4);
 goto LA1;
 LA2: ;
-Result_76150 = A_76151;
+F.line = 86;F.filename = "pbraces.nim";
+Result_78150 = A_78151;
 LA1: ;
-return Result_76150;
+framePtr = framePtr->prev;
+return Result_78150;
 }
-N_NIMCALL(TY49523*, Parsepragma_76397)(TY74011* P_76400) {
-TY49523* Result_76401;
-TY49523* A_76402;
+N_NIMCALL(void, Exprlistaux_78161)(TY76011* P_78164, NU8 Elemkind_78165, NU8 Endtok_78166, NU8 Septok_78167, TY50525* Result_78168) {
+TY50525* A_78169;
+NIM_BOOL LOC2;
+volatile struct {TFrame* prev;NCSTRING procname;NI line;NCSTRING filename;NI len;
+} F;
+F.procname = "exprListAux";
+F.prev = framePtr;
+F.filename = "rod/pbraces.nim";
+F.line = 0;
+framePtr = (TFrame*)&F;
+F.len = 0;
+A_78169 = 0;
+F.line = 91;F.filename = "pbraces.nim";
+Gettok_76038(P_78164);
+F.line = 92;F.filename = "pbraces.nim";
+Optind_76100(P_78164, Result_78168);
+F.line = 93;F.filename = "pbraces.nim";
+while (1) {
+LOC2 = !(((*(*P_78164).Tok).Toktype == Endtok_78166));
+if (!(LOC2)) goto LA3;
+LOC2 = !(((*(*P_78164).Tok).Toktype == ((NU8) 1)));
+LA3: ;
+if (!LOC2) goto LA1;
+F.line = 94;F.filename = "pbraces.nim";
+A_78169 = Exprcoloneqexpr_78144(P_78164, Elemkind_78165, Septok_78167);
+F.line = 95;F.filename = "pbraces.nim";
+Addson_50823(Result_78168, A_78169);
+F.line = 96;F.filename = "pbraces.nim";
+if (!!(((*(*P_78164).Tok).Toktype == ((NU8) 92)))) goto LA5;
+F.line = 96;F.filename = "pbraces.nim";
+goto LA1;
+LA5: ;
+F.line = 97;F.filename = "pbraces.nim";
+Gettok_76038(P_78164);
+F.line = 98;F.filename = "pbraces.nim";
+Optind_76100(P_78164, A_78169);
+} LA1: ;
+F.line = 99;F.filename = "pbraces.nim";
+Eat_76087(P_78164, Endtok_78166);
+framePtr = framePtr->prev;
+}
+N_NIMCALL(TY50525*, Qualifiedident_78198)(TY76011* P_78201) {
+TY50525* Result_78202;
+TY50525* A_78203;
+TY50525* LOC4;
+volatile struct {TFrame* prev;NCSTRING procname;NI line;NCSTRING filename;NI len;
+} F;
+F.procname = "qualifiedIdent";
+F.prev = framePtr;
+F.filename = "rod/pbraces.nim";
+F.line = 0;
+framePtr = (TFrame*)&F;
+F.len = 0;
+Result_78202 = 0;
+A_78203 = 0;
+F.line = 103;F.filename = "pbraces.nim";
+Result_78202 = Parsesymbol_76114(P_78201);
+F.line = 104;F.filename = "pbraces.nim";
+if (!((*(*P_78201).Tok).Toktype == ((NU8) 96))) goto LA2;
+F.line = 105;F.filename = "pbraces.nim";
+Gettok_76038(P_78201);
+F.line = 106;F.filename = "pbraces.nim";
+Optind_76100(P_78201, Result_78202);
+F.line = 107;F.filename = "pbraces.nim";
+A_78203 = Result_78202;
+F.line = 108;F.filename = "pbraces.nim";
+Result_78202 = Newnodei_50737(((NU8) 36), (*A_78203).Info);
+F.line = 109;F.filename = "pbraces.nim";
+Addson_50823(Result_78202, A_78203);
+F.line = 110;F.filename = "pbraces.nim";
+LOC4 = 0;
+LOC4 = Parsesymbol_76114(P_78201);
+Addson_50823(Result_78202, LOC4);
+LA2: ;
+framePtr = framePtr->prev;
+return Result_78202;
+}
+N_NIMCALL(void, Qualifiedidentlistaux_78213)(TY76011* P_78216, NU8 Endtok_78217, TY50525* Result_78218) {
+TY50525* A_78219;
+NIM_BOOL LOC2;
+volatile struct {TFrame* prev;NCSTRING procname;NI line;NCSTRING filename;NI len;
+} F;
+F.procname = "qualifiedIdentListAux";
+F.prev = framePtr;
+F.filename = "rod/pbraces.nim";
+F.line = 0;
+framePtr = (TFrame*)&F;
+F.len = 0;
+A_78219 = 0;
+F.line = 114;F.filename = "pbraces.nim";
+Gettok_76038(P_78216);
+F.line = 115;F.filename = "pbraces.nim";
+Optind_76100(P_78216, Result_78218);
+F.line = 116;F.filename = "pbraces.nim";
+while (1) {
+LOC2 = !(((*(*P_78216).Tok).Toktype == Endtok_78217));
+if (!(LOC2)) goto LA3;
+LOC2 = !(((*(*P_78216).Tok).Toktype == ((NU8) 1)));
+LA3: ;
+if (!LOC2) goto LA1;
+F.line = 117;F.filename = "pbraces.nim";
+A_78219 = Qualifiedident_78198(P_78216);
+F.line = 118;F.filename = "pbraces.nim";
+Addson_50823(Result_78218, A_78219);
+F.line = 119;F.filename = "pbraces.nim";
+if (!!(((*(*P_78216).Tok).Toktype == ((NU8) 92)))) goto LA5;
+F.line = 119;F.filename = "pbraces.nim";
+goto LA1;
+LA5: ;
+F.line = 120;F.filename = "pbraces.nim";
+Gettok_76038(P_78216);
+F.line = 121;F.filename = "pbraces.nim";
+Optind_76100(P_78216, A_78219);
+} LA1: ;
+F.line = 122;F.filename = "pbraces.nim";
+Eat_76087(P_78216, Endtok_78217);
+framePtr = framePtr->prev;
+}
+N_NIMCALL(void, Exprcoloneqexprlistaux_78248)(TY76011* P_78251, NU8 Elemkind_78252, NU8 Endtok_78253, NU8 Septok_78254, TY50525* Result_78255) {
+TY50525* A_78256;
+NIM_BOOL LOC2;
+NIM_BOOL LOC3;
+volatile struct {TFrame* prev;NCSTRING procname;NI line;NCSTRING filename;NI len;
+} F;
+F.procname = "exprColonEqExprListAux";
+F.prev = framePtr;
+F.filename = "rod/pbraces.nim";
+F.line = 0;
+framePtr = (TFrame*)&F;
+F.len = 0;
+A_78256 = 0;
+F.line = 127;F.filename = "pbraces.nim";
+Gettok_76038(P_78251);
+F.line = 128;F.filename = "pbraces.nim";
+Optind_76100(P_78251, Result_78255);
+F.line = 129;F.filename = "pbraces.nim";
+while (1) {
+LOC3 = !(((*(*P_78251).Tok).Toktype == Endtok_78253));
+if (!(LOC3)) goto LA4;
+LOC3 = !(((*(*P_78251).Tok).Toktype == ((NU8) 1)));
+LA4: ;
+LOC2 = LOC3;
+if (!(LOC2)) goto LA5;
+LOC2 = !(((*(*P_78251).Tok).Toktype == ((NU8) 103)));
+LA5: ;
+if (!LOC2) goto LA1;
+F.line = 131;F.filename = "pbraces.nim";
+A_78256 = Exprcoloneqexpr_78144(P_78251, Elemkind_78252, Septok_78254);
+F.line = 132;F.filename = "pbraces.nim";
+Addson_50823(Result_78255, A_78256);
+F.line = 133;F.filename = "pbraces.nim";
+if (!!(((*(*P_78251).Tok).Toktype == ((NU8) 92)))) goto LA7;
+F.line = 133;F.filename = "pbraces.nim";
+goto LA1;
+LA7: ;
+F.line = 134;F.filename = "pbraces.nim";
+Gettok_76038(P_78251);
+F.line = 135;F.filename = "pbraces.nim";
+Optind_76100(P_78251, A_78256);
+} LA1: ;
+F.line = 136;F.filename = "pbraces.nim";
+Optpar_76096(P_78251);
+F.line = 137;F.filename = "pbraces.nim";
+Eat_76087(P_78251, Endtok_78253);
+framePtr = framePtr->prev;
+}
+N_NIMCALL(TY50525*, Exprcoloneqexprlist_78294)(TY76011* P_78297, NU8 Kind_78298, NU8 Elemkind_78299, NU8 Endtok_78300, NU8 Septok_78301) {
+TY50525* Result_78302;
+volatile struct {TFrame* prev;NCSTRING procname;NI line;NCSTRING filename;NI len;
+} F;
+F.procname = "exprColonEqExprList";
+F.prev = framePtr;
+F.filename = "rod/pbraces.nim";
+F.line = 0;
+framePtr = (TFrame*)&F;
+F.len = 0;
+Result_78302 = 0;
+F.line = 141;F.filename = "pbraces.nim";
+Result_78302 = Newnodep_76052(Kind_78298, (*P_78297));
+F.line = 142;F.filename = "pbraces.nim";
+Exprcoloneqexprlistaux_78248(P_78297, Elemkind_78299, Endtok_78300, Septok_78301, Result_78302);
+framePtr = framePtr->prev;
+return Result_78302;
+}
+N_NIMCALL(TY50525*, Parsecast_78303)(TY76011* P_78306) {
+TY50525* Result_78307;
+TY50525* LOC1;
+TY50525* LOC2;
+volatile struct {TFrame* prev;NCSTRING procname;NI line;NCSTRING filename;NI len;
+} F;
+F.procname = "parseCast";
+F.prev = framePtr;
+F.filename = "rod/pbraces.nim";
+F.line = 0;
+framePtr = (TFrame*)&F;
+F.len = 0;
+Result_78307 = 0;
+F.line = 145;F.filename = "pbraces.nim";
+Result_78307 = Newnodep_76052(((NU8) 51), (*P_78306));
+F.line = 146;F.filename = "pbraces.nim";
+Gettok_76038(P_78306);
+F.line = 147;F.filename = "pbraces.nim";
+Eat_76087(P_78306, ((NU8) 82));
+F.line = 148;F.filename = "pbraces.nim";
+Optind_76100(P_78306, Result_78307);
+F.line = 149;F.filename = "pbraces.nim";
+LOC1 = 0;
+LOC1 = Parsetypedesc_78020(P_78306);
+Addson_50823(Result_78307, LOC1);
+F.line = 150;F.filename = "pbraces.nim";
+Optpar_76096(P_78306);
+F.line = 151;F.filename = "pbraces.nim";
+Eat_76087(P_78306, ((NU8) 83));
+F.line = 152;F.filename = "pbraces.nim";
+Eat_76087(P_78306, ((NU8) 80));
+F.line = 153;F.filename = "pbraces.nim";
+Optind_76100(P_78306, Result_78307);
+F.line = 154;F.filename = "pbraces.nim";
+LOC2 = 0;
+LOC2 = Parseexpr_78012(P_78306);
+Addson_50823(Result_78307, LOC2);
+F.line = 155;F.filename = "pbraces.nim";
+Optpar_76096(P_78306);
+F.line = 156;F.filename = "pbraces.nim";
+Eat_76087(P_78306, ((NU8) 81));
+framePtr = framePtr->prev;
+return Result_78307;
+}
+N_NIMCALL(TY50525*, Parseaddr_78308)(TY76011* P_78311) {
+TY50525* Result_78312;
+TY50525* LOC1;
+volatile struct {TFrame* prev;NCSTRING procname;NI line;NCSTRING filename;NI len;
+} F;
+F.procname = "parseAddr";
+F.prev = framePtr;
+F.filename = "rod/pbraces.nim";
+F.line = 0;
+framePtr = (TFrame*)&F;
+F.len = 0;
+Result_78312 = 0;
+F.line = 159;F.filename = "pbraces.nim";
+Result_78312 = Newnodep_76052(((NU8) 52), (*P_78311));
+F.line = 160;F.filename = "pbraces.nim";
+Gettok_76038(P_78311);
+F.line = 161;F.filename = "pbraces.nim";
+Eat_76087(P_78311, ((NU8) 80));
+F.line = 162;F.filename = "pbraces.nim";
+Optind_76100(P_78311, Result_78312);
+F.line = 163;F.filename = "pbraces.nim";
+LOC1 = 0;
+LOC1 = Parseexpr_78012(P_78311);
+Addson_50823(Result_78312, LOC1);
+F.line = 164;F.filename = "pbraces.nim";
+Optpar_76096(P_78311);
+F.line = 165;F.filename = "pbraces.nim";
+Eat_76087(P_78311, ((NU8) 81));
+framePtr = framePtr->prev;
+return Result_78312;
+}
+N_NIMCALL(TY50525*, Identorliteral_78313)(TY76011* P_78316) {
+TY50525* Result_78317;
+TY50525* LOC1;
+TY50525* LOC2;
+TY50525* LOC3;
+TY50525* LOC4;
+NimStringDesc* LOC5;
+volatile struct {TFrame* prev;NCSTRING procname;NI line;NCSTRING filename;NI len;
+} F;
+F.procname = "identOrLiteral";
+F.prev = framePtr;
+F.filename = "rod/pbraces.nim";
+F.line = 0;
+framePtr = (TFrame*)&F;
+F.len = 0;
+Result_78317 = 0;
+F.line = 168;F.filename = "pbraces.nim";
+switch ((*(*P_78316).Tok).Toktype) {
+case ((NU8) 2):
+F.line = 170;F.filename = "pbraces.nim";
+Result_78317 = Newidentnodep_76071((*(*P_78316).Tok).Ident, (*P_78316));
+F.line = 171;F.filename = "pbraces.nim";
+Gettok_76038(P_78316);
+break;
+case ((NU8) 101):
+F.line = 173;F.filename = "pbraces.nim";
+Result_78317 = Accexpr_76118(P_78316);
+break;
+case ((NU8) 66):
+F.line = 175;F.filename = "pbraces.nim";
+Result_78317 = Newintnodep_76056(((NU8) 6), (*(*P_78316).Tok).Inumber, (*P_78316));
+F.line = 176;F.filename = "pbraces.nim";
+Setbaseflags_76110(Result_78317, (*(*P_78316).Tok).Base);
+F.line = 177;F.filename = "pbraces.nim";
+Gettok_76038(P_78316);
+break;
+case ((NU8) 67):
+F.line = 179;F.filename = "pbraces.nim";
+Result_78317 = Newintnodep_76056(((NU8) 7), (*(*P_78316).Tok).Inumber, (*P_78316));
+F.line = 180;F.filename = "pbraces.nim";
+Setbaseflags_76110(Result_78317, (*(*P_78316).Tok).Base);
+F.line = 181;F.filename = "pbraces.nim";
+Gettok_76038(P_78316);
+break;
+case ((NU8) 68):
+F.line = 183;F.filename = "pbraces.nim";
+Result_78317 = Newintnodep_76056(((NU8) 8), (*(*P_78316).Tok).Inumber, (*P_78316));
+F.line = 184;F.filename = "pbraces.nim";
+Setbaseflags_76110(Result_78317, (*(*P_78316).Tok).Base);
+F.line = 185;F.filename = "pbraces.nim";
+Gettok_76038(P_78316);
+break;
+case ((NU8) 69):
+F.line = 187;F.filename = "pbraces.nim";
+Result_78317 = Newintnodep_76056(((NU8) 9), (*(*P_78316).Tok).Inumber, (*P_78316));
+F.line = 188;F.filename = "pbraces.nim";
+Setbaseflags_76110(Result_78317, (*(*P_78316).Tok).Base);
+F.line = 189;F.filename = "pbraces.nim";
+Gettok_76038(P_78316);
+break;
+case ((NU8) 70):
+F.line = 191;F.filename = "pbraces.nim";
+Result_78317 = Newintnodep_76056(((NU8) 10), (*(*P_78316).Tok).Inumber, (*P_78316));
+F.line = 192;F.filename = "pbraces.nim";
+Setbaseflags_76110(Result_78317, (*(*P_78316).Tok).Base);
+F.line = 193;F.filename = "pbraces.nim";
+Gettok_76038(P_78316);
+break;
+case ((NU8) 71):
+F.line = 195;F.filename = "pbraces.nim";
+Result_78317 = Newfloatnodep_76061(((NU8) 11), (*(*P_78316).Tok).Fnumber, (*P_78316));
+F.line = 196;F.filename = "pbraces.nim";
+Setbaseflags_76110(Result_78317, (*(*P_78316).Tok).Base);
+F.line = 197;F.filename = "pbraces.nim";
+Gettok_76038(P_78316);
+break;
+case ((NU8) 72):
+F.line = 199;F.filename = "pbraces.nim";
+Result_78317 = Newfloatnodep_76061(((NU8) 12), (*(*P_78316).Tok).Fnumber, (*P_78316));
+F.line = 200;F.filename = "pbraces.nim";
+Setbaseflags_76110(Result_78317, (*(*P_78316).Tok).Base);
+F.line = 201;F.filename = "pbraces.nim";
+Gettok_76038(P_78316);
+break;
+case ((NU8) 73):
+F.line = 203;F.filename = "pbraces.nim";
+Result_78317 = Newfloatnodep_76061(((NU8) 13), (*(*P_78316).Tok).Fnumber, (*P_78316));
+F.line = 204;F.filename = "pbraces.nim";
+Setbaseflags_76110(Result_78317, (*(*P_78316).Tok).Base);
+F.line = 205;F.filename = "pbraces.nim";
+Gettok_76038(P_78316);
+break;
+case ((NU8) 74):
+F.line = 207;F.filename = "pbraces.nim";
+Result_78317 = Newstrnodep_76066(((NU8) 14), (*(*P_78316).Tok).Literal, (*P_78316));
+F.line = 208;F.filename = "pbraces.nim";
+Gettok_76038(P_78316);
+break;
+case ((NU8) 75):
+F.line = 210;F.filename = "pbraces.nim";
+Result_78317 = Newstrnodep_76066(((NU8) 15), (*(*P_78316).Tok).Literal, (*P_78316));
+F.line = 211;F.filename = "pbraces.nim";
+Gettok_76038(P_78316);
+break;
+case ((NU8) 76):
+F.line = 213;F.filename = "pbraces.nim";
+Result_78317 = Newstrnodep_76066(((NU8) 16), (*(*P_78316).Tok).Literal, (*P_78316));
+F.line = 214;F.filename = "pbraces.nim";
+Gettok_76038(P_78316);
+break;
+case ((NU8) 77):
+F.line = 216;F.filename = "pbraces.nim";
+Result_78317 = Newnodep_76052(((NU8) 22), (*P_78316));
+F.line = 217;F.filename = "pbraces.nim";
+LOC1 = 0;
+LOC1 = Newidentnodep_76071((*(*P_78316).Tok).Ident, (*P_78316));
+Addson_50823(Result_78317, LOC1);
+F.line = 218;F.filename = "pbraces.nim";
+LOC2 = 0;
+LOC2 = Newstrnodep_76066(((NU8) 15), (*(*P_78316).Tok).Literal, (*P_78316));
+Addson_50823(Result_78317, LOC2);
+F.line = 219;F.filename = "pbraces.nim";
+Gettok_76038(P_78316);
+break;
+case ((NU8) 78):
+F.line = 221;F.filename = "pbraces.nim";
+Result_78317 = Newnodep_76052(((NU8) 22), (*P_78316));
+F.line = 222;F.filename = "pbraces.nim";
+LOC3 = 0;
+LOC3 = Newidentnodep_76071((*(*P_78316).Tok).Ident, (*P_78316));
+Addson_50823(Result_78317, LOC3);
+F.line = 223;F.filename = "pbraces.nim";
+LOC4 = 0;
+LOC4 = Newstrnodep_76066(((NU8) 16), (*(*P_78316).Tok).Literal, (*P_78316));
+Addson_50823(Result_78317, LOC4);
+F.line = 224;F.filename = "pbraces.nim";
+Gettok_76038(P_78316);
+break;
+case ((NU8) 79):
+F.line = 226;F.filename = "pbraces.nim";
+if ((NU)(0) > (NU)((*(*P_78316).Tok).Literal->Sup.len)) raiseIndexError();
+Result_78317 = Newintnodep_76056(((NU8) 5), ((NI64) (((NU8)((*(*P_78316).Tok).Literal->data[0])))), (*P_78316));
+F.line = 227;F.filename = "pbraces.nim";
+Gettok_76038(P_78316);
+break;
+case ((NU8) 41):
+F.line = 229;F.filename = "pbraces.nim";
+Result_78317 = Newnodep_76052(((NU8) 18), (*P_78316));
+F.line = 230;F.filename = "pbraces.nim";
+Gettok_76038(P_78316);
+break;
+case ((NU8) 80):
+F.line = 233;F.filename = "pbraces.nim";
+Result_78317 = Exprcoloneqexprlist_78294(P_78316, ((NU8) 30), ((NU8) 24), ((NU8) 81), ((NU8) 94));
+break;
+case ((NU8) 84):
+F.line = 236;F.filename = "pbraces.nim";
+Result_78317 = Exprcoloneqexprlist_78294(P_78316, ((NU8) 31), ((NU8) 35), ((NU8) 85), ((NU8) 97));
+break;
+case ((NU8) 82):
+F.line = 239;F.filename = "pbraces.nim";
+Result_78317 = Exprcoloneqexprlist_78294(P_78316, ((NU8) 32), ((NU8) 24), ((NU8) 83), ((NU8) 94));
+break;
+case ((NU8) 12):
+F.line = 242;F.filename = "pbraces.nim";
+Result_78317 = Parsecast_78303(P_78316);
+break;
+case ((NU8) 3):
+F.line = 244;F.filename = "pbraces.nim";
+Result_78317 = Parseaddr_78308(P_78316);
+break;
+default:
+F.line = 246;F.filename = "pbraces.nim";
+LOC5 = 0;
+LOC5 = Toktostr_72323((*P_78316).Tok);
+Parmessage_76042((*P_78316), ((NU8) 57), LOC5);
+F.line = 247;F.filename = "pbraces.nim";
+Gettok_76038(P_78316);
+F.line = 248;F.filename = "pbraces.nim";
+Result_78317 = NIM_NIL;
+break;
+}
+framePtr = framePtr->prev;
+return Result_78317;
+}
+N_NIMCALL(TY50525*, Primary_78323)(TY76011* P_78326) {
+TY50525* Result_78327;
+TY50525* A_78328;
+NIM_BOOL LOC2;
+TY50525* LOC6;
+TY50525* LOC9;
+TY50525* LOC11;
+volatile struct {TFrame* prev;NCSTRING procname;NI line;NCSTRING filename;NI len;
+} F;
+F.procname = "primary";
+F.prev = framePtr;
+F.filename = "rod/pbraces.nim";
+F.line = 0;
+framePtr = (TFrame*)&F;
+F.len = 0;
+Result_78327 = 0;
+A_78328 = 0;
+F.line = 253;F.filename = "pbraces.nim";
+LOC2 = ((*(*P_78326).Tok).Toktype == ((NU8) 42));
+if (LOC2) goto LA3;
+LOC2 = ((*(*P_78326).Tok).Toktype == ((NU8) 99));
+LA3: ;
+if (!LOC2) goto LA4;
+F.line = 254;F.filename = "pbraces.nim";
+Result_78327 = Newnodep_76052(((NU8) 28), (*P_78326));
+F.line = 255;F.filename = "pbraces.nim";
+A_78328 = Newidentnodep_76071((*(*P_78326).Tok).Ident, (*P_78326));
+F.line = 256;F.filename = "pbraces.nim";
+Addson_50823(Result_78327, A_78328);
+F.line = 257;F.filename = "pbraces.nim";
+Gettok_76038(P_78326);
+F.line = 258;F.filename = "pbraces.nim";
+Optind_76100(P_78326, A_78328);
+F.line = 259;F.filename = "pbraces.nim";
+LOC6 = 0;
+LOC6 = Primary_78323(P_78326);
+Addson_50823(Result_78327, LOC6);
+F.line = 260;F.filename = "pbraces.nim";
+goto BeforeRet;
+goto LA1;
+LA4: ;
+if (!((*(*P_78326).Tok).Toktype == ((NU8) 8))) goto LA7;
+F.line = 262;F.filename = "pbraces.nim";
+Result_78327 = Newnodep_76052(((NU8) 45), (*P_78326));
+F.line = 263;F.filename = "pbraces.nim";
+Gettok_76038(P_78326);
+F.line = 264;F.filename = "pbraces.nim";
+Optind_76100(P_78326, Result_78327);
+F.line = 265;F.filename = "pbraces.nim";
+LOC9 = 0;
+LOC9 = Primary_78323(P_78326);
+Addson_50823(Result_78327, LOC9);
+F.line = 266;F.filename = "pbraces.nim";
+goto BeforeRet;
+goto LA1;
+LA7: ;
+LA1: ;
+F.line = 267;F.filename = "pbraces.nim";
+Result_78327 = Identorliteral_78313(P_78326);
+F.line = 268;F.filename = "pbraces.nim";
+while (1) {
+F.line = 269;F.filename = "pbraces.nim";
+switch ((*(*P_78326).Tok).Toktype) {
+case ((NU8) 80):
+F.line = 271;F.filename = "pbraces.nim";
+A_78328 = Result_78327;
+F.line = 272;F.filename = "pbraces.nim";
+Result_78327 = Newnodep_76052(((NU8) 21), (*P_78326));
+F.line = 273;F.filename = "pbraces.nim";
+Addson_50823(Result_78327, A_78328);
+F.line = 274;F.filename = "pbraces.nim";
+Exprcoloneqexprlistaux_78248(P_78326, ((NU8) 23), ((NU8) 81), ((NU8) 95), Result_78327);
+break;
+case ((NU8) 96):
+F.line = 276;F.filename = "pbraces.nim";
+A_78328 = Result_78327;
+F.line = 277;F.filename = "pbraces.nim";
+Result_78327 = Newnodep_76052(((NU8) 36), (*P_78326));
+F.line = 278;F.filename = "pbraces.nim";
+Addson_50823(Result_78327, A_78328);
+F.line = 279;F.filename = "pbraces.nim";
+Gettok_76038(P_78326);
+F.line = 280;F.filename = "pbraces.nim";
+Optind_76100(P_78326, Result_78327);
+F.line = 281;F.filename = "pbraces.nim";
+LOC11 = 0;
+LOC11 = Parsesymbol_76114(P_78326);
+Addson_50823(Result_78327, LOC11);
+break;
+case ((NU8) 98):
+F.line = 283;F.filename = "pbraces.nim";
+A_78328 = Result_78327;
+F.line = 284;F.filename = "pbraces.nim";
+Result_78327 = Newnodep_76052(((NU8) 38), (*P_78326));
+F.line = 285;F.filename = "pbraces.nim";
+Addson_50823(Result_78327, A_78328);
+F.line = 286;F.filename = "pbraces.nim";
+Gettok_76038(P_78326);
+break;
+case ((NU8) 82):
+F.line = 288;F.filename = "pbraces.nim";
+Result_78327 = Indexexprlist_78100(P_78326, Result_78327);
+break;
+default:
+F.line = 289;F.filename = "pbraces.nim";
+goto LA10;
+break;
+}
+} LA10: ;
+BeforeRet: ;
+framePtr = framePtr->prev;
+return Result_78327;
+}
+N_NIMCALL(TY72263*, Lowestexpraux_78357)(TY76011* P_78360, TY50525** V_78362, NI Limit_78363) {
+TY72263* Result_78364;
+TY72263* Op_78365;
+TY72263* Nextop_78366;
+NI Oppred_78367;
+TY50525* V2_78368;
+TY50525* Node_78369;
+TY50525* Opnode_78370;
+volatile struct {TFrame* prev;NCSTRING procname;NI line;NCSTRING filename;NI len;
+} F;
+F.procname = "lowestExprAux";
+F.prev = framePtr;
+F.filename = "rod/pbraces.nim";
+F.line = 0;
+framePtr = (TFrame*)&F;
+F.len = 0;
+Result_78364 = 0;
+Op_78365 = 0;
+Nextop_78366 = 0;
+Oppred_78367 = 0;
+V2_78368 = 0;
+Node_78369 = 0;
+Opnode_78370 = 0;
+F.line = 296;F.filename = "pbraces.nim";
+unsureAsgnRef((void**) &(*V_78362), Primary_78323(P_78360));
+F.line = 297;F.filename = "pbraces.nim";
+Op_78365 = (*P_78360).Tok;
+F.line = 298;F.filename = "pbraces.nim";
+Oppred_78367 = Getprecedence_76032((*P_78360).Tok);
+F.line = 299;F.filename = "pbraces.nim";
+while (1) {
+if (!(Limit_78363 < Oppred_78367)) goto LA1;
+F.line = 300;F.filename = "pbraces.nim";
+Node_78369 = Newnodep_76052(((NU8) 27), (*P_78360));
+F.line = 301;F.filename = "pbraces.nim";
+Opnode_78370 = Newidentnodep_76071((*Op_78365).Ident, (*P_78360));
+F.line = 302;F.filename = "pbraces.nim";
+Gettok_76038(P_78360);
+F.line = 303;F.filename = "pbraces.nim";
+Optind_76100(P_78360, Opnode_78370);
+F.line = 304;F.filename = "pbraces.nim";
+Nextop_78366 = Lowestexpraux_78357(P_78360, &V2_78368, Oppred_78367);
+F.line = 305;F.filename = "pbraces.nim";
+Addson_50823(Node_78369, Opnode_78370);
+F.line = 306;F.filename = "pbraces.nim";
+Addson_50823(Node_78369, (*V_78362));
+F.line = 307;F.filename = "pbraces.nim";
+Addson_50823(Node_78369, V2_78368);
+F.line = 308;F.filename = "pbraces.nim";
+unsureAsgnRef((void**) &(*V_78362), Node_78369);
+F.line = 309;F.filename = "pbraces.nim";
+Op_78365 = Nextop_78366;
+F.line = 310;F.filename = "pbraces.nim";
+Oppred_78367 = Getprecedence_76032(Nextop_78366);
+} LA1: ;
+F.line = 311;F.filename = "pbraces.nim";
+Result_78364 = Op_78365;
+framePtr = framePtr->prev;
+return Result_78364;
+}
+N_NIMCALL(TY50525*, Lowestexpr_78375)(TY76011* P_78378) {
+TY50525* Result_78379;
+TY72263* LOC1;
+volatile struct {TFrame* prev;NCSTRING procname;NI line;NCSTRING filename;NI len;
+} F;
+F.procname = "lowestExpr";
+F.prev = framePtr;
+F.filename = "rod/pbraces.nim";
+F.line = 0;
+framePtr = (TFrame*)&F;
+F.len = 0;
+Result_78379 = 0;
+F.line = 314;F.filename = "pbraces.nim";
+LOC1 = 0;
+LOC1 = Lowestexpraux_78357(P_78378, &Result_78379, -1);
+framePtr = framePtr->prev;
+return Result_78379;
+}
+N_NIMCALL(TY50525*, Parseifexpr_78381)(TY76011* P_78384) {
+TY50525* Result_78385;
+TY50525* Branch_78386;
+TY50525* LOC2;
+TY50525* LOC3;
+TY50525* LOC7;
+volatile struct {TFrame* prev;NCSTRING procname;NI line;NCSTRING filename;NI len;
+} F;
+F.procname = "parseIfExpr";
+F.prev = framePtr;
+F.filename = "rod/pbraces.nim";
+F.line = 0;
+framePtr = (TFrame*)&F;
+F.len = 0;
+Result_78385 = 0;
+Branch_78386 = 0;
+F.line = 319;F.filename = "pbraces.nim";
+Result_78385 = Newnodep_76052(((NU8) 39), (*P_78384));
+F.line = 320;F.filename = "pbraces.nim";
+while (1) {
+F.line = 321;F.filename = "pbraces.nim";
+Gettok_76038(P_78384);
+F.line = 322;F.filename = "pbraces.nim";
+Branch_78386 = Newnodep_76052(((NU8) 40), (*P_78384));
+F.line = 323;F.filename = "pbraces.nim";
+Eat_76087(P_78384, ((NU8) 80));
+F.line = 324;F.filename = "pbraces.nim";
+LOC2 = 0;
+LOC2 = Parseexpr_78012(P_78384);
+Addson_50823(Branch_78386, LOC2);
+F.line = 325;F.filename = "pbraces.nim";
+Eat_76087(P_78384, ((NU8) 81));
+F.line = 326;F.filename = "pbraces.nim";
+LOC3 = 0;
+LOC3 = Parseexpr_78012(P_78384);
+Addson_50823(Branch_78386, LOC3);
+F.line = 327;F.filename = "pbraces.nim";
+Addson_50823(Result_78385, Branch_78386);
+F.line = 328;F.filename = "pbraces.nim";
+if (!!(((*(*P_78384).Tok).Toktype == ((NU8) 19)))) goto LA5;
+F.line = 328;F.filename = "pbraces.nim";
+goto LA1;
+LA5: ;
+} LA1: ;
+F.line = 329;F.filename = "pbraces.nim";
+Branch_78386 = Newnodep_76052(((NU8) 41), (*P_78384));
+F.line = 330;F.filename = "pbraces.nim";
+Eat_76087(P_78384, ((NU8) 20));
+F.line = 331;F.filename = "pbraces.nim";
+LOC7 = 0;
+LOC7 = Parseexpr_78012(P_78384);
+Addson_50823(Branch_78386, LOC7);
+F.line = 332;F.filename = "pbraces.nim";
+Addson_50823(Result_78385, Branch_78386);
+framePtr = framePtr->prev;
+return Result_78385;
+}
+N_NIMCALL(TY50525*, Parsepragma_78397)(TY76011* P_78400) {
+TY50525* Result_78401;
+TY50525* A_78402;
 NIM_BOOL LOC2;
 NIM_BOOL LOC3;
 NIM_BOOL LOC4;
 NIM_BOOL LOC12;
-Result_76401 = 0;
-A_76402 = 0;
-Result_76401 = Newnodep_74052(((NU8) 81), (*P_76400));
-Gettok_74038(P_76400);
-Optind_74100(P_76400, Result_76401);
+volatile struct {TFrame* prev;NCSTRING procname;NI line;NCSTRING filename;NI len;
+} F;
+F.procname = "parsePragma";
+F.prev = framePtr;
+F.filename = "rod/pbraces.nim";
+F.line = 0;
+framePtr = (TFrame*)&F;
+F.len = 0;
+Result_78401 = 0;
+A_78402 = 0;
+F.line = 336;F.filename = "pbraces.nim";
+Result_78401 = Newnodep_76052(((NU8) 81), (*P_78400));
+F.line = 337;F.filename = "pbraces.nim";
+Gettok_76038(P_78400);
+F.line = 338;F.filename = "pbraces.nim";
+Optind_76100(P_78400, Result_78401);
+F.line = 339;F.filename = "pbraces.nim";
 while (1) {
-LOC4 = !(((*(*P_76400).Tok).Toktype == ((NU8) 89)));
+LOC4 = !(((*(*P_78400).Tok).Toktype == ((NU8) 89)));
 if (!(LOC4)) goto LA5;
-LOC4 = !(((*(*P_76400).Tok).Toktype == ((NU8) 85)));
+LOC4 = !(((*(*P_78400).Tok).Toktype == ((NU8) 85)));
 LA5: ;
 LOC3 = LOC4;
 if (!(LOC3)) goto LA6;
-LOC3 = !(((*(*P_76400).Tok).Toktype == ((NU8) 1)));
+LOC3 = !(((*(*P_78400).Tok).Toktype == ((NU8) 1)));
 LA6: ;
 LOC2 = LOC3;
 if (!(LOC2)) goto LA7;
-LOC2 = !(((*(*P_76400).Tok).Toktype == ((NU8) 103)));
+LOC2 = !(((*(*P_78400).Tok).Toktype == ((NU8) 103)));
 LA7: ;
 if (!LOC2) goto LA1;
-A_76402 = Exprcoloneqexpr_76144(P_76400, ((NU8) 24), ((NU8) 94));
-Addson_49821(Result_76401, A_76402);
-if (!((*(*P_76400).Tok).Toktype == ((NU8) 92))) goto LA9;
-Gettok_74038(P_76400);
-Optind_74100(P_76400, A_76402);
+F.line = 341;F.filename = "pbraces.nim";
+A_78402 = Exprcoloneqexpr_78144(P_78400, ((NU8) 24), ((NU8) 94));
+F.line = 342;F.filename = "pbraces.nim";
+Addson_50823(Result_78401, A_78402);
+F.line = 343;F.filename = "pbraces.nim";
+if (!((*(*P_78400).Tok).Toktype == ((NU8) 92))) goto LA9;
+F.line = 344;F.filename = "pbraces.nim";
+Gettok_76038(P_78400);
+F.line = 345;F.filename = "pbraces.nim";
+Optind_76100(P_78400, A_78402);
 LA9: ;
 } LA1: ;
-Optpar_74096(P_76400);
-LOC12 = ((*(*P_76400).Tok).Toktype == ((NU8) 89));
+F.line = 346;F.filename = "pbraces.nim";
+Optpar_76096(P_78400);
+F.line = 347;F.filename = "pbraces.nim";
+LOC12 = ((*(*P_78400).Tok).Toktype == ((NU8) 89));
 if (LOC12) goto LA13;
-LOC12 = ((*(*P_76400).Tok).Toktype == ((NU8) 85));
+LOC12 = ((*(*P_78400).Tok).Toktype == ((NU8) 85));
 LA13: ;
 if (!LOC12) goto LA14;
-Gettok_74038(P_76400);
+F.line = 347;F.filename = "pbraces.nim";
+Gettok_76038(P_78400);
 goto LA11;
 LA14: ;
-Parmessage_74042((*P_76400), ((NU8) 21), ((NimStringDesc*) &TMP190861));
+F.line = 348;F.filename = "pbraces.nim";
+Parmessage_76042((*P_78400), ((NU8) 21), ((NimStringDesc*) &TMP78467));
 LA11: ;
-return Result_76401;
+framePtr = framePtr->prev;
+return Result_78401;
 }
-N_NIMCALL(TY49523*, Identwithpragma_76482)(TY74011* P_76485) {
-TY49523* Result_76486;
-TY49523* A_76487;
-TY49523* LOC4;
-Result_76486 = 0;
-A_76487 = 0;
-A_76487 = Identvis_76467(P_76485);
-if (!((*(*P_76485).Tok).Toktype == ((NU8) 88))) goto LA2;
-Result_76486 = Newnodep_74052(((NU8) 34), (*P_76485));
-Addson_49821(Result_76486, A_76487);
-LOC4 = Parsepragma_76397(P_76485);
-Addson_49821(Result_76486, LOC4);
+N_NIMCALL(TY50525*, Identvis_78468)(TY76011* P_78471) {
+TY50525* Result_78472;
+TY50525* A_78473;
+TY50525* LOC4;
+volatile struct {TFrame* prev;NCSTRING procname;NI line;NCSTRING filename;NI len;
+} F;
+F.procname = "identVis";
+F.prev = framePtr;
+F.filename = "rod/pbraces.nim";
+F.line = 0;
+framePtr = (TFrame*)&F;
+F.len = 0;
+Result_78472 = 0;
+A_78473 = 0;
+F.line = 353;F.filename = "pbraces.nim";
+A_78473 = Parsesymbol_76114(P_78471);
+F.line = 354;F.filename = "pbraces.nim";
+if (!((*(*P_78471).Tok).Toktype == ((NU8) 99))) goto LA2;
+F.line = 355;F.filename = "pbraces.nim";
+Result_78472 = Newnodep_76052(((NU8) 29), (*P_78471));
+F.line = 356;F.filename = "pbraces.nim";
+LOC4 = 0;
+LOC4 = Newidentnodep_76071((*(*P_78471).Tok).Ident, (*P_78471));
+Addson_50823(Result_78472, LOC4);
+F.line = 357;F.filename = "pbraces.nim";
+Addson_50823(Result_78472, A_78473);
+F.line = 358;F.filename = "pbraces.nim";
+Gettok_76038(P_78471);
 goto LA1;
 LA2: ;
-Result_76486 = A_76487;
+F.line = 360;F.filename = "pbraces.nim";
+Result_78472 = A_78473;
 LA1: ;
-return Result_76486;
+framePtr = framePtr->prev;
+return Result_78472;
 }
-N_NIMCALL(TY49523*, Parseidentcolonequals_76503)(TY74011* P_76506, NU8 Flags_76507) {
-TY49523* Result_76508;
-TY49523* A_76509;
-TY49523* LOC14;
+N_NIMCALL(TY50525*, Identwithpragma_78483)(TY76011* P_78486) {
+TY50525* Result_78487;
+TY50525* A_78488;
+TY50525* LOC4;
+volatile struct {TFrame* prev;NCSTRING procname;NI line;NCSTRING filename;NI len;
+} F;
+F.procname = "identWithPragma";
+F.prev = framePtr;
+F.filename = "rod/pbraces.nim";
+F.line = 0;
+framePtr = (TFrame*)&F;
+F.len = 0;
+Result_78487 = 0;
+A_78488 = 0;
+F.line = 364;F.filename = "pbraces.nim";
+A_78488 = Identvis_78468(P_78486);
+F.line = 365;F.filename = "pbraces.nim";
+if (!((*(*P_78486).Tok).Toktype == ((NU8) 88))) goto LA2;
+F.line = 366;F.filename = "pbraces.nim";
+Result_78487 = Newnodep_76052(((NU8) 34), (*P_78486));
+F.line = 367;F.filename = "pbraces.nim";
+Addson_50823(Result_78487, A_78488);
+F.line = 368;F.filename = "pbraces.nim";
+LOC4 = 0;
+LOC4 = Parsepragma_78397(P_78486);
+Addson_50823(Result_78487, LOC4);
+goto LA1;
+LA2: ;
+F.line = 370;F.filename = "pbraces.nim";
+Result_78487 = A_78488;
+LA1: ;
+framePtr = framePtr->prev;
+return Result_78487;
+}
+N_NIMCALL(TY50525*, Parseidentcolonequals_78504)(TY76011* P_78507, NU8 Flags_78508) {
+TY50525* Result_78509;
+TY50525* A_78510;
+TY50525* LOC14;
 NIM_BOOL LOC16;
 NimStringDesc* LOC20;
-TY49523* LOC24;
-Result_76508 = 0;
-A_76509 = 0;
-Result_76508 = Newnodep_74052(((NU8) 25), (*P_76506));
+TY50525* LOC24;
+volatile struct {TFrame* prev;NCSTRING procname;NI line;NCSTRING filename;NI len;
+} F;
+F.procname = "parseIdentColonEquals";
+F.prev = framePtr;
+F.filename = "rod/pbraces.nim";
+F.line = 0;
+framePtr = (TFrame*)&F;
+F.len = 0;
+Result_78509 = 0;
+A_78510 = 0;
+F.line = 380;F.filename = "pbraces.nim";
+Result_78509 = Newnodep_76052(((NU8) 25), (*P_78507));
+F.line = 381;F.filename = "pbraces.nim";
 while (1) {
-switch ((*(*P_76506).Tok).Toktype) {
+F.line = 382;F.filename = "pbraces.nim";
+switch ((*(*P_78507).Tok).Toktype) {
 case ((NU8) 2):
 case ((NU8) 101):
-if (!((Flags_76507 &(1<<((((NU8) 0))&7)))!=0)) goto LA3;
-A_76509 = Identwithpragma_76482(P_76506);
+F.line = 384;F.filename = "pbraces.nim";
+if (!((Flags_78508 &(1<<((((NU8) 0))&7)))!=0)) goto LA3;
+F.line = 384;F.filename = "pbraces.nim";
+A_78510 = Identwithpragma_78483(P_78507);
 goto LA2;
 LA3: ;
-A_76509 = Parsesymbol_74114(P_76506);
+F.line = 385;F.filename = "pbraces.nim";
+A_78510 = Parsesymbol_76114(P_78507);
 LA2: ;
-if (!(A_76509 == NIM_NIL)) goto LA6;
+F.line = 386;F.filename = "pbraces.nim";
+if (!(A_78510 == NIM_NIL)) goto LA6;
+F.line = 386;F.filename = "pbraces.nim";
 goto BeforeRet;
 LA6: ;
 break;
 default:
+F.line = 387;F.filename = "pbraces.nim";
 goto LA1;
 break;
 }
-Addson_49821(Result_76508, A_76509);
-if (!!(((*(*P_76506).Tok).Toktype == ((NU8) 92)))) goto LA9;
+F.line = 388;F.filename = "pbraces.nim";
+Addson_50823(Result_78509, A_78510);
+F.line = 389;F.filename = "pbraces.nim";
+if (!!(((*(*P_78507).Tok).Toktype == ((NU8) 92)))) goto LA9;
+F.line = 389;F.filename = "pbraces.nim";
 goto LA1;
 LA9: ;
-Gettok_74038(P_76506);
-Optind_74100(P_76506, A_76509);
+F.line = 390;F.filename = "pbraces.nim";
+Gettok_76038(P_78507);
+F.line = 391;F.filename = "pbraces.nim";
+Optind_76100(P_78507, A_78510);
 } LA1: ;
-if (!((*(*P_76506).Tok).Toktype == ((NU8) 94))) goto LA12;
-Gettok_74038(P_76506);
-Optind_74100(P_76506, Result_76508);
-LOC14 = Parsetypedesc_76020(P_76506);
-Addson_49821(Result_76508, LOC14);
+F.line = 392;F.filename = "pbraces.nim";
+if (!((*(*P_78507).Tok).Toktype == ((NU8) 94))) goto LA12;
+F.line = 393;F.filename = "pbraces.nim";
+Gettok_76038(P_78507);
+F.line = 394;F.filename = "pbraces.nim";
+Optind_76100(P_78507, Result_78509);
+F.line = 395;F.filename = "pbraces.nim";
+LOC14 = 0;
+LOC14 = Parsetypedesc_78020(P_78507);
+Addson_50823(Result_78509, LOC14);
 goto LA11;
 LA12: ;
-Addson_49821(Result_76508, NIM_NIL);
-LOC16 = !(((*(*P_76506).Tok).Toktype == ((NU8) 95)));
+F.line = 397;F.filename = "pbraces.nim";
+Addson_50823(Result_78509, NIM_NIL);
+F.line = 398;F.filename = "pbraces.nim";
+LOC16 = !(((*(*P_78507).Tok).Toktype == ((NU8) 95)));
 if (!(LOC16)) goto LA17;
-LOC16 = !(((Flags_76507 &(1<<((((NU8) 1))&7)))!=0));
+LOC16 = !(((Flags_78508 &(1<<((((NU8) 1))&7)))!=0));
 LA17: ;
 if (!LOC16) goto LA18;
-LOC20 = Toktostr_70323((*P_76506).Tok);
-Parmessage_74042((*P_76506), ((NU8) 56), LOC20);
+F.line = 399;F.filename = "pbraces.nim";
+LOC20 = 0;
+LOC20 = Toktostr_72323((*P_78507).Tok);
+Parmessage_76042((*P_78507), ((NU8) 56), LOC20);
 LA18: ;
 LA11: ;
-if (!((*(*P_76506).Tok).Toktype == ((NU8) 95))) goto LA22;
-Gettok_74038(P_76506);
-Optind_74100(P_76506, Result_76508);
-LOC24 = Parseexpr_76012(P_76506);
-Addson_49821(Result_76508, LOC24);
+F.line = 400;F.filename = "pbraces.nim";
+if (!((*(*P_78507).Tok).Toktype == ((NU8) 95))) goto LA22;
+F.line = 401;F.filename = "pbraces.nim";
+Gettok_76038(P_78507);
+F.line = 402;F.filename = "pbraces.nim";
+Optind_76100(P_78507, Result_78509);
+F.line = 403;F.filename = "pbraces.nim";
+LOC24 = 0;
+LOC24 = Parseexpr_78012(P_78507);
+Addson_50823(Result_78509, LOC24);
 goto LA21;
 LA22: ;
-Addson_49821(Result_76508, NIM_NIL);
+F.line = 405;F.filename = "pbraces.nim";
+Addson_50823(Result_78509, NIM_NIL);
 LA21: ;
 BeforeRet: ;
-return Result_76508;
+framePtr = framePtr->prev;
+return Result_78509;
 }
-static N_INLINE(TY10202*, Usrtocell_10622)(void* Usr_10624) {
-TY10202* Result_10625;
-Result_10625 = 0;
-Result_10625 = ((TY10202*) ((NI32)((NU32)(((NI) (Usr_10624))) - (NU32)(((NI) (((NI)sizeof(TY10202))))))));
-return Result_10625;
-}
-static N_INLINE(void, Rtladdzct_11256)(TY10202* C_11258) {
-Addzct_10611(&Gch_10608.Zct, C_11258);
-}
-static N_INLINE(void, asgnRefNoCycle)(void** Dest_11416, void* Src_11417) {
-TY10202* C_11418;
-TY10202* C_11419;
-if (!!((Src_11417 == NIM_NIL))) goto LA2;
-C_11418 = 0;
-C_11418 = Usrtocell_10622(Src_11417);
-(*C_11418).Refcount = (NI32)((NU32)((*C_11418).Refcount) + (NU32)(8));
-LA2: ;
-if (!!(((*Dest_11416) == NIM_NIL))) goto LA5;
-C_11419 = 0;
-C_11419 = Usrtocell_10622((*Dest_11416));
-(*C_11419).Refcount = (NI32)((NU32)((*C_11419).Refcount) - (NU32)(8));
-if (!((NU32)((*C_11419).Refcount) < (NU32)(8))) goto LA8;
-Rtladdzct_11256(C_11419);
-LA8: ;
-LA5: ;
-(*Dest_11416) = Src_11417;
-}
-N_NIMCALL(TY49523*, Parseparamlist_76024)(TY74011* P_76027) {
-TY49523* Result_76620;
-TY49523* A_76621;
-Result_76620 = 0;
-A_76621 = 0;
-Result_76620 = Newnodep_74052(((NU8) 66), (*P_76027));
-Addson_49821(Result_76620, NIM_NIL);
-if (!((*(*P_76027).Tok).Toktype == ((NU8) 80))) goto LA2;
-Gettok_74038(P_76027);
-Optind_74100(P_76027, Result_76620);
+N_NIMCALL(TY50525*, Parsetuple_78581)(TY76011* P_78584) {
+TY50525* Result_78585;
+TY50525* A_78586;
+NIM_BOOL LOC2;
+volatile struct {TFrame* prev;NCSTRING procname;NI line;NCSTRING filename;NI len;
+} F;
+F.procname = "parseTuple";
+F.prev = framePtr;
+F.filename = "rod/pbraces.nim";
+F.line = 0;
+framePtr = (TFrame*)&F;
+F.len = 0;
+Result_78585 = 0;
+A_78586 = 0;
+F.line = 409;F.filename = "pbraces.nim";
+Result_78585 = Newnodep_76052(((NU8) 112), (*P_78584));
+F.line = 410;F.filename = "pbraces.nim";
+Gettok_76038(P_78584);
+F.line = 411;F.filename = "pbraces.nim";
+Eat_76087(P_78584, ((NU8) 82));
+F.line = 412;F.filename = "pbraces.nim";
+Optind_76100(P_78584, Result_78585);
+F.line = 413;F.filename = "pbraces.nim";
 while (1) {
-switch ((*(*P_76027).Tok).Toktype) {
+LOC2 = ((*(*P_78584).Tok).Toktype == ((NU8) 2));
+if (LOC2) goto LA3;
+LOC2 = ((*(*P_78584).Tok).Toktype == ((NU8) 101));
+LA3: ;
+if (!LOC2) goto LA1;
+F.line = 414;F.filename = "pbraces.nim";
+A_78586 = Parseidentcolonequals_78504(P_78584, 0);
+F.line = 415;F.filename = "pbraces.nim";
+Addson_50823(Result_78585, A_78586);
+F.line = 416;F.filename = "pbraces.nim";
+if (!!(((*(*P_78584).Tok).Toktype == ((NU8) 92)))) goto LA5;
+F.line = 416;F.filename = "pbraces.nim";
+goto LA1;
+LA5: ;
+F.line = 417;F.filename = "pbraces.nim";
+Gettok_76038(P_78584);
+F.line = 418;F.filename = "pbraces.nim";
+Optind_76100(P_78584, A_78586);
+} LA1: ;
+F.line = 419;F.filename = "pbraces.nim";
+Optpar_76096(P_78584);
+F.line = 420;F.filename = "pbraces.nim";
+Eat_76087(P_78584, ((NU8) 83));
+framePtr = framePtr->prev;
+return Result_78585;
+}
+static N_INLINE(TY10602*, Usrtocell_11036)(void* Usr_11038) {
+TY10602* Result_11039;
+volatile struct {TFrame* prev;NCSTRING procname;NI line;NCSTRING filename;NI len;
+} F;
+F.procname = "usrToCell";
+F.prev = framePtr;
+F.filename = "/home/andreas/projects/nimrod/lib/system/gc.nim";
+F.line = 0;
+framePtr = (TFrame*)&F;
+F.len = 0;
+Result_11039 = 0;
+F.line = 100;F.filename = "gc.nim";
+Result_11039 = ((TY10602*) ((NI32)((NU32)(((NI) (Usr_11038))) - (NU32)(((NI) (((NI)sizeof(TY10602))))))));
+framePtr = framePtr->prev;
+return Result_11039;
+}
+static N_INLINE(NI, Atomicinc_3001)(NI* Memloc_3004, NI X_3005) {
+NI Result_7408;
+volatile struct {TFrame* prev;NCSTRING procname;NI line;NCSTRING filename;NI len;
+} F;
+F.procname = "atomicInc";
+F.prev = framePtr;
+F.filename = "/home/andreas/projects/nimrod/lib/system/systhread.nim";
+F.line = 0;
+framePtr = (TFrame*)&F;
+F.len = 0;
+Result_7408 = 0;
+F.line = 29;F.filename = "systhread.nim";
+Result_7408 = __sync_add_and_fetch(Memloc_3004, X_3005);
+framePtr = framePtr->prev;
+return Result_7408;
+}
+static N_INLINE(NI, Atomicdec_3006)(NI* Memloc_3009, NI X_3010) {
+NI Result_7606;
+volatile struct {TFrame* prev;NCSTRING procname;NI line;NCSTRING filename;NI len;
+} F;
+F.procname = "atomicDec";
+F.prev = framePtr;
+F.filename = "/home/andreas/projects/nimrod/lib/system/systhread.nim";
+F.line = 0;
+framePtr = (TFrame*)&F;
+F.len = 0;
+Result_7606 = 0;
+F.line = 37;F.filename = "systhread.nim";
+Result_7606 = __sync_sub_and_fetch(Memloc_3009, X_3010);
+framePtr = framePtr->prev;
+return Result_7606;
+}
+static N_INLINE(void, Rtladdzct_11658)(TY10602* C_11660) {
+volatile struct {TFrame* prev;NCSTRING procname;NI line;NCSTRING filename;NI len;
+} F;
+F.procname = "rtlAddZCT";
+F.prev = framePtr;
+F.filename = "/home/andreas/projects/nimrod/lib/system/gc.nim";
+F.line = 0;
+framePtr = (TFrame*)&F;
+F.len = 0;
+F.line = 211;F.filename = "gc.nim";
+if (!NIM_TRUE) goto LA2;
+F.line = 211;F.filename = "gc.nim";
+Dl_8015(&Gch_11010.Zctlock);
+LA2: ;
+F.line = 212;F.filename = "gc.nim";
+Addzct_11025(&Gch_11010.Zct, C_11660);
+F.line = 213;F.filename = "gc.nim";
+if (!NIM_TRUE) goto LA5;
+F.line = 213;F.filename = "gc.nim";
+Dl_8019(&Gch_11010.Zctlock);
+LA5: ;
+framePtr = framePtr->prev;
+}
+static N_INLINE(void, asgnRefNoCycle)(void** Dest_11818, void* Src_11819) {
+TY10602* C_11820;
+NI LOC4;
+TY10602* C_11822;
+NI LOC9;
+volatile struct {TFrame* prev;NCSTRING procname;NI line;NCSTRING filename;NI len;
+} F;
+F.procname = "asgnRefNoCycle";
+F.prev = framePtr;
+F.filename = "/home/andreas/projects/nimrod/lib/system/gc.nim";
+F.line = 0;
+framePtr = (TFrame*)&F;
+F.len = 0;
+F.line = 244;F.filename = "gc.nim";
+if (!!((Src_11819 == NIM_NIL))) goto LA2;
+C_11820 = 0;
+F.line = 245;F.filename = "gc.nim";
+C_11820 = Usrtocell_11036(Src_11819);
+F.line = 246;F.filename = "gc.nim";
+LOC4 = Atomicinc_3001(&(*C_11820).Refcount, 8);
+LA2: ;
+F.line = 247;F.filename = "gc.nim";
+if (!!(((*Dest_11818) == NIM_NIL))) goto LA6;
+C_11822 = 0;
+F.line = 248;F.filename = "gc.nim";
+C_11822 = Usrtocell_11036((*Dest_11818));
+F.line = 249;F.filename = "gc.nim";
+LOC9 = Atomicdec_3006(&(*C_11822).Refcount, 8);
+if (!((NU32)(LOC9) < (NU32)(8))) goto LA10;
+F.line = 250;F.filename = "gc.nim";
+Rtladdzct_11658(C_11822);
+LA10: ;
+LA6: ;
+F.line = 251;F.filename = "gc.nim";
+(*Dest_11818) = Src_11819;
+framePtr = framePtr->prev;
+}
+N_NIMCALL(TY50525*, Parseparamlist_78024)(TY76011* P_78027) {
+TY50525* Result_78621;
+TY50525* A_78622;
+volatile struct {TFrame* prev;NCSTRING procname;NI line;NCSTRING filename;NI len;
+} F;
+F.procname = "parseParamList";
+F.prev = framePtr;
+F.filename = "rod/pbraces.nim";
+F.line = 0;
+framePtr = (TFrame*)&F;
+F.len = 0;
+Result_78621 = 0;
+A_78622 = 0;
+F.line = 424;F.filename = "pbraces.nim";
+Result_78621 = Newnodep_76052(((NU8) 66), (*P_78027));
+F.line = 425;F.filename = "pbraces.nim";
+Addson_50823(Result_78621, NIM_NIL);
+F.line = 426;F.filename = "pbraces.nim";
+if (!((*(*P_78027).Tok).Toktype == ((NU8) 80))) goto LA2;
+F.line = 427;F.filename = "pbraces.nim";
+Gettok_76038(P_78027);
+F.line = 428;F.filename = "pbraces.nim";
+Optind_76100(P_78027, Result_78621);
+F.line = 429;F.filename = "pbraces.nim";
+while (1) {
+F.line = 430;F.filename = "pbraces.nim";
+switch ((*(*P_78027).Tok).Toktype) {
 case ((NU8) 2):
 case ((NU8) 101):
-A_76621 = Parseidentcolonequals_76503(P_76027, 0);
+F.line = 431;F.filename = "pbraces.nim";
+A_78622 = Parseidentcolonequals_78504(P_78027, 0);
 break;
 case ((NU8) 81):
+F.line = 432;F.filename = "pbraces.nim";
 goto LA4;
 break;
 default:
-Parmessage_74042((*P_76027), ((NU8) 21), ((NimStringDesc*) &TMP190862));
+F.line = 434;F.filename = "pbraces.nim";
+Parmessage_76042((*P_78027), ((NU8) 21), ((NimStringDesc*) &TMP78665));
+F.line = 435;F.filename = "pbraces.nim";
 goto LA4;
 break;
 }
-Addson_49821(Result_76620, A_76621);
-if (!!(((*(*P_76027).Tok).Toktype == ((NU8) 92)))) goto LA6;
+F.line = 436;F.filename = "pbraces.nim";
+Addson_50823(Result_78621, A_78622);
+F.line = 437;F.filename = "pbraces.nim";
+if (!!(((*(*P_78027).Tok).Toktype == ((NU8) 92)))) goto LA6;
+F.line = 437;F.filename = "pbraces.nim";
 goto LA4;
 LA6: ;
-Gettok_74038(P_76027);
-Optind_74100(P_76027, A_76621);
+F.line = 438;F.filename = "pbraces.nim";
+Gettok_76038(P_78027);
+F.line = 439;F.filename = "pbraces.nim";
+Optind_76100(P_78027, A_78622);
 } LA4: ;
-Optpar_74096(P_76027);
-Eat_74087(P_76027, ((NU8) 81));
+F.line = 440;F.filename = "pbraces.nim";
+Optpar_76096(P_78027);
+F.line = 441;F.filename = "pbraces.nim";
+Eat_76087(P_78027, ((NU8) 81));
 LA2: ;
-if (!((*(*P_76027).Tok).Toktype == ((NU8) 94))) goto LA9;
-Gettok_74038(P_76027);
-Optind_74100(P_76027, Result_76620);
-asgnRefNoCycle((void**) &(*Result_76620).KindU.S6.Sons->data[0], Parsetypedesc_76020(P_76027));
+F.line = 442;F.filename = "pbraces.nim";
+if (!((*(*P_78027).Tok).Toktype == ((NU8) 94))) goto LA9;
+F.line = 443;F.filename = "pbraces.nim";
+Gettok_76038(P_78027);
+F.line = 444;F.filename = "pbraces.nim";
+Optind_76100(P_78027, Result_78621);
+F.line = 445;F.filename = "pbraces.nim";
+if (((TMP78666[(*Result_78621).Kind/8] &(1<<((*Result_78621).Kind%8)))!=0)) raiseFieldError(((NimStringDesc*) &TMP78667));
+if ((NU)(0) >= (NU)((*Result_78621).KindU.S6.Sons->Sup.len)) raiseIndexError();
+asgnRefNoCycle((void**) &(*Result_78621).KindU.S6.Sons->data[0], Parsetypedesc_78020(P_78027));
 LA9: ;
-return Result_76620;
+framePtr = framePtr->prev;
+return Result_78621;
 }
-N_NIMCALL(TY49523*, Parsereturnorraise_76831)(TY74011* P_76834, NU8 Kind_76835) {
-TY49523* Result_76836;
-TY49523* LOC1;
-Result_76836 = 0;
-Result_76836 = Newnodep_74052(Kind_76835, (*P_76834));
-Gettok_74038(P_76834);
-Optind_74100(P_76834, Result_76836);
-switch ((*(*P_76834).Tok).Toktype) {
-case ((NU8) 1):
-case ((NU8) 103):
-case ((NU8) 104):
-Addson_49821(Result_76836, NIM_NIL);
-break;
-default:
-LOC1 = Parseexpr_76012(P_76834);
-Addson_49821(Result_76836, LOC1);
-break;
-}
-return Result_76836;
-}
-N_NIMCALL(TY49523*, Parseyieldordiscard_76837)(TY74011* P_76840, NU8 Kind_76841) {
-TY49523* Result_76842;
-TY49523* LOC1;
-Result_76842 = 0;
-Result_76842 = Newnodep_74052(Kind_76841, (*P_76840));
-Gettok_74038(P_76840);
-Optind_74100(P_76840, Result_76842);
-LOC1 = Parseexpr_76012(P_76840);
-Addson_49821(Result_76842, LOC1);
-return Result_76842;
-}
-N_NIMCALL(TY49523*, Parsebreakorcontinue_76843)(TY74011* P_76846, NU8 Kind_76847) {
-TY49523* Result_76848;
-TY49523* LOC1;
-Result_76848 = 0;
-Result_76848 = Newnodep_74052(Kind_76847, (*P_76846));
-Gettok_74038(P_76846);
-Optind_74100(P_76846, Result_76848);
-switch ((*(*P_76846).Tok).Toktype) {
-case ((NU8) 1):
-case ((NU8) 103):
-case ((NU8) 104):
-Addson_49821(Result_76848, NIM_NIL);
-break;
-default:
-LOC1 = Parsesymbol_74114(P_76846);
-Addson_49821(Result_76848, LOC1);
-break;
-}
-return Result_76848;
-}
-N_NIMCALL(TY49523*, Parseimportorincludestmt_76798)(TY74011* P_76801, NU8 Kind_76802) {
-TY49523* Result_76803;
-TY49523* A_76804;
-NimStringDesc* LOC2;
-Result_76803 = 0;
-A_76804 = 0;
-Result_76803 = Newnodep_74052(Kind_76802, (*P_76801));
-Gettok_74038(P_76801);
-Optind_74100(P_76801, Result_76803);
-while (1) {
-switch ((*(*P_76801).Tok).Toktype) {
-case ((NU8) 1):
-case ((NU8) 103):
-case ((NU8) 104):
+N_NIMCALL(TY50525*, Parseprocexpr_78668)(TY76011* P_78671, NIM_BOOL Isexpr_78672) {
+TY50525* Result_78673;
+TY50525* Pragmas_78674;
+TY50525* Params_78675;
+TY42532 Info_78676;
+NIM_BOOL LOC5;
+TY50525* LOC9;
+volatile struct {TFrame* prev;NCSTRING procname;NI line;NCSTRING filename;NI len;
+} F;
+F.procname = "parseProcExpr";
+F.prev = framePtr;
+F.filename = "rod/pbraces.nim";
+F.line = 0;
+framePtr = (TFrame*)&F;
+F.len = 0;
+Result_78673 = 0;
+Pragmas_78674 = 0;
+Params_78675 = 0;
+memset((void*)&Info_78676, 0, sizeof(Info_78676));
+F.line = 452;F.filename = "pbraces.nim";
+Info_78676 = Parlineinfo_76084((*P_78671));
+F.line = 453;F.filename = "pbraces.nim";
+Gettok_76038(P_78671);
+F.line = 454;F.filename = "pbraces.nim";
+Params_78675 = Parseparamlist_78024(P_78671);
+F.line = 455;F.filename = "pbraces.nim";
+if (!((*(*P_78671).Tok).Toktype == ((NU8) 88))) goto LA2;
+F.line = 455;F.filename = "pbraces.nim";
+Pragmas_78674 = Parsepragma_78397(P_78671);
 goto LA1;
-break;
-case ((NU8) 2):
-case ((NU8) 101):
-A_76804 = Parsesymbol_74114(P_76801);
-break;
-case ((NU8) 75):
-A_76804 = Newstrnodep_74066(((NU8) 15), (*(*P_76801).Tok).Literal, (*P_76801));
-Gettok_74038(P_76801);
-break;
-case ((NU8) 74):
-A_76804 = Newstrnodep_74066(((NU8) 14), (*(*P_76801).Tok).Literal, (*P_76801));
-Gettok_74038(P_76801);
-break;
-case ((NU8) 76):
-A_76804 = Newstrnodep_74066(((NU8) 16), (*(*P_76801).Tok).Literal, (*P_76801));
-Gettok_74038(P_76801);
-break;
-default:
-LOC2 = Toktostr_70323((*P_76801).Tok);
-Parmessage_74042((*P_76801), ((NU8) 19), LOC2);
-goto LA1;
-break;
-}
-Addson_49821(Result_76803, A_76804);
-if (!!(((*(*P_76801).Tok).Toktype == ((NU8) 92)))) goto LA4;
-goto LA1;
+LA2: ;
+F.line = 456;F.filename = "pbraces.nim";
+Pragmas_78674 = NIM_NIL;
+LA1: ;
+F.line = 457;F.filename = "pbraces.nim";
+LOC5 = ((*(*P_78671).Tok).Toktype == ((NU8) 84));
+if (!(LOC5)) goto LA6;
+LOC5 = Isexpr_78672;
+LA6: ;
+if (!LOC5) goto LA7;
+F.line = 458;F.filename = "pbraces.nim";
+Result_78673 = Newnodei_50737(((NU8) 42), Info_78676);
+F.line = 459;F.filename = "pbraces.nim";
+Addson_50823(Result_78673, NIM_NIL);
+F.line = 460;F.filename = "pbraces.nim";
+Addson_50823(Result_78673, NIM_NIL);
+F.line = 461;F.filename = "pbraces.nim";
+Addson_50823(Result_78673, Params_78675);
+F.line = 462;F.filename = "pbraces.nim";
+Addson_50823(Result_78673, Pragmas_78674);
+F.line = 463;F.filename = "pbraces.nim";
+LOC9 = 0;
+LOC9 = Parsestmt_78016(P_78671);
+Addson_50823(Result_78673, LOC9);
+goto LA4;
+LA7: ;
+F.line = 465;F.filename = "pbraces.nim";
+Result_78673 = Newnodei_50737(((NU8) 120), Info_78676);
+F.line = 466;F.filename = "pbraces.nim";
+Addson_50823(Result_78673, Params_78675);
+F.line = 467;F.filename = "pbraces.nim";
+Addson_50823(Result_78673, Pragmas_78674);
 LA4: ;
-Gettok_74038(P_76801);
-Optind_74100(P_76801, A_76804);
-} LA1: ;
-return Result_76803;
+framePtr = framePtr->prev;
+return Result_78673;
 }
-N_NIMCALL(TY49523*, Parsefromstmt_76815)(TY74011* P_76818) {
-TY49523* Result_76819;
-TY49523* A_76820;
-NimStringDesc* LOC1;
-NimStringDesc* LOC3;
-Result_76819 = 0;
-A_76820 = 0;
-Result_76819 = Newnodep_74052(((NU8) 103), (*P_76818));
-Gettok_74038(P_76818);
-Optind_74100(P_76818, Result_76819);
-switch ((*(*P_76818).Tok).Toktype) {
-case ((NU8) 2):
-case ((NU8) 101):
-A_76820 = Parsesymbol_74114(P_76818);
+N_NIMCALL(TY50525*, Parsetypedesckaux_78695)(TY76011* P_78698, NU8 Kind_78699) {
+TY50525* Result_78700;
+TY50525* LOC1;
+volatile struct {TFrame* prev;NCSTRING procname;NI line;NCSTRING filename;NI len;
+} F;
+F.procname = "parseTypeDescKAux";
+F.prev = framePtr;
+F.filename = "rod/pbraces.nim";
+F.line = 0;
+framePtr = (TFrame*)&F;
+F.len = 0;
+Result_78700 = 0;
+F.line = 470;F.filename = "pbraces.nim";
+Result_78700 = Newnodep_76052(Kind_78699, (*P_78698));
+F.line = 471;F.filename = "pbraces.nim";
+Gettok_76038(P_78698);
+F.line = 472;F.filename = "pbraces.nim";
+Optind_76100(P_78698, Result_78700);
+F.line = 473;F.filename = "pbraces.nim";
+LOC1 = 0;
+LOC1 = Parsetypedesc_78020(P_78698);
+Addson_50823(Result_78700, LOC1);
+framePtr = framePtr->prev;
+return Result_78700;
+}
+N_NIMCALL(TY50525*, Parseexpr_78012)(TY76011* P_78015) {
+TY50525* Result_78705;
+volatile struct {TFrame* prev;NCSTRING procname;NI line;NCSTRING filename;NI len;
+} F;
+F.procname = "parseExpr";
+F.prev = framePtr;
+F.filename = "rod/pbraces.nim";
+F.line = 0;
+framePtr = (TFrame*)&F;
+F.len = 0;
+Result_78705 = 0;
+F.line = 486;F.filename = "pbraces.nim";
+switch ((*(*P_78015).Tok).Toktype) {
+case ((NU8) 59):
+F.line = 487;F.filename = "pbraces.nim";
+Result_78705 = Parsetypedesckaux_78695(P_78015, ((NU8) 118));
 break;
-case ((NU8) 75):
-A_76820 = Newstrnodep_74066(((NU8) 15), (*(*P_76818).Tok).Literal, (*P_76818));
-Gettok_74038(P_76818);
+case ((NU8) 51):
+F.line = 488;F.filename = "pbraces.nim";
+Result_78705 = Parsetypedesckaux_78695(P_78015, ((NU8) 116));
 break;
-case ((NU8) 74):
-A_76820 = Newstrnodep_74066(((NU8) 14), (*(*P_76818).Tok).Literal, (*P_76818));
-Gettok_74038(P_76818);
+case ((NU8) 49):
+F.line = 489;F.filename = "pbraces.nim";
+Result_78705 = Parsetypedesckaux_78695(P_78015, ((NU8) 117));
 break;
-case ((NU8) 76):
-A_76820 = Newstrnodep_74066(((NU8) 16), (*(*P_76818).Tok).Literal, (*P_76818));
-Gettok_74038(P_76818);
+case ((NU8) 58):
+F.line = 490;F.filename = "pbraces.nim";
+Result_78705 = Parsetypedesckaux_78695(P_78015, ((NU8) 110));
+break;
+case ((NU8) 57):
+F.line = 491;F.filename = "pbraces.nim";
+Result_78705 = Parsetuple_78581(P_78015);
+break;
+case ((NU8) 48):
+F.line = 492;F.filename = "pbraces.nim";
+Result_78705 = Parseprocexpr_78668(P_78015, NIM_TRUE);
+break;
+case ((NU8) 28):
+F.line = 493;F.filename = "pbraces.nim";
+Result_78705 = Parseifexpr_78381(P_78015);
 break;
 default:
-LOC1 = Toktostr_70323((*P_76818).Tok);
-Parmessage_74042((*P_76818), ((NU8) 19), LOC1);
-goto BeforeRet;
+F.line = 494;F.filename = "pbraces.nim";
+Result_78705 = Lowestexpr_78375(P_78015);
 break;
 }
-Addson_49821(Result_76819, A_76820);
-Eat_74087(P_76818, ((NU8) 30));
-Optind_74100(P_76818, Result_76819);
-while (1) {
-switch ((*(*P_76818).Tok).Toktype) {
-case ((NU8) 1):
-case ((NU8) 103):
-case ((NU8) 104):
-goto LA2;
-break;
-case ((NU8) 2):
-case ((NU8) 101):
-A_76820 = Parsesymbol_74114(P_76818);
-break;
-default:
-LOC3 = Toktostr_70323((*P_76818).Tok);
-Parmessage_74042((*P_76818), ((NU8) 19), LOC3);
-goto LA2;
-break;
+framePtr = framePtr->prev;
+return Result_78705;
 }
-Addson_49821(Result_76819, A_76820);
-if (!!(((*(*P_76818).Tok).Toktype == ((NU8) 92)))) goto LA5;
-goto LA2;
-LA5: ;
-Gettok_74038(P_76818);
-Optind_74100(P_76818, A_76820);
-} LA2: ;
-BeforeRet: ;
-return Result_76819;
+N_NIMCALL(TY50525*, Parsetypedesc_78020)(TY76011* P_78023) {
+TY50525* Result_78710;
+volatile struct {TFrame* prev;NCSTRING procname;NI line;NCSTRING filename;NI len;
+} F;
+F.procname = "parseTypeDesc";
+F.prev = framePtr;
+F.filename = "rod/pbraces.nim";
+F.line = 0;
+framePtr = (TFrame*)&F;
+F.len = 0;
+Result_78710 = 0;
+F.line = 497;F.filename = "pbraces.nim";
+if (!((*(*P_78023).Tok).Toktype == ((NU8) 48))) goto LA2;
+F.line = 497;F.filename = "pbraces.nim";
+Result_78710 = Parseprocexpr_78668(P_78023, NIM_FALSE);
+goto LA1;
+LA2: ;
+F.line = 498;F.filename = "pbraces.nim";
+Result_78710 = Parseexpr_78012(P_78023);
+LA1: ;
+framePtr = framePtr->prev;
+return Result_78710;
 }
-N_NIMCALL(TY49523*, Newcommentstmt_77045)(TY74011* P_77048) {
-TY49523* Result_77049;
-Result_77049 = 0;
-Result_77049 = Newnodep_74052(((NU8) 105), (*P_77048));
-(*Result_77049).Info.Line = (NI16)((*Result_77049).Info.Line - ((NI16) 1));
-return Result_77049;
-}
-N_NIMCALL(NIM_BOOL, Isexprstart_76716)(TY74011 P_76718) {
-NIM_BOOL Result_76719;
-Result_76719 = 0;
-switch ((*P_76718.Tok).Toktype) {
+N_NIMCALL(NIM_BOOL, Isexprstart_78720)(TY76011 P_78722) {
+NIM_BOOL Result_78723;
+volatile struct {TFrame* prev;NCSTRING procname;NI line;NCSTRING filename;NI len;
+} F;
+F.procname = "isExprStart";
+F.prev = framePtr;
+F.filename = "rod/pbraces.nim";
+F.line = 0;
+framePtr = (TFrame*)&F;
+F.len = 0;
+Result_78723 = 0;
+F.line = 501;F.filename = "pbraces.nim";
+switch ((*P_78722.Tok).Toktype) {
 case ((NU8) 2):
 case ((NU8) 101):
 case ((NU8) 99):
@@ -765,1451 +1950,2230 @@ case ((NU8) 51):
 case ((NU8) 49):
 case ((NU8) 57):
 case ((NU8) 58):
-Result_76719 = NIM_TRUE;
+F.line = 505;F.filename = "pbraces.nim";
+Result_78723 = NIM_TRUE;
 break;
 default:
-Result_76719 = NIM_FALSE;
+F.line = 506;F.filename = "pbraces.nim";
+Result_78723 = NIM_FALSE;
 break;
 }
-return Result_76719;
+framePtr = framePtr->prev;
+return Result_78723;
 }
-N_NIMCALL(void, Exprcoloneqexprlistaux_76248)(TY74011* P_76251, NU8 Elemkind_76252, NU8 Endtok_76253, NU8 Septok_76254, TY49523* Result_76255) {
-TY49523* A_76256;
-NIM_BOOL LOC2;
-NIM_BOOL LOC3;
-A_76256 = 0;
-Gettok_74038(P_76251);
-Optind_74100(P_76251, Result_76255);
-while (1) {
-LOC3 = !(((*(*P_76251).Tok).Toktype == Endtok_76253));
-if (!(LOC3)) goto LA4;
-LOC3 = !(((*(*P_76251).Tok).Toktype == ((NU8) 1)));
-LA4: ;
-LOC2 = LOC3;
-if (!(LOC2)) goto LA5;
-LOC2 = !(((*(*P_76251).Tok).Toktype == ((NU8) 103)));
-LA5: ;
-if (!LOC2) goto LA1;
-A_76256 = Exprcoloneqexpr_76144(P_76251, Elemkind_76252, Septok_76254);
-Addson_49821(Result_76255, A_76256);
-if (!!(((*(*P_76251).Tok).Toktype == ((NU8) 92)))) goto LA7;
-goto LA1;
-LA7: ;
-Gettok_74038(P_76251);
-Optind_74100(P_76251, A_76256);
-} LA1: ;
-Optpar_74096(P_76251);
-Eat_74087(P_76251, Endtok_76253);
-}
-N_NIMCALL(TY49523*, Exprcoloneqexprlist_76294)(TY74011* P_76297, NU8 Kind_76298, NU8 Elemkind_76299, NU8 Endtok_76300, NU8 Septok_76301) {
-TY49523* Result_76302;
-Result_76302 = 0;
-Result_76302 = Newnodep_74052(Kind_76298, (*P_76297));
-Exprcoloneqexprlistaux_76248(P_76297, Elemkind_76299, Endtok_76300, Septok_76301, Result_76302);
-return Result_76302;
-}
-N_NIMCALL(TY49523*, Parsecast_76303)(TY74011* P_76306) {
-TY49523* Result_76307;
-TY49523* LOC1;
-TY49523* LOC2;
-Result_76307 = 0;
-Result_76307 = Newnodep_74052(((NU8) 51), (*P_76306));
-Gettok_74038(P_76306);
-Eat_74087(P_76306, ((NU8) 82));
-Optind_74100(P_76306, Result_76307);
-LOC1 = Parsetypedesc_76020(P_76306);
-Addson_49821(Result_76307, LOC1);
-Optpar_74096(P_76306);
-Eat_74087(P_76306, ((NU8) 83));
-Eat_74087(P_76306, ((NU8) 80));
-Optind_74100(P_76306, Result_76307);
-LOC2 = Parseexpr_76012(P_76306);
-Addson_49821(Result_76307, LOC2);
-Optpar_74096(P_76306);
-Eat_74087(P_76306, ((NU8) 81));
-return Result_76307;
-}
-N_NIMCALL(TY49523*, Parseaddr_76308)(TY74011* P_76311) {
-TY49523* Result_76312;
-TY49523* LOC1;
-Result_76312 = 0;
-Result_76312 = Newnodep_74052(((NU8) 52), (*P_76311));
-Gettok_74038(P_76311);
-Eat_74087(P_76311, ((NU8) 80));
-Optind_74100(P_76311, Result_76312);
-LOC1 = Parseexpr_76012(P_76311);
-Addson_49821(Result_76312, LOC1);
-Optpar_74096(P_76311);
-Eat_74087(P_76311, ((NU8) 81));
-return Result_76312;
-}
-N_NIMCALL(TY49523*, Identorliteral_76313)(TY74011* P_76316) {
-TY49523* Result_76317;
-TY49523* LOC1;
-TY49523* LOC2;
-TY49523* LOC3;
-TY49523* LOC4;
-NimStringDesc* LOC5;
-Result_76317 = 0;
-switch ((*(*P_76316).Tok).Toktype) {
-case ((NU8) 2):
-Result_76317 = Newidentnodep_74071((*(*P_76316).Tok).Ident, (*P_76316));
-Gettok_74038(P_76316);
-break;
-case ((NU8) 101):
-Result_76317 = Accexpr_74118(P_76316);
-break;
-case ((NU8) 66):
-Result_76317 = Newintnodep_74056(((NU8) 6), (*(*P_76316).Tok).Inumber, (*P_76316));
-Setbaseflags_74110(Result_76317, (*(*P_76316).Tok).Base);
-Gettok_74038(P_76316);
-break;
-case ((NU8) 67):
-Result_76317 = Newintnodep_74056(((NU8) 7), (*(*P_76316).Tok).Inumber, (*P_76316));
-Setbaseflags_74110(Result_76317, (*(*P_76316).Tok).Base);
-Gettok_74038(P_76316);
-break;
-case ((NU8) 68):
-Result_76317 = Newintnodep_74056(((NU8) 8), (*(*P_76316).Tok).Inumber, (*P_76316));
-Setbaseflags_74110(Result_76317, (*(*P_76316).Tok).Base);
-Gettok_74038(P_76316);
-break;
-case ((NU8) 69):
-Result_76317 = Newintnodep_74056(((NU8) 9), (*(*P_76316).Tok).Inumber, (*P_76316));
-Setbaseflags_74110(Result_76317, (*(*P_76316).Tok).Base);
-Gettok_74038(P_76316);
-break;
-case ((NU8) 70):
-Result_76317 = Newintnodep_74056(((NU8) 10), (*(*P_76316).Tok).Inumber, (*P_76316));
-Setbaseflags_74110(Result_76317, (*(*P_76316).Tok).Base);
-Gettok_74038(P_76316);
-break;
-case ((NU8) 71):
-Result_76317 = Newfloatnodep_74061(((NU8) 11), (*(*P_76316).Tok).Fnumber, (*P_76316));
-Setbaseflags_74110(Result_76317, (*(*P_76316).Tok).Base);
-Gettok_74038(P_76316);
-break;
-case ((NU8) 72):
-Result_76317 = Newfloatnodep_74061(((NU8) 12), (*(*P_76316).Tok).Fnumber, (*P_76316));
-Setbaseflags_74110(Result_76317, (*(*P_76316).Tok).Base);
-Gettok_74038(P_76316);
-break;
-case ((NU8) 73):
-Result_76317 = Newfloatnodep_74061(((NU8) 13), (*(*P_76316).Tok).Fnumber, (*P_76316));
-Setbaseflags_74110(Result_76317, (*(*P_76316).Tok).Base);
-Gettok_74038(P_76316);
-break;
-case ((NU8) 74):
-Result_76317 = Newstrnodep_74066(((NU8) 14), (*(*P_76316).Tok).Literal, (*P_76316));
-Gettok_74038(P_76316);
-break;
-case ((NU8) 75):
-Result_76317 = Newstrnodep_74066(((NU8) 15), (*(*P_76316).Tok).Literal, (*P_76316));
-Gettok_74038(P_76316);
-break;
-case ((NU8) 76):
-Result_76317 = Newstrnodep_74066(((NU8) 16), (*(*P_76316).Tok).Literal, (*P_76316));
-Gettok_74038(P_76316);
-break;
-case ((NU8) 77):
-Result_76317 = Newnodep_74052(((NU8) 22), (*P_76316));
-LOC1 = Newidentnodep_74071((*(*P_76316).Tok).Ident, (*P_76316));
-Addson_49821(Result_76317, LOC1);
-LOC2 = Newstrnodep_74066(((NU8) 15), (*(*P_76316).Tok).Literal, (*P_76316));
-Addson_49821(Result_76317, LOC2);
-Gettok_74038(P_76316);
-break;
-case ((NU8) 78):
-Result_76317 = Newnodep_74052(((NU8) 22), (*P_76316));
-LOC3 = Newidentnodep_74071((*(*P_76316).Tok).Ident, (*P_76316));
-Addson_49821(Result_76317, LOC3);
-LOC4 = Newstrnodep_74066(((NU8) 16), (*(*P_76316).Tok).Literal, (*P_76316));
-Addson_49821(Result_76317, LOC4);
-Gettok_74038(P_76316);
-break;
-case ((NU8) 79):
-Result_76317 = Newintnodep_74056(((NU8) 5), ((NI64) (((NU8)((*(*P_76316).Tok).Literal->data[0])))), (*P_76316));
-Gettok_74038(P_76316);
-break;
-case ((NU8) 41):
-Result_76317 = Newnodep_74052(((NU8) 18), (*P_76316));
-Gettok_74038(P_76316);
-break;
-case ((NU8) 80):
-Result_76317 = Exprcoloneqexprlist_76294(P_76316, ((NU8) 30), ((NU8) 24), ((NU8) 81), ((NU8) 94));
-break;
-case ((NU8) 84):
-Result_76317 = Exprcoloneqexprlist_76294(P_76316, ((NU8) 31), ((NU8) 35), ((NU8) 85), ((NU8) 97));
-break;
-case ((NU8) 82):
-Result_76317 = Exprcoloneqexprlist_76294(P_76316, ((NU8) 32), ((NU8) 24), ((NU8) 83), ((NU8) 94));
-break;
-case ((NU8) 12):
-Result_76317 = Parsecast_76303(P_76316);
-break;
-case ((NU8) 3):
-Result_76317 = Parseaddr_76308(P_76316);
-break;
-default:
-LOC5 = Toktostr_70323((*P_76316).Tok);
-Parmessage_74042((*P_76316), ((NU8) 57), LOC5);
-Gettok_74038(P_76316);
-Result_76317 = NIM_NIL;
-break;
-}
-return Result_76317;
-}
-N_NIMCALL(TY49523*, Optexpr_76028)(TY74011* P_76031) {
-TY49523* Result_76032;
-NIM_BOOL LOC2;
-NIM_BOOL LOC3;
-Result_76032 = 0;
-LOC3 = !(((*(*P_76031).Tok).Toktype == ((NU8) 92)));
-if (!(LOC3)) goto LA4;
-LOC3 = !(((*(*P_76031).Tok).Toktype == ((NU8) 83)));
-LA4: ;
-LOC2 = LOC3;
-if (!(LOC2)) goto LA5;
-LOC2 = !(((*(*P_76031).Tok).Toktype == ((NU8) 97)));
-LA5: ;
-if (!LOC2) goto LA6;
-Result_76032 = Parseexpr_76012(P_76031);
-goto LA1;
-LA6: ;
-Result_76032 = NIM_NIL;
-LA1: ;
-return Result_76032;
-}
-N_NIMCALL(TY49523*, Dotdotexpr_76060)(TY74011* P_76063, TY49523* First_76064) {
-TY49523* Result_76065;
-TY49523* LOC1;
-Result_76065 = 0;
-Result_76065 = Newnodep_74052(((NU8) 35), (*P_76063));
-Addson_49821(Result_76065, First_76064);
-Gettok_74038(P_76063);
-Optind_74100(P_76063, Result_76065);
-LOC1 = Optexpr_76028(P_76063);
-Addson_49821(Result_76065, LOC1);
-return Result_76065;
-}
-N_NIMCALL(TY49523*, Indexexpr_76066)(TY74011* P_76069) {
-TY49523* Result_76070;
-TY49523* A_76071;
-TY49523* B_76072;
-TY49523* LOC7;
-Result_76070 = 0;
-A_76071 = 0;
-B_76072 = 0;
-if (!((*(*P_76069).Tok).Toktype == ((NU8) 97))) goto LA2;
-Result_76070 = Dotdotexpr_76060(P_76069, NIM_NIL);
-goto LA1;
-LA2: ;
-A_76071 = Parseexpr_76012(P_76069);
-switch ((*(*P_76069).Tok).Toktype) {
-case ((NU8) 95):
-Result_76070 = Newnodep_74052(((NU8) 23), (*P_76069));
-Addson_49821(Result_76070, A_76071);
-Gettok_74038(P_76069);
-if (!((*(*P_76069).Tok).Toktype == ((NU8) 97))) goto LA5;
-LOC7 = Dotdotexpr_76060(P_76069, NIM_NIL);
-Addson_49821(Result_76070, LOC7);
-goto LA4;
-LA5: ;
-B_76072 = Parseexpr_76012(P_76069);
-if (!((*(*P_76069).Tok).Toktype == ((NU8) 97))) goto LA9;
-B_76072 = Dotdotexpr_76060(P_76069, B_76072);
-LA9: ;
-Addson_49821(Result_76070, B_76072);
-LA4: ;
-break;
-case ((NU8) 97):
-Result_76070 = Dotdotexpr_76060(P_76069, A_76071);
-break;
-default:
-Result_76070 = A_76071;
-break;
-}
-LA1: ;
-return Result_76070;
-}
-N_NIMCALL(TY49523*, Indexexprlist_76100)(TY74011* P_76103, TY49523* First_76104) {
-TY49523* Result_76105;
-TY49523* A_76106;
-NIM_BOOL LOC2;
-NIM_BOOL LOC3;
-Result_76105 = 0;
-A_76106 = 0;
-Result_76105 = Newnodep_74052(((NU8) 33), (*P_76103));
-Addson_49821(Result_76105, First_76104);
-Gettok_74038(P_76103);
-Optind_74100(P_76103, Result_76105);
-while (1) {
-LOC3 = !(((*(*P_76103).Tok).Toktype == ((NU8) 83)));
-if (!(LOC3)) goto LA4;
-LOC3 = !(((*(*P_76103).Tok).Toktype == ((NU8) 1)));
-LA4: ;
-LOC2 = LOC3;
-if (!(LOC2)) goto LA5;
-LOC2 = !(((*(*P_76103).Tok).Toktype == ((NU8) 103)));
-LA5: ;
-if (!LOC2) goto LA1;
-A_76106 = Indexexpr_76066(P_76103);
-Addson_49821(Result_76105, A_76106);
-if (!!(((*(*P_76103).Tok).Toktype == ((NU8) 92)))) goto LA7;
-goto LA1;
-LA7: ;
-Gettok_74038(P_76103);
-Optind_74100(P_76103, A_76106);
-} LA1: ;
-Optpar_74096(P_76103);
-Eat_74087(P_76103, ((NU8) 83));
-return Result_76105;
-}
-N_NIMCALL(TY49523*, Primary_76323)(TY74011* P_76326) {
-TY49523* Result_76327;
-TY49523* A_76328;
-NIM_BOOL LOC2;
-TY49523* LOC6;
-TY49523* LOC9;
-TY49523* LOC11;
-Result_76327 = 0;
-A_76328 = 0;
-LOC2 = ((*(*P_76326).Tok).Toktype == ((NU8) 42));
-if (LOC2) goto LA3;
-LOC2 = ((*(*P_76326).Tok).Toktype == ((NU8) 99));
-LA3: ;
-if (!LOC2) goto LA4;
-Result_76327 = Newnodep_74052(((NU8) 28), (*P_76326));
-A_76328 = Newidentnodep_74071((*(*P_76326).Tok).Ident, (*P_76326));
-Addson_49821(Result_76327, A_76328);
-Gettok_74038(P_76326);
-Optind_74100(P_76326, A_76328);
-LOC6 = Primary_76323(P_76326);
-Addson_49821(Result_76327, LOC6);
-goto BeforeRet;
-goto LA1;
-LA4: ;
-if (!((*(*P_76326).Tok).Toktype == ((NU8) 8))) goto LA7;
-Result_76327 = Newnodep_74052(((NU8) 45), (*P_76326));
-Gettok_74038(P_76326);
-Optind_74100(P_76326, Result_76327);
-LOC9 = Primary_76323(P_76326);
-Addson_49821(Result_76327, LOC9);
-goto BeforeRet;
-goto LA1;
-LA7: ;
-LA1: ;
-Result_76327 = Identorliteral_76313(P_76326);
-while (1) {
-switch ((*(*P_76326).Tok).Toktype) {
-case ((NU8) 80):
-A_76328 = Result_76327;
-Result_76327 = Newnodep_74052(((NU8) 21), (*P_76326));
-Addson_49821(Result_76327, A_76328);
-Exprcoloneqexprlistaux_76248(P_76326, ((NU8) 23), ((NU8) 81), ((NU8) 95), Result_76327);
-break;
-case ((NU8) 96):
-A_76328 = Result_76327;
-Result_76327 = Newnodep_74052(((NU8) 36), (*P_76326));
-Addson_49821(Result_76327, A_76328);
-Gettok_74038(P_76326);
-Optind_74100(P_76326, Result_76327);
-LOC11 = Parsesymbol_74114(P_76326);
-Addson_49821(Result_76327, LOC11);
-break;
-case ((NU8) 98):
-A_76328 = Result_76327;
-Result_76327 = Newnodep_74052(((NU8) 38), (*P_76326));
-Addson_49821(Result_76327, A_76328);
-Gettok_74038(P_76326);
-break;
-case ((NU8) 82):
-Result_76327 = Indexexprlist_76100(P_76326, Result_76327);
-break;
-default:
-goto LA10;
-break;
-}
-} LA10: ;
-BeforeRet: ;
-return Result_76327;
-}
-N_NIMCALL(TY70263*, Lowestexpraux_76357)(TY74011* P_76360, TY49523** V_76362, NI Limit_76363) {
-TY70263* Result_76364;
-TY70263* Op_76365;
-TY70263* Nextop_76366;
-NI Oppred_76367;
-TY49523* V2_76368;
-TY49523* Node_76369;
-TY49523* Opnode_76370;
-Result_76364 = 0;
-Op_76365 = 0;
-Nextop_76366 = 0;
-Oppred_76367 = 0;
-V2_76368 = 0;
-Node_76369 = 0;
-Opnode_76370 = 0;
-unsureAsgnRef((void**) &(*V_76362), Primary_76323(P_76360));
-Op_76365 = (*P_76360).Tok;
-Oppred_76367 = Getprecedence_74032((*P_76360).Tok);
-while (1) {
-if (!(Limit_76363 < Oppred_76367)) goto LA1;
-Node_76369 = Newnodep_74052(((NU8) 27), (*P_76360));
-Opnode_76370 = Newidentnodep_74071((*Op_76365).Ident, (*P_76360));
-Gettok_74038(P_76360);
-Optind_74100(P_76360, Opnode_76370);
-Nextop_76366 = Lowestexpraux_76357(P_76360, &V2_76368, Oppred_76367);
-Addson_49821(Node_76369, Opnode_76370);
-Addson_49821(Node_76369, (*V_76362));
-Addson_49821(Node_76369, V2_76368);
-unsureAsgnRef((void**) &(*V_76362), Node_76369);
-Op_76365 = Nextop_76366;
-Oppred_76367 = Getprecedence_74032(Nextop_76366);
-} LA1: ;
-Result_76364 = Op_76365;
-return Result_76364;
-}
-N_NIMCALL(TY49523*, Lowestexpr_76375)(TY74011* P_76378) {
-TY49523* Result_76379;
-TY70263* LOC1;
-Result_76379 = 0;
-LOC1 = Lowestexpraux_76357(P_76378, &Result_76379, -1);
-return Result_76379;
-}
-N_NIMCALL(void, Exprlistaux_76161)(TY74011* P_76164, NU8 Elemkind_76165, NU8 Endtok_76166, NU8 Septok_76167, TY49523* Result_76168) {
-TY49523* A_76169;
-NIM_BOOL LOC2;
-A_76169 = 0;
-Gettok_74038(P_76164);
-Optind_74100(P_76164, Result_76168);
-while (1) {
-LOC2 = !(((*(*P_76164).Tok).Toktype == Endtok_76166));
-if (!(LOC2)) goto LA3;
-LOC2 = !(((*(*P_76164).Tok).Toktype == ((NU8) 1)));
-LA3: ;
-if (!LOC2) goto LA1;
-A_76169 = Exprcoloneqexpr_76144(P_76164, Elemkind_76165, Septok_76167);
-Addson_49821(Result_76168, A_76169);
-if (!!(((*(*P_76164).Tok).Toktype == ((NU8) 92)))) goto LA5;
-goto LA1;
-LA5: ;
-Gettok_74038(P_76164);
-Optind_74100(P_76164, A_76169);
-} LA1: ;
-Eat_74087(P_76164, Endtok_76166);
-}
-N_NIMCALL(TY49523*, Qualifiedident_76198)(TY74011* P_76201) {
-TY49523* Result_76202;
-TY49523* A_76203;
-TY49523* LOC4;
-Result_76202 = 0;
-A_76203 = 0;
-Result_76202 = Parsesymbol_74114(P_76201);
-if (!((*(*P_76201).Tok).Toktype == ((NU8) 96))) goto LA2;
-Gettok_74038(P_76201);
-Optind_74100(P_76201, Result_76202);
-A_76203 = Result_76202;
-Result_76202 = Newnodei_49735(((NU8) 36), (*A_76203).Info);
-Addson_49821(Result_76202, A_76203);
-LOC4 = Parsesymbol_74114(P_76201);
-Addson_49821(Result_76202, LOC4);
-LA2: ;
-return Result_76202;
-}
-N_NIMCALL(void, Qualifiedidentlistaux_76213)(TY74011* P_76216, NU8 Endtok_76217, TY49523* Result_76218) {
-TY49523* A_76219;
-NIM_BOOL LOC2;
-A_76219 = 0;
-Gettok_74038(P_76216);
-Optind_74100(P_76216, Result_76218);
-while (1) {
-LOC2 = !(((*(*P_76216).Tok).Toktype == Endtok_76217));
-if (!(LOC2)) goto LA3;
-LOC2 = !(((*(*P_76216).Tok).Toktype == ((NU8) 1)));
-LA3: ;
-if (!LOC2) goto LA1;
-A_76219 = Qualifiedident_76198(P_76216);
-Addson_49821(Result_76218, A_76219);
-if (!!(((*(*P_76216).Tok).Toktype == ((NU8) 92)))) goto LA5;
-goto LA1;
-LA5: ;
-Gettok_74038(P_76216);
-Optind_74100(P_76216, A_76219);
-} LA1: ;
-Eat_74087(P_76216, Endtok_76217);
-}
-N_NIMCALL(TY49523*, Parseexprstmt_76720)(TY74011* P_76723) {
-TY49523* Result_76724;
-TY49523* A_76725;
-TY49523* B_76726;
-TY49523* E_76727;
+N_NIMCALL(TY50525*, Parseexprstmt_78724)(TY76011* P_78727) {
+TY50525* Result_78728;
+TY50525* A_78729;
+TY50525* B_78730;
+TY50525* E_78731;
 NIM_BOOL LOC6;
 NI LOC13;
 NIM_BOOL LOC20;
-TY49523* LOC24;
-TY49523* LOC29;
-TY49523* LOC30;
-Result_76724 = 0;
-A_76725 = 0;
-B_76726 = 0;
-E_76727 = 0;
-A_76725 = Lowestexpr_76375(P_76723);
-if (!((*(*P_76723).Tok).Toktype == ((NU8) 95))) goto LA2;
-Gettok_74038(P_76723);
-Optind_74100(P_76723, Result_76724);
-B_76726 = Parseexpr_76012(P_76723);
-Result_76724 = Newnodei_49735(((NU8) 63), (*A_76725).Info);
-Addson_49821(Result_76724, A_76725);
-Addson_49821(Result_76724, B_76726);
+TY50525* LOC24;
+TY50525* LOC29;
+TY50525* LOC30;
+volatile struct {TFrame* prev;NCSTRING procname;NI line;NCSTRING filename;NI len;
+} F;
+F.procname = "parseExprStmt";
+F.prev = framePtr;
+F.filename = "rod/pbraces.nim";
+F.line = 0;
+framePtr = (TFrame*)&F;
+F.len = 0;
+Result_78728 = 0;
+A_78729 = 0;
+B_78730 = 0;
+E_78731 = 0;
+F.line = 510;F.filename = "pbraces.nim";
+A_78729 = Lowestexpr_78375(P_78727);
+F.line = 511;F.filename = "pbraces.nim";
+if (!((*(*P_78727).Tok).Toktype == ((NU8) 95))) goto LA2;
+F.line = 512;F.filename = "pbraces.nim";
+Gettok_76038(P_78727);
+F.line = 513;F.filename = "pbraces.nim";
+Optind_76100(P_78727, Result_78728);
+F.line = 514;F.filename = "pbraces.nim";
+B_78730 = Parseexpr_78012(P_78727);
+F.line = 515;F.filename = "pbraces.nim";
+Result_78728 = Newnodei_50737(((NU8) 63), (*A_78729).Info);
+F.line = 516;F.filename = "pbraces.nim";
+Addson_50823(Result_78728, A_78729);
+F.line = 517;F.filename = "pbraces.nim";
+Addson_50823(Result_78728, B_78730);
 goto LA1;
 LA2: ;
-Result_76724 = Newnodep_74052(((NU8) 20), (*P_76723));
-(*Result_76724).Info = (*A_76725).Info;
-Addson_49821(Result_76724, A_76725);
+F.line = 519;F.filename = "pbraces.nim";
+Result_78728 = Newnodep_76052(((NU8) 20), (*P_78727));
+F.line = 520;F.filename = "pbraces.nim";
+(*Result_78728).Info = (*A_78729).Info;
+F.line = 521;F.filename = "pbraces.nim";
+Addson_50823(Result_78728, A_78729);
+F.line = 522;F.filename = "pbraces.nim";
 while (1) {
-LOC6 = Isexprstart_76716((*P_76723));
+F.line = 523;F.filename = "pbraces.nim";
+LOC6 = Isexprstart_78720((*P_78727));
 if (!!(LOC6)) goto LA7;
+F.line = 523;F.filename = "pbraces.nim";
 goto LA4;
 LA7: ;
-E_76727 = Parseexpr_76012(P_76723);
-Addson_49821(Result_76724, E_76727);
-if (!!(((*(*P_76723).Tok).Toktype == ((NU8) 92)))) goto LA10;
+F.line = 524;F.filename = "pbraces.nim";
+E_78731 = Parseexpr_78012(P_78727);
+F.line = 525;F.filename = "pbraces.nim";
+Addson_50823(Result_78728, E_78731);
+F.line = 526;F.filename = "pbraces.nim";
+if (!!(((*(*P_78727).Tok).Toktype == ((NU8) 92)))) goto LA10;
+F.line = 526;F.filename = "pbraces.nim";
 goto LA4;
 LA10: ;
-Gettok_74038(P_76723);
-Optind_74100(P_76723, A_76725);
+F.line = 527;F.filename = "pbraces.nim";
+Gettok_76038(P_78727);
+F.line = 528;F.filename = "pbraces.nim";
+Optind_76100(P_78727, A_78729);
 } LA4: ;
-LOC13 = Sonslen_49801(Result_76724);
+F.line = 529;F.filename = "pbraces.nim";
+LOC13 = Sonslen_50803(Result_78728);
 if (!(LOC13 <= 1)) goto LA14;
-Result_76724 = A_76725;
+F.line = 529;F.filename = "pbraces.nim";
+Result_78728 = A_78729;
 goto LA12;
 LA14: ;
-A_76725 = Result_76724;
+F.line = 530;F.filename = "pbraces.nim";
+A_78729 = Result_78728;
 LA12: ;
-if (!((*(*P_76723).Tok).Toktype == ((NU8) 84))) goto LA17;
-Result_76724 = Newnodep_74052(((NU8) 79), (*P_76723));
-(*Result_76724).Info = (*A_76725).Info;
-Addson_49821(Result_76724, A_76725);
-Gettok_74038(P_76723);
-Skipcomment_74047(P_76723, Result_76724);
-LOC20 = ((*(*P_76723).Tok).Toktype == ((NU8) 102));
+F.line = 531;F.filename = "pbraces.nim";
+if (!((*(*P_78727).Tok).Toktype == ((NU8) 84))) goto LA17;
+F.line = 533;F.filename = "pbraces.nim";
+Result_78728 = Newnodep_76052(((NU8) 79), (*P_78727));
+F.line = 534;F.filename = "pbraces.nim";
+(*Result_78728).Info = (*A_78729).Info;
+F.line = 535;F.filename = "pbraces.nim";
+Addson_50823(Result_78728, A_78729);
+F.line = 536;F.filename = "pbraces.nim";
+Gettok_76038(P_78727);
+F.line = 537;F.filename = "pbraces.nim";
+Skipcomment_76047(P_78727, Result_78728);
+F.line = 538;F.filename = "pbraces.nim";
+LOC20 = ((*(*P_78727).Tok).Toktype == ((NU8) 102));
 if (LOC20) goto LA21;
-LOC20 = !(((*(*P_76723).Tok).Toktype == ((NU8) 45) || (*(*P_76723).Tok).Toktype == ((NU8) 19) || (*(*P_76723).Tok).Toktype == ((NU8) 20) || (*(*P_76723).Tok).Toktype == ((NU8) 23)));
+LOC20 = !(((*(*P_78727).Tok).Toktype == ((NU8) 45) || (*(*P_78727).Tok).Toktype == ((NU8) 19) || (*(*P_78727).Tok).Toktype == ((NU8) 20) || (*(*P_78727).Tok).Toktype == ((NU8) 23)));
 LA21: ;
 if (!LOC20) goto LA22;
-LOC24 = Parsestmt_76016(P_76723);
-Addson_49821(Result_76724, LOC24);
+F.line = 540;F.filename = "pbraces.nim";
+LOC24 = 0;
+LOC24 = Parsestmt_78016(P_78727);
+Addson_50823(Result_78728, LOC24);
 LA22: ;
+F.line = 541;F.filename = "pbraces.nim";
 while (1) {
-if (!((*(*P_76723).Tok).Toktype == ((NU8) 103))) goto LA27;
-Gettok_74038(P_76723);
+F.line = 542;F.filename = "pbraces.nim";
+if (!((*(*P_78727).Tok).Toktype == ((NU8) 103))) goto LA27;
+F.line = 542;F.filename = "pbraces.nim";
+Gettok_76038(P_78727);
 LA27: ;
-switch ((*(*P_76723).Tok).Toktype) {
+F.line = 543;F.filename = "pbraces.nim";
+switch ((*(*P_78727).Tok).Toktype) {
 case ((NU8) 45):
-B_76726 = Newnodep_74052(((NU8) 75), (*P_76723));
-Exprlistaux_76161(P_76723, ((NU8) 35), ((NU8) 84), ((NU8) 97), B_76726);
+F.line = 545;F.filename = "pbraces.nim";
+B_78730 = Newnodep_76052(((NU8) 75), (*P_78727));
+F.line = 546;F.filename = "pbraces.nim";
+Exprlistaux_78161(P_78727, ((NU8) 35), ((NU8) 84), ((NU8) 97), B_78730);
 break;
 case ((NU8) 19):
-B_76726 = Newnodep_74052(((NU8) 76), (*P_76723));
-Gettok_74038(P_76723);
-Optind_74100(P_76723, B_76726);
-LOC29 = Parseexpr_76012(P_76723);
-Addson_49821(B_76726, LOC29);
-Eat_74087(P_76723, ((NU8) 84));
+F.line = 548;F.filename = "pbraces.nim";
+B_78730 = Newnodep_76052(((NU8) 76), (*P_78727));
+F.line = 549;F.filename = "pbraces.nim";
+Gettok_76038(P_78727);
+F.line = 550;F.filename = "pbraces.nim";
+Optind_76100(P_78727, B_78730);
+F.line = 551;F.filename = "pbraces.nim";
+LOC29 = 0;
+LOC29 = Parseexpr_78012(P_78727);
+Addson_50823(B_78730, LOC29);
+F.line = 552;F.filename = "pbraces.nim";
+Eat_76087(P_78727, ((NU8) 84));
 break;
 case ((NU8) 23):
-B_76726 = Newnodep_74052(((NU8) 77), (*P_76723));
-Qualifiedidentlistaux_76213(P_76723, ((NU8) 84), B_76726);
-Skipcomment_74047(P_76723, B_76726);
+F.line = 554;F.filename = "pbraces.nim";
+B_78730 = Newnodep_76052(((NU8) 77), (*P_78727));
+F.line = 555;F.filename = "pbraces.nim";
+Qualifiedidentlistaux_78213(P_78727, ((NU8) 84), B_78730);
+F.line = 556;F.filename = "pbraces.nim";
+Skipcomment_76047(P_78727, B_78730);
 break;
 case ((NU8) 20):
-B_76726 = Newnodep_74052(((NU8) 78), (*P_76723));
-Gettok_74038(P_76723);
-Eat_74087(P_76723, ((NU8) 84));
+F.line = 558;F.filename = "pbraces.nim";
+B_78730 = Newnodep_76052(((NU8) 78), (*P_78727));
+F.line = 559;F.filename = "pbraces.nim";
+Gettok_76038(P_78727);
+F.line = 560;F.filename = "pbraces.nim";
+Eat_76087(P_78727, ((NU8) 84));
 break;
 default:
+F.line = 561;F.filename = "pbraces.nim";
 goto LA25;
 break;
 }
-LOC30 = Parsestmt_76016(P_76723);
-Addson_49821(B_76726, LOC30);
-Eat_74087(P_76723, ((NU8) 85));
-Addson_49821(Result_76724, B_76726);
-if (!((*B_76726).Kind == ((NU8) 78))) goto LA32;
+F.line = 562;F.filename = "pbraces.nim";
+LOC30 = 0;
+LOC30 = Parsestmt_78016(P_78727);
+Addson_50823(B_78730, LOC30);
+F.line = 563;F.filename = "pbraces.nim";
+Eat_76087(P_78727, ((NU8) 85));
+F.line = 564;F.filename = "pbraces.nim";
+Addson_50823(Result_78728, B_78730);
+F.line = 565;F.filename = "pbraces.nim";
+if (!((*B_78730).Kind == ((NU8) 78))) goto LA32;
+F.line = 565;F.filename = "pbraces.nim";
 goto LA25;
 LA32: ;
 } LA25: ;
-Eat_74087(P_76723, ((NU8) 85));
+F.line = 566;F.filename = "pbraces.nim";
+Eat_76087(P_78727, ((NU8) 85));
 LA17: ;
 LA1: ;
-return Result_76724;
+framePtr = framePtr->prev;
+return Result_78728;
 }
-N_NIMCALL(TY49523*, Simplestmt_77314)(TY74011* P_77317) {
-TY49523* Result_77318;
-NIM_BOOL LOC2;
-Result_77318 = 0;
-switch ((*(*P_77317).Tok).Toktype) {
-case ((NU8) 52):
-Result_77318 = Parsereturnorraise_76831(P_77317, ((NU8) 96));
-break;
-case ((NU8) 50):
-Result_77318 = Parsereturnorraise_76831(P_77317, ((NU8) 95));
-break;
-case ((NU8) 65):
-Result_77318 = Parseyieldordiscard_76837(P_77317, ((NU8) 92));
-break;
-case ((NU8) 16):
-Result_77318 = Parseyieldordiscard_76837(P_77317, ((NU8) 100));
-break;
-case ((NU8) 10):
-Result_77318 = Parsebreakorcontinue_76843(P_77317, ((NU8) 97));
-break;
-case ((NU8) 14):
-Result_77318 = Parsebreakorcontinue_76843(P_77317, ((NU8) 98));
-break;
-case ((NU8) 88):
-Result_77318 = Parsepragma_76397(P_77317);
-break;
-case ((NU8) 30):
-Result_77318 = Parseimportorincludestmt_76798(P_77317, ((NU8) 102));
-break;
-case ((NU8) 26):
-Result_77318 = Parsefromstmt_76815(P_77317);
-break;
-case ((NU8) 32):
-Result_77318 = Parseimportorincludestmt_76798(P_77317, ((NU8) 104));
-break;
-case ((NU8) 100):
-Result_77318 = Newcommentstmt_77045(P_77317);
-break;
-default:
-LOC2 = Isexprstart_76716((*P_77317));
-if (!LOC2) goto LA3;
-Result_77318 = Parseexprstmt_76720(P_77317);
-goto LA1;
-LA3: ;
-Result_77318 = NIM_NIL;
-LA1: ;
-break;
-}
-if (!!((Result_77318 == NIM_NIL))) goto LA6;
-Skipcomment_74047(P_77317, Result_77318);
-LA6: ;
-return Result_77318;
-}
-N_NIMCALL(TY49523*, Parsestmt_76016)(TY74011* P_76019) {
-TY49523* Result_77345;
-TY49523* A_77346;
-NimStringDesc* LOC11;
-Result_77345 = 0;
-A_77346 = 0;
-if (!((*(*P_76019).Tok).Toktype == ((NU8) 84))) goto LA2;
-Result_77345 = Newnodep_74052(((NU8) 101), (*P_76019));
-Gettok_74038(P_76019);
+N_NIMCALL(TY50525*, Parseimportorincludestmt_78802)(TY76011* P_78805, NU8 Kind_78806) {
+TY50525* Result_78807;
+TY50525* A_78808;
+NimStringDesc* LOC2;
+volatile struct {TFrame* prev;NCSTRING procname;NI line;NCSTRING filename;NI len;
+} F;
+F.procname = "parseImportOrIncludeStmt";
+F.prev = framePtr;
+F.filename = "rod/pbraces.nim";
+F.line = 0;
+framePtr = (TFrame*)&F;
+F.len = 0;
+Result_78807 = 0;
+A_78808 = 0;
+F.line = 570;F.filename = "pbraces.nim";
+Result_78807 = Newnodep_76052(Kind_78806, (*P_78805));
+F.line = 571;F.filename = "pbraces.nim";
+Gettok_76038(P_78805);
+F.line = 572;F.filename = "pbraces.nim";
+Optind_76100(P_78805, Result_78807);
+F.line = 573;F.filename = "pbraces.nim";
 while (1) {
-switch ((*(*P_76019).Tok).Toktype) {
-case ((NU8) 103):
-case ((NU8) 102):
-case ((NU8) 104):
-Gettok_74038(P_76019);
-break;
+F.line = 574;F.filename = "pbraces.nim";
+switch ((*(*P_78805).Tok).Toktype) {
 case ((NU8) 1):
-case ((NU8) 85):
-goto LA4;
+case ((NU8) 103):
+case ((NU8) 104):
+F.line = 576;F.filename = "pbraces.nim";
+goto LA1;
+break;
+case ((NU8) 2):
+case ((NU8) 101):
+F.line = 578;F.filename = "pbraces.nim";
+A_78808 = Parsesymbol_76114(P_78805);
+break;
+case ((NU8) 75):
+F.line = 580;F.filename = "pbraces.nim";
+A_78808 = Newstrnodep_76066(((NU8) 15), (*(*P_78805).Tok).Literal, (*P_78805));
+F.line = 581;F.filename = "pbraces.nim";
+Gettok_76038(P_78805);
+break;
+case ((NU8) 74):
+F.line = 583;F.filename = "pbraces.nim";
+A_78808 = Newstrnodep_76066(((NU8) 14), (*(*P_78805).Tok).Literal, (*P_78805));
+F.line = 584;F.filename = "pbraces.nim";
+Gettok_76038(P_78805);
+break;
+case ((NU8) 76):
+F.line = 586;F.filename = "pbraces.nim";
+A_78808 = Newstrnodep_76066(((NU8) 16), (*(*P_78805).Tok).Literal, (*P_78805));
+F.line = 587;F.filename = "pbraces.nim";
+Gettok_76038(P_78805);
 break;
 default:
-A_77346 = Complexorsimplestmt_77336(P_76019);
-if (!(A_77346 == NIM_NIL)) goto LA6;
-goto LA4;
-LA6: ;
-Addson_49821(Result_77345, A_77346);
-break;
-}
-} LA4: ;
-Eat_74087(P_76019, ((NU8) 85));
+F.line = 589;F.filename = "pbraces.nim";
+LOC2 = 0;
+LOC2 = Toktostr_72323((*P_78805).Tok);
+Parmessage_76042((*P_78805), ((NU8) 19), LOC2);
+F.line = 590;F.filename = "pbraces.nim";
 goto LA1;
-LA2: ;
-switch ((*(*P_76019).Tok).Toktype) {
-case ((NU8) 28):
-case ((NU8) 61):
-case ((NU8) 11):
-case ((NU8) 56):
-case ((NU8) 25):
-case ((NU8) 9):
-case ((NU8) 6):
-case ((NU8) 48):
-case ((NU8) 35):
-case ((NU8) 38):
-case ((NU8) 58):
-case ((NU8) 13):
-case ((NU8) 60):
-case ((NU8) 59):
-Parmessage_74042((*P_76019), ((NU8) 149), ((NimStringDesc*) &TMP190863));
-Result_77345 = NIM_NIL;
-break;
-default:
-Result_77345 = Simplestmt_77314(P_76019);
-if (!(Result_77345 == NIM_NIL)) goto LA9;
-LOC11 = Toktostr_70323((*P_76019).Tok);
-Parmessage_74042((*P_76019), ((NU8) 57), LOC11);
-LA9: ;
-if (!((*(*P_76019).Tok).Toktype == ((NU8) 102) || (*(*P_76019).Tok).Toktype == ((NU8) 104) || (*(*P_76019).Tok).Toktype == ((NU8) 103))) goto LA13;
-Gettok_74038(P_76019);
-LA13: ;
 break;
 }
-LA1: ;
-return Result_77345;
-}
-N_NIMCALL(TY49523*, Parseprocexpr_76664)(TY74011* P_76667, NIM_BOOL Isexpr_76668) {
-TY49523* Result_76669;
-TY49523* Pragmas_76670;
-TY49523* Params_76671;
-TY41532 Info_76672;
-NIM_BOOL LOC5;
-TY49523* LOC9;
-Result_76669 = 0;
-Pragmas_76670 = 0;
-Params_76671 = 0;
-memset((void*)&Info_76672, 0, sizeof(Info_76672));
-Info_76672 = Parlineinfo_74084((*P_76667));
-Gettok_74038(P_76667);
-Params_76671 = Parseparamlist_76024(P_76667);
-if (!((*(*P_76667).Tok).Toktype == ((NU8) 88))) goto LA2;
-Pragmas_76670 = Parsepragma_76397(P_76667);
+F.line = 591;F.filename = "pbraces.nim";
+Addson_50823(Result_78807, A_78808);
+F.line = 592;F.filename = "pbraces.nim";
+if (!!(((*(*P_78805).Tok).Toktype == ((NU8) 92)))) goto LA4;
+F.line = 592;F.filename = "pbraces.nim";
 goto LA1;
-LA2: ;
-Pragmas_76670 = NIM_NIL;
-LA1: ;
-LOC5 = ((*(*P_76667).Tok).Toktype == ((NU8) 84));
-if (!(LOC5)) goto LA6;
-LOC5 = Isexpr_76668;
-LA6: ;
-if (!LOC5) goto LA7;
-Result_76669 = Newnodei_49735(((NU8) 42), Info_76672);
-Addson_49821(Result_76669, NIM_NIL);
-Addson_49821(Result_76669, NIM_NIL);
-Addson_49821(Result_76669, Params_76671);
-Addson_49821(Result_76669, Pragmas_76670);
-LOC9 = Parsestmt_76016(P_76667);
-Addson_49821(Result_76669, LOC9);
-goto LA4;
-LA7: ;
-Result_76669 = Newnodei_49735(((NU8) 120), Info_76672);
-Addson_49821(Result_76669, Params_76671);
-Addson_49821(Result_76669, Pragmas_76670);
 LA4: ;
-return Result_76669;
-}
-N_NIMCALL(TY49523*, Parsetypedesc_76020)(TY74011* P_76023) {
-TY49523* Result_76706;
-Result_76706 = 0;
-if (!((*(*P_76023).Tok).Toktype == ((NU8) 48))) goto LA2;
-Result_76706 = Parseprocexpr_76664(P_76023, NIM_FALSE);
-goto LA1;
-LA2: ;
-Result_76706 = Parseexpr_76012(P_76023);
-LA1: ;
-return Result_76706;
-}
-N_NIMCALL(TY49523*, Parsetypedesckaux_76691)(TY74011* P_76694, NU8 Kind_76695) {
-TY49523* Result_76696;
-TY49523* LOC1;
-Result_76696 = 0;
-Result_76696 = Newnodep_74052(Kind_76695, (*P_76694));
-Gettok_74038(P_76694);
-Optind_74100(P_76694, Result_76696);
-LOC1 = Parsetypedesc_76020(P_76694);
-Addson_49821(Result_76696, LOC1);
-return Result_76696;
-}
-N_NIMCALL(TY49523*, Parsetuple_76580)(TY74011* P_76583) {
-TY49523* Result_76584;
-TY49523* A_76585;
-NIM_BOOL LOC2;
-Result_76584 = 0;
-A_76585 = 0;
-Result_76584 = Newnodep_74052(((NU8) 112), (*P_76583));
-Gettok_74038(P_76583);
-Eat_74087(P_76583, ((NU8) 82));
-Optind_74100(P_76583, Result_76584);
-while (1) {
-LOC2 = ((*(*P_76583).Tok).Toktype == ((NU8) 2));
-if (LOC2) goto LA3;
-LOC2 = ((*(*P_76583).Tok).Toktype == ((NU8) 101));
-LA3: ;
-if (!LOC2) goto LA1;
-A_76585 = Parseidentcolonequals_76503(P_76583, 0);
-Addson_49821(Result_76584, A_76585);
-if (!!(((*(*P_76583).Tok).Toktype == ((NU8) 92)))) goto LA5;
-goto LA1;
-LA5: ;
-Gettok_74038(P_76583);
-Optind_74100(P_76583, A_76585);
+F.line = 593;F.filename = "pbraces.nim";
+Gettok_76038(P_78805);
+F.line = 594;F.filename = "pbraces.nim";
+Optind_76100(P_78805, A_78808);
 } LA1: ;
-Optpar_74096(P_76583);
-Eat_74087(P_76583, ((NU8) 83));
-return Result_76584;
+framePtr = framePtr->prev;
+return Result_78807;
 }
-N_NIMCALL(TY49523*, Parseifexpr_76381)(TY74011* P_76384) {
-TY49523* Result_76385;
-TY49523* Branch_76386;
-TY49523* LOC2;
-TY49523* LOC3;
-TY49523* LOC7;
-Result_76385 = 0;
-Branch_76386 = 0;
-Result_76385 = Newnodep_74052(((NU8) 39), (*P_76384));
-while (1) {
-Gettok_74038(P_76384);
-Branch_76386 = Newnodep_74052(((NU8) 40), (*P_76384));
-Eat_74087(P_76384, ((NU8) 80));
-LOC2 = Parseexpr_76012(P_76384);
-Addson_49821(Branch_76386, LOC2);
-Eat_74087(P_76384, ((NU8) 81));
-LOC3 = Parseexpr_76012(P_76384);
-Addson_49821(Branch_76386, LOC3);
-Addson_49821(Result_76385, Branch_76386);
-if (!!(((*(*P_76384).Tok).Toktype == ((NU8) 19)))) goto LA5;
-goto LA1;
-LA5: ;
-} LA1: ;
-Branch_76386 = Newnodep_74052(((NU8) 41), (*P_76384));
-Eat_74087(P_76384, ((NU8) 20));
-LOC7 = Parseexpr_76012(P_76384);
-Addson_49821(Branch_76386, LOC7);
-Addson_49821(Result_76385, Branch_76386);
-return Result_76385;
-}
-N_NIMCALL(TY49523*, Parseexpr_76012)(TY74011* P_76015) {
-TY49523* Result_76701;
-Result_76701 = 0;
-switch ((*(*P_76015).Tok).Toktype) {
-case ((NU8) 59):
-Result_76701 = Parsetypedesckaux_76691(P_76015, ((NU8) 118));
+N_NIMCALL(TY50525*, Parsefromstmt_78819)(TY76011* P_78822) {
+TY50525* Result_78823;
+TY50525* A_78824;
+NimStringDesc* LOC1;
+NimStringDesc* LOC3;
+volatile struct {TFrame* prev;NCSTRING procname;NI line;NCSTRING filename;NI len;
+} F;
+F.procname = "parseFromStmt";
+F.prev = framePtr;
+F.filename = "rod/pbraces.nim";
+F.line = 0;
+framePtr = (TFrame*)&F;
+F.len = 0;
+Result_78823 = 0;
+A_78824 = 0;
+F.line = 598;F.filename = "pbraces.nim";
+Result_78823 = Newnodep_76052(((NU8) 103), (*P_78822));
+F.line = 599;F.filename = "pbraces.nim";
+Gettok_76038(P_78822);
+F.line = 600;F.filename = "pbraces.nim";
+Optind_76100(P_78822, Result_78823);
+F.line = 601;F.filename = "pbraces.nim";
+switch ((*(*P_78822).Tok).Toktype) {
+case ((NU8) 2):
+case ((NU8) 101):
+F.line = 603;F.filename = "pbraces.nim";
+A_78824 = Parsesymbol_76114(P_78822);
 break;
-case ((NU8) 51):
-Result_76701 = Parsetypedesckaux_76691(P_76015, ((NU8) 116));
+case ((NU8) 75):
+F.line = 605;F.filename = "pbraces.nim";
+A_78824 = Newstrnodep_76066(((NU8) 15), (*(*P_78822).Tok).Literal, (*P_78822));
+F.line = 606;F.filename = "pbraces.nim";
+Gettok_76038(P_78822);
 break;
-case ((NU8) 49):
-Result_76701 = Parsetypedesckaux_76691(P_76015, ((NU8) 117));
+case ((NU8) 74):
+F.line = 608;F.filename = "pbraces.nim";
+A_78824 = Newstrnodep_76066(((NU8) 14), (*(*P_78822).Tok).Literal, (*P_78822));
+F.line = 609;F.filename = "pbraces.nim";
+Gettok_76038(P_78822);
 break;
-case ((NU8) 58):
-Result_76701 = Parsetypedesckaux_76691(P_76015, ((NU8) 110));
-break;
-case ((NU8) 57):
-Result_76701 = Parsetuple_76580(P_76015);
-break;
-case ((NU8) 48):
-Result_76701 = Parseprocexpr_76664(P_76015, NIM_TRUE);
-break;
-case ((NU8) 28):
-Result_76701 = Parseifexpr_76381(P_76015);
+case ((NU8) 76):
+F.line = 611;F.filename = "pbraces.nim";
+A_78824 = Newstrnodep_76066(((NU8) 16), (*(*P_78822).Tok).Literal, (*P_78822));
+F.line = 612;F.filename = "pbraces.nim";
+Gettok_76038(P_78822);
 break;
 default:
-Result_76701 = Lowestexpr_76375(P_76015);
+F.line = 614;F.filename = "pbraces.nim";
+LOC1 = 0;
+LOC1 = Toktostr_72323((*P_78822).Tok);
+Parmessage_76042((*P_78822), ((NU8) 19), LOC1);
+F.line = 615;F.filename = "pbraces.nim";
+goto BeforeRet;
 break;
 }
-return Result_76701;
-}
-N_NIMCALL(TY49523*, Parseiforwhen_76849)(TY74011* P_76852, NU8 Kind_76853) {
-TY49523* Result_76854;
-TY49523* Branch_76855;
-TY49523* LOC2;
-TY49523* LOC3;
-TY49523* LOC10;
-Result_76854 = 0;
-Branch_76855 = 0;
-Result_76854 = Newnodep_74052(Kind_76853, (*P_76852));
+F.line = 616;F.filename = "pbraces.nim";
+Addson_50823(Result_78823, A_78824);
+F.line = 617;F.filename = "pbraces.nim";
+Eat_76087(P_78822, ((NU8) 30));
+F.line = 618;F.filename = "pbraces.nim";
+Optind_76100(P_78822, Result_78823);
+F.line = 619;F.filename = "pbraces.nim";
 while (1) {
-Gettok_74038(P_76852);
-Branch_76855 = Newnodep_74052(((NU8) 76), (*P_76852));
-Optind_74100(P_76852, Branch_76855);
-Eat_74087(P_76852, ((NU8) 80));
-LOC2 = Parseexpr_76012(P_76852);
-Addson_49821(Branch_76855, LOC2);
-Eat_74087(P_76852, ((NU8) 81));
-Skipcomment_74047(P_76852, Branch_76855);
-LOC3 = Parsestmt_76016(P_76852);
-Addson_49821(Branch_76855, LOC3);
-Skipcomment_74047(P_76852, Branch_76855);
-Addson_49821(Result_76854, Branch_76855);
-if (!!(((*(*P_76852).Tok).Toktype == ((NU8) 19)))) goto LA5;
+F.line = 620;F.filename = "pbraces.nim";
+switch ((*(*P_78822).Tok).Toktype) {
+case ((NU8) 1):
+case ((NU8) 103):
+case ((NU8) 104):
+F.line = 622;F.filename = "pbraces.nim";
+goto LA2;
+break;
+case ((NU8) 2):
+case ((NU8) 101):
+F.line = 624;F.filename = "pbraces.nim";
+A_78824 = Parsesymbol_76114(P_78822);
+break;
+default:
+F.line = 626;F.filename = "pbraces.nim";
+LOC3 = 0;
+LOC3 = Toktostr_72323((*P_78822).Tok);
+Parmessage_76042((*P_78822), ((NU8) 19), LOC3);
+F.line = 627;F.filename = "pbraces.nim";
+goto LA2;
+break;
+}
+F.line = 628;F.filename = "pbraces.nim";
+Addson_50823(Result_78823, A_78824);
+F.line = 629;F.filename = "pbraces.nim";
+if (!!(((*(*P_78822).Tok).Toktype == ((NU8) 92)))) goto LA5;
+F.line = 629;F.filename = "pbraces.nim";
+goto LA2;
+LA5: ;
+F.line = 630;F.filename = "pbraces.nim";
+Gettok_76038(P_78822);
+F.line = 631;F.filename = "pbraces.nim";
+Optind_76100(P_78822, A_78824);
+} LA2: ;
+BeforeRet: ;
+framePtr = framePtr->prev;
+return Result_78823;
+}
+N_NIMCALL(TY50525*, Parsereturnorraise_78835)(TY76011* P_78838, NU8 Kind_78839) {
+TY50525* Result_78840;
+TY50525* LOC1;
+volatile struct {TFrame* prev;NCSTRING procname;NI line;NCSTRING filename;NI len;
+} F;
+F.procname = "parseReturnOrRaise";
+F.prev = framePtr;
+F.filename = "rod/pbraces.nim";
+F.line = 0;
+framePtr = (TFrame*)&F;
+F.len = 0;
+Result_78840 = 0;
+F.line = 634;F.filename = "pbraces.nim";
+Result_78840 = Newnodep_76052(Kind_78839, (*P_78838));
+F.line = 635;F.filename = "pbraces.nim";
+Gettok_76038(P_78838);
+F.line = 636;F.filename = "pbraces.nim";
+Optind_76100(P_78838, Result_78840);
+F.line = 637;F.filename = "pbraces.nim";
+switch ((*(*P_78838).Tok).Toktype) {
+case ((NU8) 1):
+case ((NU8) 103):
+case ((NU8) 104):
+F.line = 638;F.filename = "pbraces.nim";
+Addson_50823(Result_78840, NIM_NIL);
+break;
+default:
+F.line = 639;F.filename = "pbraces.nim";
+LOC1 = 0;
+LOC1 = Parseexpr_78012(P_78838);
+Addson_50823(Result_78840, LOC1);
+break;
+}
+framePtr = framePtr->prev;
+return Result_78840;
+}
+N_NIMCALL(TY50525*, Parseyieldordiscard_78841)(TY76011* P_78844, NU8 Kind_78845) {
+TY50525* Result_78846;
+TY50525* LOC1;
+volatile struct {TFrame* prev;NCSTRING procname;NI line;NCSTRING filename;NI len;
+} F;
+F.procname = "parseYieldOrDiscard";
+F.prev = framePtr;
+F.filename = "rod/pbraces.nim";
+F.line = 0;
+framePtr = (TFrame*)&F;
+F.len = 0;
+Result_78846 = 0;
+F.line = 642;F.filename = "pbraces.nim";
+Result_78846 = Newnodep_76052(Kind_78845, (*P_78844));
+F.line = 643;F.filename = "pbraces.nim";
+Gettok_76038(P_78844);
+F.line = 644;F.filename = "pbraces.nim";
+Optind_76100(P_78844, Result_78846);
+F.line = 645;F.filename = "pbraces.nim";
+LOC1 = 0;
+LOC1 = Parseexpr_78012(P_78844);
+Addson_50823(Result_78846, LOC1);
+framePtr = framePtr->prev;
+return Result_78846;
+}
+N_NIMCALL(TY50525*, Parsebreakorcontinue_78847)(TY76011* P_78850, NU8 Kind_78851) {
+TY50525* Result_78852;
+TY50525* LOC1;
+volatile struct {TFrame* prev;NCSTRING procname;NI line;NCSTRING filename;NI len;
+} F;
+F.procname = "parseBreakOrContinue";
+F.prev = framePtr;
+F.filename = "rod/pbraces.nim";
+F.line = 0;
+framePtr = (TFrame*)&F;
+F.len = 0;
+Result_78852 = 0;
+F.line = 648;F.filename = "pbraces.nim";
+Result_78852 = Newnodep_76052(Kind_78851, (*P_78850));
+F.line = 649;F.filename = "pbraces.nim";
+Gettok_76038(P_78850);
+F.line = 650;F.filename = "pbraces.nim";
+Optind_76100(P_78850, Result_78852);
+F.line = 651;F.filename = "pbraces.nim";
+switch ((*(*P_78850).Tok).Toktype) {
+case ((NU8) 1):
+case ((NU8) 103):
+case ((NU8) 104):
+F.line = 652;F.filename = "pbraces.nim";
+Addson_50823(Result_78852, NIM_NIL);
+break;
+default:
+F.line = 653;F.filename = "pbraces.nim";
+LOC1 = 0;
+LOC1 = Parsesymbol_76114(P_78850);
+Addson_50823(Result_78852, LOC1);
+break;
+}
+framePtr = framePtr->prev;
+return Result_78852;
+}
+N_NIMCALL(TY50525*, Parseiforwhen_78853)(TY76011* P_78856, NU8 Kind_78857) {
+TY50525* Result_78858;
+TY50525* Branch_78859;
+TY50525* LOC2;
+TY50525* LOC3;
+TY50525* LOC10;
+volatile struct {TFrame* prev;NCSTRING procname;NI line;NCSTRING filename;NI len;
+} F;
+F.procname = "parseIfOrWhen";
+F.prev = framePtr;
+F.filename = "rod/pbraces.nim";
+F.line = 0;
+framePtr = (TFrame*)&F;
+F.len = 0;
+Result_78858 = 0;
+Branch_78859 = 0;
+F.line = 657;F.filename = "pbraces.nim";
+Result_78858 = Newnodep_76052(Kind_78857, (*P_78856));
+F.line = 658;F.filename = "pbraces.nim";
+while (1) {
+F.line = 659;F.filename = "pbraces.nim";
+Gettok_76038(P_78856);
+F.line = 660;F.filename = "pbraces.nim";
+Branch_78859 = Newnodep_76052(((NU8) 76), (*P_78856));
+F.line = 661;F.filename = "pbraces.nim";
+Optind_76100(P_78856, Branch_78859);
+F.line = 662;F.filename = "pbraces.nim";
+Eat_76087(P_78856, ((NU8) 80));
+F.line = 663;F.filename = "pbraces.nim";
+LOC2 = 0;
+LOC2 = Parseexpr_78012(P_78856);
+Addson_50823(Branch_78859, LOC2);
+F.line = 664;F.filename = "pbraces.nim";
+Eat_76087(P_78856, ((NU8) 81));
+F.line = 665;F.filename = "pbraces.nim";
+Skipcomment_76047(P_78856, Branch_78859);
+F.line = 666;F.filename = "pbraces.nim";
+LOC3 = 0;
+LOC3 = Parsestmt_78016(P_78856);
+Addson_50823(Branch_78859, LOC3);
+F.line = 667;F.filename = "pbraces.nim";
+Skipcomment_76047(P_78856, Branch_78859);
+F.line = 668;F.filename = "pbraces.nim";
+Addson_50823(Result_78858, Branch_78859);
+F.line = 669;F.filename = "pbraces.nim";
+if (!!(((*(*P_78856).Tok).Toktype == ((NU8) 19)))) goto LA5;
+F.line = 669;F.filename = "pbraces.nim";
 goto LA1;
 LA5: ;
 } LA1: ;
-if (!((*(*P_76852).Tok).Toktype == ((NU8) 20))) goto LA8;
-Branch_76855 = Newnodep_74052(((NU8) 78), (*P_76852));
-Eat_74087(P_76852, ((NU8) 20));
-Skipcomment_74047(P_76852, Branch_76855);
-LOC10 = Parsestmt_76016(P_76852);
-Addson_49821(Branch_76855, LOC10);
-Addson_49821(Result_76854, Branch_76855);
+F.line = 670;F.filename = "pbraces.nim";
+if (!((*(*P_78856).Tok).Toktype == ((NU8) 20))) goto LA8;
+F.line = 671;F.filename = "pbraces.nim";
+Branch_78859 = Newnodep_76052(((NU8) 78), (*P_78856));
+F.line = 672;F.filename = "pbraces.nim";
+Eat_76087(P_78856, ((NU8) 20));
+F.line = 673;F.filename = "pbraces.nim";
+Skipcomment_76047(P_78856, Branch_78859);
+F.line = 674;F.filename = "pbraces.nim";
+LOC10 = 0;
+LOC10 = Parsestmt_78016(P_78856);
+Addson_50823(Branch_78859, LOC10);
+F.line = 675;F.filename = "pbraces.nim";
+Addson_50823(Result_78858, Branch_78859);
 LA8: ;
-return Result_76854;
+framePtr = framePtr->prev;
+return Result_78858;
 }
-N_NIMCALL(TY49523*, Parsewhile_76875)(TY74011* P_76878) {
-TY49523* Result_76879;
-TY49523* LOC1;
-TY49523* LOC2;
-Result_76879 = 0;
-Result_76879 = Newnodep_74052(((NU8) 85), (*P_76878));
-Gettok_74038(P_76878);
-Optind_74100(P_76878, Result_76879);
-Eat_74087(P_76878, ((NU8) 80));
-LOC1 = Parseexpr_76012(P_76878);
-Addson_49821(Result_76879, LOC1);
-Eat_74087(P_76878, ((NU8) 81));
-Skipcomment_74047(P_76878, Result_76879);
-LOC2 = Parsestmt_76016(P_76878);
-Addson_49821(Result_76879, LOC2);
-return Result_76879;
+N_NIMCALL(TY50525*, Parsewhile_78879)(TY76011* P_78882) {
+TY50525* Result_78883;
+TY50525* LOC1;
+TY50525* LOC2;
+volatile struct {TFrame* prev;NCSTRING procname;NI line;NCSTRING filename;NI len;
+} F;
+F.procname = "parseWhile";
+F.prev = framePtr;
+F.filename = "rod/pbraces.nim";
+F.line = 0;
+framePtr = (TFrame*)&F;
+F.len = 0;
+Result_78883 = 0;
+F.line = 678;F.filename = "pbraces.nim";
+Result_78883 = Newnodep_76052(((NU8) 85), (*P_78882));
+F.line = 679;F.filename = "pbraces.nim";
+Gettok_76038(P_78882);
+F.line = 680;F.filename = "pbraces.nim";
+Optind_76100(P_78882, Result_78883);
+F.line = 681;F.filename = "pbraces.nim";
+Eat_76087(P_78882, ((NU8) 80));
+F.line = 682;F.filename = "pbraces.nim";
+LOC1 = 0;
+LOC1 = Parseexpr_78012(P_78882);
+Addson_50823(Result_78883, LOC1);
+F.line = 683;F.filename = "pbraces.nim";
+Eat_76087(P_78882, ((NU8) 81));
+F.line = 684;F.filename = "pbraces.nim";
+Skipcomment_76047(P_78882, Result_78883);
+F.line = 685;F.filename = "pbraces.nim";
+LOC2 = 0;
+LOC2 = Parsestmt_78016(P_78882);
+Addson_50823(Result_78883, LOC2);
+framePtr = framePtr->prev;
+return Result_78883;
 }
-N_NIMCALL(TY49523*, Parsecase_76880)(TY74011* P_76883) {
-TY49523* Result_76884;
-TY49523* B_76885;
-NIM_BOOL Inelif_76886;
-TY49523* LOC1;
-TY49523* LOC9;
-TY49523* LOC10;
-Result_76884 = 0;
-B_76885 = 0;
-Inelif_76886 = 0;
-Result_76884 = Newnodep_74052(((NU8) 86), (*P_76883));
-Gettok_74038(P_76883);
-Eat_74087(P_76883, ((NU8) 80));
-LOC1 = Parseexpr_76012(P_76883);
-Addson_49821(Result_76884, LOC1);
-Eat_74087(P_76883, ((NU8) 81));
-Skipcomment_74047(P_76883, Result_76884);
-Inelif_76886 = NIM_FALSE;
+N_NIMCALL(TY50525*, Parsecase_78884)(TY76011* P_78887) {
+TY50525* Result_78888;
+TY50525* B_78889;
+NIM_BOOL Inelif_78890;
+TY50525* LOC1;
+TY50525* LOC9;
+TY50525* LOC10;
+volatile struct {TFrame* prev;NCSTRING procname;NI line;NCSTRING filename;NI len;
+} F;
+F.procname = "parseCase";
+F.prev = framePtr;
+F.filename = "rod/pbraces.nim";
+F.line = 0;
+framePtr = (TFrame*)&F;
+F.len = 0;
+Result_78888 = 0;
+B_78889 = 0;
+Inelif_78890 = 0;
+F.line = 691;F.filename = "pbraces.nim";
+Result_78888 = Newnodep_76052(((NU8) 86), (*P_78887));
+F.line = 692;F.filename = "pbraces.nim";
+Gettok_76038(P_78887);
+F.line = 693;F.filename = "pbraces.nim";
+Eat_76087(P_78887, ((NU8) 80));
+F.line = 694;F.filename = "pbraces.nim";
+LOC1 = 0;
+LOC1 = Parseexpr_78012(P_78887);
+Addson_50823(Result_78888, LOC1);
+F.line = 695;F.filename = "pbraces.nim";
+Eat_76087(P_78887, ((NU8) 81));
+F.line = 696;F.filename = "pbraces.nim";
+Skipcomment_76047(P_78887, Result_78888);
+F.line = 697;F.filename = "pbraces.nim";
+Inelif_78890 = NIM_FALSE;
+F.line = 698;F.filename = "pbraces.nim";
 while (1) {
-if (!((*(*P_76883).Tok).Toktype == ((NU8) 103))) goto LA4;
-Gettok_74038(P_76883);
+F.line = 699;F.filename = "pbraces.nim";
+if (!((*(*P_78887).Tok).Toktype == ((NU8) 103))) goto LA4;
+F.line = 699;F.filename = "pbraces.nim";
+Gettok_76038(P_78887);
 LA4: ;
-switch ((*(*P_76883).Tok).Toktype) {
+F.line = 700;F.filename = "pbraces.nim";
+switch ((*(*P_78887).Tok).Toktype) {
 case ((NU8) 45):
-if (!Inelif_76886) goto LA7;
+F.line = 702;F.filename = "pbraces.nim";
+if (!Inelif_78890) goto LA7;
+F.line = 702;F.filename = "pbraces.nim";
 goto LA2;
 LA7: ;
-B_76885 = Newnodep_74052(((NU8) 75), (*P_76883));
-Exprlistaux_76161(P_76883, ((NU8) 35), ((NU8) 94), ((NU8) 97), B_76885);
+F.line = 703;F.filename = "pbraces.nim";
+B_78889 = Newnodep_76052(((NU8) 75), (*P_78887));
+F.line = 704;F.filename = "pbraces.nim";
+Exprlistaux_78161(P_78887, ((NU8) 35), ((NU8) 94), ((NU8) 97), B_78889);
 break;
 case ((NU8) 19):
-Inelif_76886 = NIM_TRUE;
-B_76885 = Newnodep_74052(((NU8) 76), (*P_76883));
-Gettok_74038(P_76883);
-Optind_74100(P_76883, B_76885);
-LOC9 = Parseexpr_76012(P_76883);
-Addson_49821(B_76885, LOC9);
-Eat_74087(P_76883, ((NU8) 94));
+F.line = 706;F.filename = "pbraces.nim";
+Inelif_78890 = NIM_TRUE;
+F.line = 707;F.filename = "pbraces.nim";
+B_78889 = Newnodep_76052(((NU8) 76), (*P_78887));
+F.line = 708;F.filename = "pbraces.nim";
+Gettok_76038(P_78887);
+F.line = 709;F.filename = "pbraces.nim";
+Optind_76100(P_78887, B_78889);
+F.line = 710;F.filename = "pbraces.nim";
+LOC9 = 0;
+LOC9 = Parseexpr_78012(P_78887);
+Addson_50823(B_78889, LOC9);
+F.line = 711;F.filename = "pbraces.nim";
+Eat_76087(P_78887, ((NU8) 94));
 break;
 case ((NU8) 20):
-B_76885 = Newnodep_74052(((NU8) 78), (*P_76883));
-Gettok_74038(P_76883);
-Eat_74087(P_76883, ((NU8) 94));
+F.line = 713;F.filename = "pbraces.nim";
+B_78889 = Newnodep_76052(((NU8) 78), (*P_78887));
+F.line = 714;F.filename = "pbraces.nim";
+Gettok_76038(P_78887);
+F.line = 715;F.filename = "pbraces.nim";
+Eat_76087(P_78887, ((NU8) 94));
 break;
 default:
+F.line = 716;F.filename = "pbraces.nim";
 goto LA2;
 break;
 }
-Skipcomment_74047(P_76883, B_76885);
-LOC10 = Parsestmt_76016(P_76883);
-Addson_49821(B_76885, LOC10);
-Addson_49821(Result_76884, B_76885);
-if (!((*B_76885).Kind == ((NU8) 78))) goto LA12;
+F.line = 717;F.filename = "pbraces.nim";
+Skipcomment_76047(P_78887, B_78889);
+F.line = 718;F.filename = "pbraces.nim";
+LOC10 = 0;
+LOC10 = Parsestmt_78016(P_78887);
+Addson_50823(B_78889, LOC10);
+F.line = 719;F.filename = "pbraces.nim";
+Addson_50823(Result_78888, B_78889);
+F.line = 720;F.filename = "pbraces.nim";
+if (!((*B_78889).Kind == ((NU8) 78))) goto LA12;
+F.line = 720;F.filename = "pbraces.nim";
 goto LA2;
 LA12: ;
 } LA2: ;
-return Result_76884;
+framePtr = framePtr->prev;
+return Result_78888;
 }
-N_NIMCALL(TY49523*, Parsetry_76906)(TY74011* P_76909) {
-TY49523* Result_76910;
-TY49523* B_76911;
-TY49523* LOC1;
-TY49523* LOC6;
-Result_76910 = 0;
-B_76911 = 0;
-Result_76910 = Newnodep_74052(((NU8) 93), (*P_76909));
-Gettok_74038(P_76909);
-Eat_74087(P_76909, ((NU8) 94));
-Skipcomment_74047(P_76909, Result_76910);
-LOC1 = Parsestmt_76016(P_76909);
-Addson_49821(Result_76910, LOC1);
-B_76911 = NIM_NIL;
+N_NIMCALL(TY50525*, Parsetry_78910)(TY76011* P_78913) {
+TY50525* Result_78914;
+TY50525* B_78915;
+TY50525* LOC1;
+TY50525* LOC6;
+volatile struct {TFrame* prev;NCSTRING procname;NI line;NCSTRING filename;NI len;
+} F;
+F.procname = "parseTry";
+F.prev = framePtr;
+F.filename = "rod/pbraces.nim";
+F.line = 0;
+framePtr = (TFrame*)&F;
+F.len = 0;
+Result_78914 = 0;
+B_78915 = 0;
+F.line = 724;F.filename = "pbraces.nim";
+Result_78914 = Newnodep_76052(((NU8) 93), (*P_78913));
+F.line = 725;F.filename = "pbraces.nim";
+Gettok_76038(P_78913);
+F.line = 726;F.filename = "pbraces.nim";
+Eat_76087(P_78913, ((NU8) 94));
+F.line = 727;F.filename = "pbraces.nim";
+Skipcomment_76047(P_78913, Result_78914);
+F.line = 728;F.filename = "pbraces.nim";
+LOC1 = 0;
+LOC1 = Parsestmt_78016(P_78913);
+Addson_50823(Result_78914, LOC1);
+F.line = 729;F.filename = "pbraces.nim";
+B_78915 = NIM_NIL;
+F.line = 730;F.filename = "pbraces.nim";
 while (1) {
-if (!((*(*P_76909).Tok).Toktype == ((NU8) 103))) goto LA4;
-Gettok_74038(P_76909);
+F.line = 731;F.filename = "pbraces.nim";
+if (!((*(*P_78913).Tok).Toktype == ((NU8) 103))) goto LA4;
+F.line = 731;F.filename = "pbraces.nim";
+Gettok_76038(P_78913);
 LA4: ;
-switch ((*(*P_76909).Tok).Toktype) {
+F.line = 732;F.filename = "pbraces.nim";
+switch ((*(*P_78913).Tok).Toktype) {
 case ((NU8) 23):
-B_76911 = Newnodep_74052(((NU8) 77), (*P_76909));
-Qualifiedidentlistaux_76213(P_76909, ((NU8) 94), B_76911);
+F.line = 734;F.filename = "pbraces.nim";
+B_78915 = Newnodep_76052(((NU8) 77), (*P_78913));
+F.line = 735;F.filename = "pbraces.nim";
+Qualifiedidentlistaux_78213(P_78913, ((NU8) 94), B_78915);
 break;
 case ((NU8) 24):
-B_76911 = Newnodep_74052(((NU8) 94), (*P_76909));
-Gettok_74038(P_76909);
-Eat_74087(P_76909, ((NU8) 94));
+F.line = 737;F.filename = "pbraces.nim";
+B_78915 = Newnodep_76052(((NU8) 94), (*P_78913));
+F.line = 738;F.filename = "pbraces.nim";
+Gettok_76038(P_78913);
+F.line = 739;F.filename = "pbraces.nim";
+Eat_76087(P_78913, ((NU8) 94));
 break;
 default:
+F.line = 740;F.filename = "pbraces.nim";
 goto LA2;
 break;
 }
-Skipcomment_74047(P_76909, B_76911);
-LOC6 = Parsestmt_76016(P_76909);
-Addson_49821(B_76911, LOC6);
-Addson_49821(Result_76910, B_76911);
-if (!((*B_76911).Kind == ((NU8) 94))) goto LA8;
+F.line = 741;F.filename = "pbraces.nim";
+Skipcomment_76047(P_78913, B_78915);
+F.line = 742;F.filename = "pbraces.nim";
+LOC6 = 0;
+LOC6 = Parsestmt_78016(P_78913);
+Addson_50823(B_78915, LOC6);
+F.line = 743;F.filename = "pbraces.nim";
+Addson_50823(Result_78914, B_78915);
+F.line = 744;F.filename = "pbraces.nim";
+if (!((*B_78915).Kind == ((NU8) 94))) goto LA8;
+F.line = 744;F.filename = "pbraces.nim";
 goto LA2;
 LA8: ;
 } LA2: ;
-if (!(B_76911 == NIM_NIL)) goto LA11;
-Parmessage_74042((*P_76909), ((NU8) 21), ((NimStringDesc*) &TMP190864));
+F.line = 745;F.filename = "pbraces.nim";
+if (!(B_78915 == NIM_NIL)) goto LA11;
+F.line = 745;F.filename = "pbraces.nim";
+Parmessage_76042((*P_78913), ((NU8) 21), ((NimStringDesc*) &TMP78946));
 LA11: ;
-return Result_76910;
+framePtr = framePtr->prev;
+return Result_78914;
 }
-N_NIMCALL(TY49523*, Parsefor_76942)(TY74011* P_76945) {
-TY49523* Result_76946;
-TY49523* A_76947;
-TY49523* LOC2;
-TY49523* LOC3;
-Result_76946 = 0;
-A_76947 = 0;
-Result_76946 = Newnodep_74052(((NU8) 84), (*P_76945));
-Gettok_74038(P_76945);
-Optind_74100(P_76945, Result_76946);
-A_76947 = Parsesymbol_74114(P_76945);
-Addson_49821(Result_76946, A_76947);
+N_NIMCALL(TY50525*, Parsefor_78947)(TY76011* P_78950) {
+TY50525* Result_78951;
+TY50525* A_78952;
+TY50525* LOC2;
+TY50525* LOC3;
+volatile struct {TFrame* prev;NCSTRING procname;NI line;NCSTRING filename;NI len;
+} F;
+F.procname = "parseFor";
+F.prev = framePtr;
+F.filename = "rod/pbraces.nim";
+F.line = 0;
+framePtr = (TFrame*)&F;
+F.len = 0;
+Result_78951 = 0;
+A_78952 = 0;
+F.line = 749;F.filename = "pbraces.nim";
+Result_78951 = Newnodep_76052(((NU8) 84), (*P_78950));
+F.line = 750;F.filename = "pbraces.nim";
+Gettok_76038(P_78950);
+F.line = 751;F.filename = "pbraces.nim";
+Optind_76100(P_78950, Result_78951);
+F.line = 752;F.filename = "pbraces.nim";
+A_78952 = Parsesymbol_76114(P_78950);
+F.line = 753;F.filename = "pbraces.nim";
+Addson_50823(Result_78951, A_78952);
+F.line = 754;F.filename = "pbraces.nim";
 while (1) {
-if (!((*(*P_76945).Tok).Toktype == ((NU8) 92))) goto LA1;
-Gettok_74038(P_76945);
-Optind_74100(P_76945, A_76947);
-A_76947 = Parsesymbol_74114(P_76945);
-Addson_49821(Result_76946, A_76947);
+if (!((*(*P_78950).Tok).Toktype == ((NU8) 92))) goto LA1;
+F.line = 755;F.filename = "pbraces.nim";
+Gettok_76038(P_78950);
+F.line = 756;F.filename = "pbraces.nim";
+Optind_76100(P_78950, A_78952);
+F.line = 757;F.filename = "pbraces.nim";
+A_78952 = Parsesymbol_76114(P_78950);
+F.line = 758;F.filename = "pbraces.nim";
+Addson_50823(Result_78951, A_78952);
 } LA1: ;
-Eat_74087(P_76945, ((NU8) 31));
-LOC2 = Exprcoloneqexpr_76144(P_76945, ((NU8) 35), ((NU8) 97));
-Addson_49821(Result_76946, LOC2);
-Eat_74087(P_76945, ((NU8) 94));
-Skipcomment_74047(P_76945, Result_76946);
-LOC3 = Parsestmt_76016(P_76945);
-Addson_49821(Result_76946, LOC3);
-return Result_76946;
+F.line = 759;F.filename = "pbraces.nim";
+Eat_76087(P_78950, ((NU8) 31));
+F.line = 760;F.filename = "pbraces.nim";
+LOC2 = 0;
+LOC2 = Exprcoloneqexpr_78144(P_78950, ((NU8) 35), ((NU8) 97));
+Addson_50823(Result_78951, LOC2);
+F.line = 761;F.filename = "pbraces.nim";
+Eat_76087(P_78950, ((NU8) 94));
+F.line = 762;F.filename = "pbraces.nim";
+Skipcomment_76047(P_78950, Result_78951);
+F.line = 763;F.filename = "pbraces.nim";
+LOC3 = 0;
+LOC3 = Parsestmt_78016(P_78950);
+Addson_50823(Result_78951, LOC3);
+framePtr = framePtr->prev;
+return Result_78951;
 }
-N_NIMCALL(TY49523*, Parseblock_76958)(TY74011* P_76961) {
-TY49523* Result_76962;
-TY49523* LOC1;
-TY49523* LOC2;
-Result_76962 = 0;
-Result_76962 = Newnodep_74052(((NU8) 99), (*P_76961));
-Gettok_74038(P_76961);
-Optind_74100(P_76961, Result_76962);
-switch ((*(*P_76961).Tok).Toktype) {
+N_NIMCALL(TY50525*, Parseblock_78963)(TY76011* P_78966) {
+TY50525* Result_78967;
+TY50525* LOC1;
+TY50525* LOC2;
+volatile struct {TFrame* prev;NCSTRING procname;NI line;NCSTRING filename;NI len;
+} F;
+F.procname = "parseBlock";
+F.prev = framePtr;
+F.filename = "rod/pbraces.nim";
+F.line = 0;
+framePtr = (TFrame*)&F;
+F.len = 0;
+Result_78967 = 0;
+F.line = 766;F.filename = "pbraces.nim";
+Result_78967 = Newnodep_76052(((NU8) 99), (*P_78966));
+F.line = 767;F.filename = "pbraces.nim";
+Gettok_76038(P_78966);
+F.line = 768;F.filename = "pbraces.nim";
+Optind_76100(P_78966, Result_78967);
+F.line = 769;F.filename = "pbraces.nim";
+switch ((*(*P_78966).Tok).Toktype) {
 case ((NU8) 1):
 case ((NU8) 103):
 case ((NU8) 104):
 case ((NU8) 94):
-Addson_49821(Result_76962, NIM_NIL);
+F.line = 770;F.filename = "pbraces.nim";
+Addson_50823(Result_78967, NIM_NIL);
 break;
 default:
-LOC1 = Parsesymbol_74114(P_76961);
-Addson_49821(Result_76962, LOC1);
+F.line = 771;F.filename = "pbraces.nim";
+LOC1 = 0;
+LOC1 = Parsesymbol_76114(P_78966);
+Addson_50823(Result_78967, LOC1);
 break;
 }
-Eat_74087(P_76961, ((NU8) 94));
-Skipcomment_74047(P_76961, Result_76962);
-LOC2 = Parsestmt_76016(P_76961);
-Addson_49821(Result_76962, LOC2);
-return Result_76962;
+F.line = 772;F.filename = "pbraces.nim";
+Eat_76087(P_78966, ((NU8) 94));
+F.line = 773;F.filename = "pbraces.nim";
+Skipcomment_76047(P_78966, Result_78967);
+F.line = 774;F.filename = "pbraces.nim";
+LOC2 = 0;
+LOC2 = Parsestmt_78016(P_78966);
+Addson_50823(Result_78967, LOC2);
+framePtr = framePtr->prev;
+return Result_78967;
 }
-N_NIMCALL(TY49523*, Parseasm_76963)(TY74011* P_76966) {
-TY49523* Result_76967;
-TY49523* LOC4;
-TY49523* LOC5;
-TY49523* LOC6;
-TY49523* LOC7;
-Result_76967 = 0;
-Result_76967 = Newnodep_74052(((NU8) 80), (*P_76966));
-Gettok_74038(P_76966);
-Optind_74100(P_76966, Result_76967);
-if (!((*(*P_76966).Tok).Toktype == ((NU8) 88))) goto LA2;
-LOC4 = Parsepragma_76397(P_76966);
-Addson_49821(Result_76967, LOC4);
+N_NIMCALL(TY50525*, Parseasm_78968)(TY76011* P_78971) {
+TY50525* Result_78972;
+TY50525* LOC4;
+TY50525* LOC5;
+TY50525* LOC6;
+TY50525* LOC7;
+volatile struct {TFrame* prev;NCSTRING procname;NI line;NCSTRING filename;NI len;
+} F;
+F.procname = "parseAsm";
+F.prev = framePtr;
+F.filename = "rod/pbraces.nim";
+F.line = 0;
+framePtr = (TFrame*)&F;
+F.len = 0;
+Result_78972 = 0;
+F.line = 777;F.filename = "pbraces.nim";
+Result_78972 = Newnodep_76052(((NU8) 80), (*P_78971));
+F.line = 778;F.filename = "pbraces.nim";
+Gettok_76038(P_78971);
+F.line = 779;F.filename = "pbraces.nim";
+Optind_76100(P_78971, Result_78972);
+F.line = 780;F.filename = "pbraces.nim";
+if (!((*(*P_78971).Tok).Toktype == ((NU8) 88))) goto LA2;
+F.line = 780;F.filename = "pbraces.nim";
+LOC4 = 0;
+LOC4 = Parsepragma_78397(P_78971);
+Addson_50823(Result_78972, LOC4);
 goto LA1;
 LA2: ;
-Addson_49821(Result_76967, NIM_NIL);
+F.line = 781;F.filename = "pbraces.nim";
+Addson_50823(Result_78972, NIM_NIL);
 LA1: ;
-switch ((*(*P_76966).Tok).Toktype) {
+F.line = 782;F.filename = "pbraces.nim";
+switch ((*(*P_78971).Tok).Toktype) {
 case ((NU8) 74):
-LOC5 = Newstrnodep_74066(((NU8) 14), (*(*P_76966).Tok).Literal, (*P_76966));
-Addson_49821(Result_76967, LOC5);
+F.line = 783;F.filename = "pbraces.nim";
+LOC5 = 0;
+LOC5 = Newstrnodep_76066(((NU8) 14), (*(*P_78971).Tok).Literal, (*P_78971));
+Addson_50823(Result_78972, LOC5);
 break;
 case ((NU8) 75):
-LOC6 = Newstrnodep_74066(((NU8) 15), (*(*P_76966).Tok).Literal, (*P_76966));
-Addson_49821(Result_76967, LOC6);
+F.line = 784;F.filename = "pbraces.nim";
+LOC6 = 0;
+LOC6 = Newstrnodep_76066(((NU8) 15), (*(*P_78971).Tok).Literal, (*P_78971));
+Addson_50823(Result_78972, LOC6);
 break;
 case ((NU8) 76):
-LOC7 = Newstrnodep_74066(((NU8) 16), (*(*P_76966).Tok).Literal, (*P_76966));
-Addson_49821(Result_76967, LOC7);
+F.line = 785;F.filename = "pbraces.nim";
+LOC7 = 0;
+LOC7 = Newstrnodep_76066(((NU8) 16), (*(*P_78971).Tok).Literal, (*P_78971));
+Addson_50823(Result_78972, LOC7);
 break;
 default:
-Parmessage_74042((*P_76966), ((NU8) 6), ((NimStringDesc*) &TMP190863));
-Addson_49821(Result_76967, NIM_NIL);
+F.line = 788;F.filename = "pbraces.nim";
+Parmessage_76042((*P_78971), ((NU8) 6), ((NimStringDesc*) &TMP78982));
+F.line = 789;F.filename = "pbraces.nim";
+Addson_50823(Result_78972, NIM_NIL);
+F.line = 790;F.filename = "pbraces.nim";
 goto BeforeRet;
 break;
 }
-Gettok_74038(P_76966);
+F.line = 791;F.filename = "pbraces.nim";
+Gettok_76038(P_78971);
 BeforeRet: ;
-return Result_76967;
+framePtr = framePtr->prev;
+return Result_78972;
 }
-N_NIMCALL(TY49523*, Parsegenericparamlist_76977)(TY74011* P_76980) {
-TY49523* Result_76981;
-TY49523* A_76982;
+N_NIMCALL(TY50525*, Parsegenericparamlist_78983)(TY76011* P_78986) {
+TY50525* Result_78987;
+TY50525* A_78988;
 NIM_BOOL LOC2;
-Result_76981 = 0;
-A_76982 = 0;
-Result_76981 = Newnodep_74052(((NU8) 65), (*P_76980));
-Gettok_74038(P_76980);
-Optind_74100(P_76980, Result_76981);
+volatile struct {TFrame* prev;NCSTRING procname;NI line;NCSTRING filename;NI len;
+} F;
+F.procname = "parseGenericParamList";
+F.prev = framePtr;
+F.filename = "rod/pbraces.nim";
+F.line = 0;
+framePtr = (TFrame*)&F;
+F.len = 0;
+Result_78987 = 0;
+A_78988 = 0;
+F.line = 795;F.filename = "pbraces.nim";
+Result_78987 = Newnodep_76052(((NU8) 65), (*P_78986));
+F.line = 796;F.filename = "pbraces.nim";
+Gettok_76038(P_78986);
+F.line = 797;F.filename = "pbraces.nim";
+Optind_76100(P_78986, Result_78987);
+F.line = 798;F.filename = "pbraces.nim";
 while (1) {
-LOC2 = ((*(*P_76980).Tok).Toktype == ((NU8) 2));
+LOC2 = ((*(*P_78986).Tok).Toktype == ((NU8) 2));
 if (LOC2) goto LA3;
-LOC2 = ((*(*P_76980).Tok).Toktype == ((NU8) 101));
+LOC2 = ((*(*P_78986).Tok).Toktype == ((NU8) 101));
 LA3: ;
 if (!LOC2) goto LA1;
-A_76982 = Parseidentcolonequals_76503(P_76980, 2);
-Addson_49821(Result_76981, A_76982);
-if (!!(((*(*P_76980).Tok).Toktype == ((NU8) 92)))) goto LA5;
+F.line = 799;F.filename = "pbraces.nim";
+A_78988 = Parseidentcolonequals_78504(P_78986, 2);
+F.line = 800;F.filename = "pbraces.nim";
+Addson_50823(Result_78987, A_78988);
+F.line = 801;F.filename = "pbraces.nim";
+if (!!(((*(*P_78986).Tok).Toktype == ((NU8) 92)))) goto LA5;
+F.line = 801;F.filename = "pbraces.nim";
 goto LA1;
 LA5: ;
-Gettok_74038(P_76980);
-Optind_74100(P_76980, A_76982);
+F.line = 802;F.filename = "pbraces.nim";
+Gettok_76038(P_78986);
+F.line = 803;F.filename = "pbraces.nim";
+Optind_76100(P_78986, A_78988);
 } LA1: ;
-Optpar_74096(P_76980);
-Eat_74087(P_76980, ((NU8) 83));
-return Result_76981;
+F.line = 804;F.filename = "pbraces.nim";
+Optpar_76096(P_78986);
+F.line = 805;F.filename = "pbraces.nim";
+Eat_76087(P_78986, ((NU8) 83));
+framePtr = framePtr->prev;
+return Result_78987;
 }
-N_NIMCALL(TY49523*, Parseroutine_77012)(TY74011* P_77015, NU8 Kind_77016) {
-TY49523* Result_77017;
-TY49523* LOC1;
-TY49523* LOC5;
-TY49523* LOC6;
-TY49523* LOC10;
-TY49523* LOC14;
-Result_77017 = 0;
-Result_77017 = Newnodep_74052(Kind_77016, (*P_77015));
-Gettok_74038(P_77015);
-Optind_74100(P_77015, Result_77017);
-LOC1 = Identvis_76467(P_77015);
-Addson_49821(Result_77017, LOC1);
-if (!((*(*P_77015).Tok).Toktype == ((NU8) 82))) goto LA3;
-LOC5 = Parsegenericparamlist_76977(P_77015);
-Addson_49821(Result_77017, LOC5);
+N_NIMCALL(TY50525*, Parseroutine_79018)(TY76011* P_79021, NU8 Kind_79022) {
+TY50525* Result_79023;
+TY50525* LOC1;
+TY50525* LOC5;
+TY50525* LOC6;
+TY50525* LOC10;
+TY50525* LOC14;
+volatile struct {TFrame* prev;NCSTRING procname;NI line;NCSTRING filename;NI len;
+} F;
+F.procname = "parseRoutine";
+F.prev = framePtr;
+F.filename = "rod/pbraces.nim";
+F.line = 0;
+framePtr = (TFrame*)&F;
+F.len = 0;
+Result_79023 = 0;
+F.line = 808;F.filename = "pbraces.nim";
+Result_79023 = Newnodep_76052(Kind_79022, (*P_79021));
+F.line = 809;F.filename = "pbraces.nim";
+Gettok_76038(P_79021);
+F.line = 810;F.filename = "pbraces.nim";
+Optind_76100(P_79021, Result_79023);
+F.line = 811;F.filename = "pbraces.nim";
+LOC1 = 0;
+LOC1 = Identvis_78468(P_79021);
+Addson_50823(Result_79023, LOC1);
+F.line = 812;F.filename = "pbraces.nim";
+if (!((*(*P_79021).Tok).Toktype == ((NU8) 82))) goto LA3;
+F.line = 812;F.filename = "pbraces.nim";
+LOC5 = 0;
+LOC5 = Parsegenericparamlist_78983(P_79021);
+Addson_50823(Result_79023, LOC5);
 goto LA2;
 LA3: ;
-Addson_49821(Result_77017, NIM_NIL);
+F.line = 813;F.filename = "pbraces.nim";
+Addson_50823(Result_79023, NIM_NIL);
 LA2: ;
-LOC6 = Parseparamlist_76024(P_77015);
-Addson_49821(Result_77017, LOC6);
-if (!((*(*P_77015).Tok).Toktype == ((NU8) 88))) goto LA8;
-LOC10 = Parsepragma_76397(P_77015);
-Addson_49821(Result_77017, LOC10);
+F.line = 814;F.filename = "pbraces.nim";
+LOC6 = 0;
+LOC6 = Parseparamlist_78024(P_79021);
+Addson_50823(Result_79023, LOC6);
+F.line = 815;F.filename = "pbraces.nim";
+if (!((*(*P_79021).Tok).Toktype == ((NU8) 88))) goto LA8;
+F.line = 815;F.filename = "pbraces.nim";
+LOC10 = 0;
+LOC10 = Parsepragma_78397(P_79021);
+Addson_50823(Result_79023, LOC10);
 goto LA7;
 LA8: ;
-Addson_49821(Result_77017, NIM_NIL);
+F.line = 816;F.filename = "pbraces.nim";
+Addson_50823(Result_79023, NIM_NIL);
 LA7: ;
-if (!((*(*P_77015).Tok).Toktype == ((NU8) 95))) goto LA12;
-Gettok_74038(P_77015);
-Skipcomment_74047(P_77015, Result_77017);
-LOC14 = Parsestmt_76016(P_77015);
-Addson_49821(Result_77017, LOC14);
+F.line = 817;F.filename = "pbraces.nim";
+if (!((*(*P_79021).Tok).Toktype == ((NU8) 95))) goto LA12;
+F.line = 818;F.filename = "pbraces.nim";
+Gettok_76038(P_79021);
+F.line = 819;F.filename = "pbraces.nim";
+Skipcomment_76047(P_79021, Result_79023);
+F.line = 820;F.filename = "pbraces.nim";
+LOC14 = 0;
+LOC14 = Parsestmt_78016(P_79021);
+Addson_50823(Result_79023, LOC14);
 goto LA11;
 LA12: ;
-Addson_49821(Result_77017, NIM_NIL);
+F.line = 822;F.filename = "pbraces.nim";
+Addson_50823(Result_79023, NIM_NIL);
 LA11: ;
-Indandcomment_74105(P_77015, Result_77017);
-return Result_77017;
+F.line = 823;F.filename = "pbraces.nim";
+Indandcomment_76105(P_79021, Result_79023);
+framePtr = framePtr->prev;
+return Result_79023;
 }
-N_NIMCALL(TY49523*, Parseconstant_77066)(TY74011* P_77069) {
-TY49523* Result_77070;
-TY49523* LOC1;
-TY49523* LOC5;
-TY49523* LOC6;
-Result_77070 = 0;
-Result_77070 = Newnodep_74052(((NU8) 89), (*P_77069));
-LOC1 = Identwithpragma_76482(P_77069);
-Addson_49821(Result_77070, LOC1);
-if (!((*(*P_77069).Tok).Toktype == ((NU8) 94))) goto LA3;
-Gettok_74038(P_77069);
-Optind_74100(P_77069, Result_77070);
-LOC5 = Parsetypedesc_76020(P_77069);
-Addson_49821(Result_77070, LOC5);
-goto LA2;
-LA3: ;
-Addson_49821(Result_77070, NIM_NIL);
-LA2: ;
-Eat_74087(P_77069, ((NU8) 95));
-Optind_74100(P_77069, Result_77070);
-LOC6 = Parseexpr_76012(P_77069);
-Addson_49821(Result_77070, LOC6);
-Indandcomment_74105(P_77069, Result_77070);
-return Result_77070;
+N_NIMCALL(TY50525*, Newcommentstmt_79051)(TY76011* P_79054) {
+TY50525* Result_79055;
+volatile struct {TFrame* prev;NCSTRING procname;NI line;NCSTRING filename;NI len;
+} F;
+F.procname = "newCommentStmt";
+F.prev = framePtr;
+F.filename = "rod/pbraces.nim";
+F.line = 0;
+framePtr = (TFrame*)&F;
+F.len = 0;
+Result_79055 = 0;
+F.line = 826;F.filename = "pbraces.nim";
+Result_79055 = Newnodep_76052(((NU8) 105), (*P_79054));
+F.line = 827;F.filename = "pbraces.nim";
+(*Result_79055).Info.Line = ((NI)((*Result_79055).Info.Line) - (NI)(((NI16) 1)));
+if ((*Result_79055).Info.Line < -32768 || (*Result_79055).Info.Line > 32767) raiseOverflow();
+framePtr = framePtr->prev;
+return Result_79055;
 }
-N_NIMCALL(TY49523*, Parseconstsection_77080)(TY74011* P_77083) {
-TY49523* Result_77084;
-NIM_BOOL LOC5;
-TY49523* LOC7;
-TY49523* LOC8;
-Result_77084 = 0;
-Result_77084 = Newnodep_74052(((NU8) 88), (*P_77083));
-Gettok_74038(P_77083);
-Skipcomment_74047(P_77083, Result_77084);
-if (!((*(*P_77083).Tok).Toktype == ((NU8) 84))) goto LA2;
-Gettok_74038(P_77083);
-Skipcomment_74047(P_77083, Result_77084);
-while (1) {
-LOC5 = !(((*(*P_77083).Tok).Toktype == ((NU8) 85)));
-if (!(LOC5)) goto LA6;
-LOC5 = !(((*(*P_77083).Tok).Toktype == ((NU8) 1)));
-LA6: ;
-if (!LOC5) goto LA4;
-LOC7 = Parseconstant_77066(P_77083);
-Addson_49821(Result_77084, LOC7);
-} LA4: ;
-Eat_74087(P_77083, ((NU8) 85));
-goto LA1;
-LA2: ;
-LOC8 = Parseconstant_77066(P_77083);
-Addson_49821(Result_77084, LOC8);
-LA1: ;
-return Result_77084;
-}
-N_NIMCALL(TY49523*, Parsesection_77055)(TY74011* P_77058, NU8 Kind_77059, TY77051 Defparser_77060) {
-TY49523* Result_77061;
-TY49523* A_77062;
+N_NIMCALL(TY50525*, Parsesection_79061)(TY76011* P_79064, NU8 Kind_79065, TY79057 Defparser_79066) {
+TY50525* Result_79067;
+TY50525* A_79068;
 NimStringDesc* LOC2;
-TY49523* LOC3;
+TY50525* LOC3;
 NimStringDesc* LOC4;
-Result_77061 = 0;
-A_77062 = 0;
-Result_77061 = Newnodep_74052(Kind_77059, (*P_77058));
-Gettok_74038(P_77058);
-Skipcomment_74047(P_77058, Result_77061);
-switch ((*(*P_77058).Tok).Toktype) {
+volatile struct {TFrame* prev;NCSTRING procname;NI line;NCSTRING filename;NI len;
+} F;
+F.procname = "parseSection";
+F.prev = framePtr;
+F.filename = "rod/pbraces.nim";
+F.line = 0;
+framePtr = (TFrame*)&F;
+F.len = 0;
+Result_79067 = 0;
+A_79068 = 0;
+F.line = 834;F.filename = "pbraces.nim";
+Result_79067 = Newnodep_76052(Kind_79065, (*P_79064));
+F.line = 835;F.filename = "pbraces.nim";
+Gettok_76038(P_79064);
+F.line = 836;F.filename = "pbraces.nim";
+Skipcomment_76047(P_79064, Result_79067);
+F.line = 837;F.filename = "pbraces.nim";
+switch ((*(*P_79064).Tok).Toktype) {
 case ((NU8) 102):
-Pushind_70286((*P_77058).Lex, (*(*P_77058).Tok).Indent);
-Gettok_74038(P_77058);
-Skipcomment_74047(P_77058, Result_77061);
+F.line = 839;F.filename = "pbraces.nim";
+Pushind_72286((*P_79064).Lex, (*(*P_79064).Tok).Indent);
+F.line = 840;F.filename = "pbraces.nim";
+Gettok_76038(P_79064);
+F.line = 841;F.filename = "pbraces.nim";
+Skipcomment_76047(P_79064, Result_79067);
+F.line = 842;F.filename = "pbraces.nim";
 while (1) {
-switch ((*(*P_77058).Tok).Toktype) {
+F.line = 843;F.filename = "pbraces.nim";
+switch ((*(*P_79064).Tok).Toktype) {
 case ((NU8) 103):
-Gettok_74038(P_77058);
+F.line = 845;F.filename = "pbraces.nim";
+Gettok_76038(P_79064);
 break;
 case ((NU8) 2):
 case ((NU8) 101):
-A_77062 = Defparser_77060(P_77058);
-Skipcomment_74047(P_77058, A_77062);
-Addson_49821(Result_77061, A_77062);
+F.line = 847;F.filename = "pbraces.nim";
+A_79068 = Defparser_79066(P_79064);
+F.line = 848;F.filename = "pbraces.nim";
+Skipcomment_76047(P_79064, A_79068);
+F.line = 849;F.filename = "pbraces.nim";
+Addson_50823(Result_79067, A_79068);
 break;
 case ((NU8) 104):
-Gettok_74038(P_77058);
+F.line = 851;F.filename = "pbraces.nim";
+Gettok_76038(P_79064);
+F.line = 852;F.filename = "pbraces.nim";
 goto LA1;
 break;
 case ((NU8) 1):
+F.line = 854;F.filename = "pbraces.nim";
 goto LA1;
 break;
 case ((NU8) 100):
-A_77062 = Newcommentstmt_77045(P_77058);
-Skipcomment_74047(P_77058, A_77062);
-Addson_49821(Result_77061, A_77062);
+F.line = 856;F.filename = "pbraces.nim";
+A_79068 = Newcommentstmt_79051(P_79064);
+F.line = 857;F.filename = "pbraces.nim";
+Skipcomment_76047(P_79064, A_79068);
+F.line = 858;F.filename = "pbraces.nim";
+Addson_50823(Result_79067, A_79068);
 break;
 default:
-LOC2 = Toktostr_70323((*P_77058).Tok);
-Parmessage_74042((*P_77058), ((NU8) 19), LOC2);
+F.line = 860;F.filename = "pbraces.nim";
+LOC2 = 0;
+LOC2 = Toktostr_72323((*P_79064).Tok);
+Parmessage_76042((*P_79064), ((NU8) 19), LOC2);
+F.line = 861;F.filename = "pbraces.nim";
 goto LA1;
 break;
 }
 } LA1: ;
-Popind_70291((*P_77058).Lex);
+F.line = 862;F.filename = "pbraces.nim";
+Popind_72291((*P_79064).Lex);
 break;
 case ((NU8) 2):
 case ((NU8) 101):
 case ((NU8) 80):
-LOC3 = Defparser_77060(P_77058);
-Addson_49821(Result_77061, LOC3);
+F.line = 865;F.filename = "pbraces.nim";
+LOC3 = 0;
+LOC3 = Defparser_79066(P_79064);
+Addson_50823(Result_79067, LOC3);
 break;
 default:
-LOC4 = Toktostr_70323((*P_77058).Tok);
-Parmessage_74042((*P_77058), ((NU8) 19), LOC4);
+F.line = 866;F.filename = "pbraces.nim";
+LOC4 = 0;
+LOC4 = Toktostr_72323((*P_79064).Tok);
+Parmessage_76042((*P_79064), ((NU8) 19), LOC4);
 break;
 }
-return Result_77061;
+framePtr = framePtr->prev;
+return Result_79067;
 }
-N_NIMCALL(TY49523*, Parsevartuple_77265)(TY74011* P_77268) {
-TY49523* Result_77269;
-TY49523* A_77270;
-NIM_BOOL LOC2;
-TY49523* LOC7;
-Result_77269 = 0;
-A_77270 = 0;
-Result_77269 = Newnodep_74052(((NU8) 26), (*P_77268));
-Gettok_74038(P_77268);
-Optind_74100(P_77268, Result_77269);
-while (1) {
-LOC2 = ((*(*P_77268).Tok).Toktype == ((NU8) 2));
-if (LOC2) goto LA3;
-LOC2 = ((*(*P_77268).Tok).Toktype == ((NU8) 101));
+N_NIMCALL(TY50525*, Parseconstant_79072)(TY76011* P_79075) {
+TY50525* Result_79076;
+TY50525* LOC1;
+TY50525* LOC5;
+TY50525* LOC6;
+volatile struct {TFrame* prev;NCSTRING procname;NI line;NCSTRING filename;NI len;
+} F;
+F.procname = "parseConstant";
+F.prev = framePtr;
+F.filename = "rod/pbraces.nim";
+F.line = 0;
+framePtr = (TFrame*)&F;
+F.len = 0;
+Result_79076 = 0;
+F.line = 869;F.filename = "pbraces.nim";
+Result_79076 = Newnodep_76052(((NU8) 89), (*P_79075));
+F.line = 870;F.filename = "pbraces.nim";
+LOC1 = 0;
+LOC1 = Identwithpragma_78483(P_79075);
+Addson_50823(Result_79076, LOC1);
+F.line = 871;F.filename = "pbraces.nim";
+if (!((*(*P_79075).Tok).Toktype == ((NU8) 94))) goto LA3;
+F.line = 872;F.filename = "pbraces.nim";
+Gettok_76038(P_79075);
+F.line = 873;F.filename = "pbraces.nim";
+Optind_76100(P_79075, Result_79076);
+F.line = 874;F.filename = "pbraces.nim";
+LOC5 = 0;
+LOC5 = Parsetypedesc_78020(P_79075);
+Addson_50823(Result_79076, LOC5);
+goto LA2;
 LA3: ;
-if (!LOC2) goto LA1;
-A_77270 = Identwithpragma_76482(P_77268);
-Addson_49821(Result_77269, A_77270);
-if (!!(((*(*P_77268).Tok).Toktype == ((NU8) 92)))) goto LA5;
-goto LA1;
-LA5: ;
-Gettok_74038(P_77268);
-Optind_74100(P_77268, A_77270);
-} LA1: ;
-Addson_49821(Result_77269, NIM_NIL);
-Optpar_74096(P_77268);
-Eat_74087(P_77268, ((NU8) 81));
-Eat_74087(P_77268, ((NU8) 95));
-Optind_74100(P_77268, Result_77269);
-LOC7 = Parseexpr_76012(P_77268);
-Addson_49821(Result_77269, LOC7);
-return Result_77269;
+F.line = 876;F.filename = "pbraces.nim";
+Addson_50823(Result_79076, NIM_NIL);
+LA2: ;
+F.line = 877;F.filename = "pbraces.nim";
+Eat_76087(P_79075, ((NU8) 95));
+F.line = 878;F.filename = "pbraces.nim";
+Optind_76100(P_79075, Result_79076);
+F.line = 879;F.filename = "pbraces.nim";
+LOC6 = 0;
+LOC6 = Parseexpr_78012(P_79075);
+Addson_50823(Result_79076, LOC6);
+F.line = 880;F.filename = "pbraces.nim";
+Indandcomment_76105(P_79075, Result_79076);
+framePtr = framePtr->prev;
+return Result_79076;
 }
-N_NIMCALL(TY49523*, Parsevariable_77299)(TY74011* P_77302) {
-TY49523* Result_77303;
-Result_77303 = 0;
-if (!((*(*P_77302).Tok).Toktype == ((NU8) 80))) goto LA2;
-Result_77303 = Parsevartuple_77265(P_77302);
+N_NIMCALL(TY50525*, Parseconstsection_79086)(TY76011* P_79089) {
+TY50525* Result_79090;
+NIM_BOOL LOC5;
+TY50525* LOC7;
+TY50525* LOC8;
+volatile struct {TFrame* prev;NCSTRING procname;NI line;NCSTRING filename;NI len;
+} F;
+F.procname = "parseConstSection";
+F.prev = framePtr;
+F.filename = "rod/pbraces.nim";
+F.line = 0;
+framePtr = (TFrame*)&F;
+F.len = 0;
+Result_79090 = 0;
+F.line = 883;F.filename = "pbraces.nim";
+Result_79090 = Newnodep_76052(((NU8) 88), (*P_79089));
+F.line = 884;F.filename = "pbraces.nim";
+Gettok_76038(P_79089);
+F.line = 885;F.filename = "pbraces.nim";
+Skipcomment_76047(P_79089, Result_79090);
+F.line = 886;F.filename = "pbraces.nim";
+if (!((*(*P_79089).Tok).Toktype == ((NU8) 84))) goto LA2;
+F.line = 887;F.filename = "pbraces.nim";
+Gettok_76038(P_79089);
+F.line = 888;F.filename = "pbraces.nim";
+Skipcomment_76047(P_79089, Result_79090);
+F.line = 889;F.filename = "pbraces.nim";
+while (1) {
+LOC5 = !(((*(*P_79089).Tok).Toktype == ((NU8) 85)));
+if (!(LOC5)) goto LA6;
+LOC5 = !(((*(*P_79089).Tok).Toktype == ((NU8) 1)));
+LA6: ;
+if (!LOC5) goto LA4;
+F.line = 890;F.filename = "pbraces.nim";
+LOC7 = 0;
+LOC7 = Parseconstant_79072(P_79089);
+Addson_50823(Result_79090, LOC7);
+} LA4: ;
+F.line = 891;F.filename = "pbraces.nim";
+Eat_76087(P_79089, ((NU8) 85));
 goto LA1;
 LA2: ;
-Result_77303 = Parseidentcolonequals_76503(P_77302, 1);
+F.line = 893;F.filename = "pbraces.nim";
+LOC8 = 0;
+LOC8 = Parseconstant_79072(P_79089);
+Addson_50823(Result_79090, LOC8);
 LA1: ;
-Indandcomment_74105(P_77302, Result_77303);
-return Result_77303;
+framePtr = framePtr->prev;
+return Result_79090;
 }
-N_NIMCALL(TY49523*, Complexorsimplestmt_77336)(TY74011* P_77339) {
-TY49523* Result_77340;
-Result_77340 = 0;
-switch ((*(*P_77339).Tok).Toktype) {
-case ((NU8) 28):
-Result_77340 = Parseiforwhen_76849(P_77339, ((NU8) 82));
+N_NIMCALL(TY50525*, Parseenum_79119)(TY76011* P_79122) {
+TY50525* Result_79123;
+TY50525* A_79124;
+TY50525* B_79125;
+TY50525* LOC4;
+TY50525* LOC9;
+volatile struct {TFrame* prev;NCSTRING procname;NI line;NCSTRING filename;NI len;
+} F;
+F.procname = "parseEnum";
+F.prev = framePtr;
+F.filename = "rod/pbraces.nim";
+F.line = 0;
+framePtr = (TFrame*)&F;
+F.len = 0;
+Result_79123 = 0;
+A_79124 = 0;
+B_79125 = 0;
+F.line = 897;F.filename = "pbraces.nim";
+Result_79123 = Newnodep_76052(((NU8) 121), (*P_79122));
+F.line = 898;F.filename = "pbraces.nim";
+A_79124 = NIM_NIL;
+F.line = 899;F.filename = "pbraces.nim";
+Gettok_76038(P_79122);
+F.line = 900;F.filename = "pbraces.nim";
+Optind_76100(P_79122, Result_79123);
+F.line = 901;F.filename = "pbraces.nim";
+if (!((*(*P_79122).Tok).Toktype == ((NU8) 45))) goto LA2;
+F.line = 902;F.filename = "pbraces.nim";
+A_79124 = Newnodep_76052(((NU8) 67), (*P_79122));
+F.line = 903;F.filename = "pbraces.nim";
+Gettok_76038(P_79122);
+F.line = 904;F.filename = "pbraces.nim";
+Optind_76100(P_79122, A_79124);
+F.line = 905;F.filename = "pbraces.nim";
+LOC4 = 0;
+LOC4 = Parsetypedesc_78020(P_79122);
+Addson_50823(A_79124, LOC4);
+F.line = 906;F.filename = "pbraces.nim";
+Addson_50823(Result_79123, A_79124);
+goto LA1;
+LA2: ;
+F.line = 908;F.filename = "pbraces.nim";
+Addson_50823(Result_79123, NIM_NIL);
+LA1: ;
+F.line = 909;F.filename = "pbraces.nim";
+while (1) {
+F.line = 910;F.filename = "pbraces.nim";
+switch ((*(*P_79122).Tok).Toktype) {
+case ((NU8) 1):
+case ((NU8) 103):
+case ((NU8) 104):
+F.line = 911;F.filename = "pbraces.nim";
+goto LA5;
 break;
-case ((NU8) 61):
-Result_77340 = Parsewhile_76875(P_77339);
+default:
+F.line = 912;F.filename = "pbraces.nim";
+A_79124 = Parsesymbol_76114(P_79122);
+break;
+}
+F.line = 913;F.filename = "pbraces.nim";
+Optind_76100(P_79122, A_79124);
+F.line = 914;F.filename = "pbraces.nim";
+if (!((*(*P_79122).Tok).Toktype == ((NU8) 95))) goto LA7;
+F.line = 915;F.filename = "pbraces.nim";
+Gettok_76038(P_79122);
+F.line = 916;F.filename = "pbraces.nim";
+Optind_76100(P_79122, A_79124);
+F.line = 917;F.filename = "pbraces.nim";
+B_79125 = A_79124;
+F.line = 918;F.filename = "pbraces.nim";
+A_79124 = Newnodep_76052(((NU8) 122), (*P_79122));
+F.line = 919;F.filename = "pbraces.nim";
+Addson_50823(A_79124, B_79125);
+F.line = 920;F.filename = "pbraces.nim";
+LOC9 = 0;
+LOC9 = Parseexpr_78012(P_79122);
+Addson_50823(A_79124, LOC9);
+F.line = 921;F.filename = "pbraces.nim";
+Skipcomment_76047(P_79122, A_79124);
+LA7: ;
+F.line = 922;F.filename = "pbraces.nim";
+if (!((*(*P_79122).Tok).Toktype == ((NU8) 92))) goto LA11;
+F.line = 923;F.filename = "pbraces.nim";
+Gettok_76038(P_79122);
+F.line = 924;F.filename = "pbraces.nim";
+Optind_76100(P_79122, A_79124);
+LA11: ;
+F.line = 925;F.filename = "pbraces.nim";
+Addson_50823(Result_79123, A_79124);
+} LA5: ;
+framePtr = framePtr->prev;
+return Result_79123;
+}
+N_NIMCALL(TY50525*, Parseobjectwhen_79158)(TY76011* P_79161) {
+TY50525* Result_79162;
+TY50525* Branch_79163;
+TY50525* LOC2;
+TY50525* LOC3;
+TY50525* LOC10;
+volatile struct {TFrame* prev;NCSTRING procname;NI line;NCSTRING filename;NI len;
+} F;
+F.procname = "parseObjectWhen";
+F.prev = framePtr;
+F.filename = "rod/pbraces.nim";
+F.line = 0;
+framePtr = (TFrame*)&F;
+F.len = 0;
+Result_79162 = 0;
+Branch_79163 = 0;
+F.line = 930;F.filename = "pbraces.nim";
+Result_79162 = Newnodep_76052(((NU8) 115), (*P_79161));
+F.line = 931;F.filename = "pbraces.nim";
+while (1) {
+F.line = 932;F.filename = "pbraces.nim";
+Gettok_76038(P_79161);
+F.line = 933;F.filename = "pbraces.nim";
+Branch_79163 = Newnodep_76052(((NU8) 76), (*P_79161));
+F.line = 934;F.filename = "pbraces.nim";
+Optind_76100(P_79161, Branch_79163);
+F.line = 935;F.filename = "pbraces.nim";
+LOC2 = 0;
+LOC2 = Parseexpr_78012(P_79161);
+Addson_50823(Branch_79163, LOC2);
+F.line = 936;F.filename = "pbraces.nim";
+Eat_76087(P_79161, ((NU8) 94));
+F.line = 937;F.filename = "pbraces.nim";
+Skipcomment_76047(P_79161, Branch_79163);
+F.line = 938;F.filename = "pbraces.nim";
+LOC3 = 0;
+LOC3 = Parseobjectpart_79154(P_79161);
+Addson_50823(Branch_79163, LOC3);
+F.line = 939;F.filename = "pbraces.nim";
+Skipcomment_76047(P_79161, Branch_79163);
+F.line = 940;F.filename = "pbraces.nim";
+Addson_50823(Result_79162, Branch_79163);
+F.line = 941;F.filename = "pbraces.nim";
+if (!!(((*(*P_79161).Tok).Toktype == ((NU8) 19)))) goto LA5;
+F.line = 941;F.filename = "pbraces.nim";
+goto LA1;
+LA5: ;
+} LA1: ;
+F.line = 942;F.filename = "pbraces.nim";
+if (!((*(*P_79161).Tok).Toktype == ((NU8) 20))) goto LA8;
+F.line = 943;F.filename = "pbraces.nim";
+Branch_79163 = Newnodep_76052(((NU8) 78), (*P_79161));
+F.line = 944;F.filename = "pbraces.nim";
+Eat_76087(P_79161, ((NU8) 20));
+F.line = 945;F.filename = "pbraces.nim";
+Eat_76087(P_79161, ((NU8) 94));
+F.line = 946;F.filename = "pbraces.nim";
+Skipcomment_76047(P_79161, Branch_79163);
+F.line = 947;F.filename = "pbraces.nim";
+LOC10 = 0;
+LOC10 = Parseobjectpart_79154(P_79161);
+Addson_50823(Branch_79163, LOC10);
+F.line = 948;F.filename = "pbraces.nim";
+Addson_50823(Result_79162, Branch_79163);
+LA8: ;
+framePtr = framePtr->prev;
+return Result_79162;
+}
+N_NIMCALL(TY50525*, Parseobjectcase_79183)(TY76011* P_79186) {
+TY50525* Result_79187;
+TY50525* A_79188;
+TY50525* B_79189;
+TY50525* LOC1;
+TY50525* LOC2;
+TY50525* LOC7;
+volatile struct {TFrame* prev;NCSTRING procname;NI line;NCSTRING filename;NI len;
+} F;
+F.procname = "parseObjectCase";
+F.prev = framePtr;
+F.filename = "rod/pbraces.nim";
+F.line = 0;
+framePtr = (TFrame*)&F;
+F.len = 0;
+Result_79187 = 0;
+A_79188 = 0;
+B_79189 = 0;
+F.line = 952;F.filename = "pbraces.nim";
+Result_79187 = Newnodep_76052(((NU8) 114), (*P_79186));
+F.line = 953;F.filename = "pbraces.nim";
+Gettok_76038(P_79186);
+F.line = 954;F.filename = "pbraces.nim";
+A_79188 = Newnodep_76052(((NU8) 25), (*P_79186));
+F.line = 955;F.filename = "pbraces.nim";
+LOC1 = 0;
+LOC1 = Identwithpragma_78483(P_79186);
+Addson_50823(A_79188, LOC1);
+F.line = 956;F.filename = "pbraces.nim";
+Eat_76087(P_79186, ((NU8) 94));
+F.line = 957;F.filename = "pbraces.nim";
+LOC2 = 0;
+LOC2 = Parsetypedesc_78020(P_79186);
+Addson_50823(A_79188, LOC2);
+F.line = 958;F.filename = "pbraces.nim";
+Addson_50823(A_79188, NIM_NIL);
+F.line = 959;F.filename = "pbraces.nim";
+Addson_50823(Result_79187, A_79188);
+F.line = 960;F.filename = "pbraces.nim";
+Skipcomment_76047(P_79186, Result_79187);
+F.line = 961;F.filename = "pbraces.nim";
+while (1) {
+F.line = 962;F.filename = "pbraces.nim";
+if (!((*(*P_79186).Tok).Toktype == ((NU8) 103))) goto LA5;
+F.line = 962;F.filename = "pbraces.nim";
+Gettok_76038(P_79186);
+LA5: ;
+F.line = 963;F.filename = "pbraces.nim";
+switch ((*(*P_79186).Tok).Toktype) {
+case ((NU8) 45):
+F.line = 965;F.filename = "pbraces.nim";
+B_79189 = Newnodep_76052(((NU8) 75), (*P_79186));
+F.line = 966;F.filename = "pbraces.nim";
+Exprlistaux_78161(P_79186, ((NU8) 35), ((NU8) 94), ((NU8) 97), B_79189);
+break;
+case ((NU8) 20):
+F.line = 968;F.filename = "pbraces.nim";
+B_79189 = Newnodep_76052(((NU8) 78), (*P_79186));
+F.line = 969;F.filename = "pbraces.nim";
+Gettok_76038(P_79186);
+F.line = 970;F.filename = "pbraces.nim";
+Eat_76087(P_79186, ((NU8) 94));
+break;
+default:
+F.line = 971;F.filename = "pbraces.nim";
+goto LA3;
+break;
+}
+F.line = 972;F.filename = "pbraces.nim";
+Skipcomment_76047(P_79186, B_79189);
+F.line = 973;F.filename = "pbraces.nim";
+LOC7 = 0;
+LOC7 = Parseobjectpart_79154(P_79186);
+Addson_50823(B_79189, LOC7);
+F.line = 974;F.filename = "pbraces.nim";
+Addson_50823(Result_79187, B_79189);
+F.line = 975;F.filename = "pbraces.nim";
+if (!((*B_79189).Kind == ((NU8) 78))) goto LA9;
+F.line = 975;F.filename = "pbraces.nim";
+goto LA3;
+LA9: ;
+} LA3: ;
+framePtr = framePtr->prev;
+return Result_79187;
+}
+N_NIMCALL(TY50525*, Parseobjectpart_79154)(TY76011* P_79157) {
+TY50525* Result_79213;
+TY50525* LOC2;
+NimStringDesc* LOC3;
+volatile struct {TFrame* prev;NCSTRING procname;NI line;NCSTRING filename;NI len;
+} F;
+F.procname = "parseObjectPart";
+F.prev = framePtr;
+F.filename = "rod/pbraces.nim";
+F.line = 0;
+framePtr = (TFrame*)&F;
+F.len = 0;
+Result_79213 = 0;
+F.line = 978;F.filename = "pbraces.nim";
+switch ((*(*P_79157).Tok).Toktype) {
+case ((NU8) 102):
+F.line = 980;F.filename = "pbraces.nim";
+Result_79213 = Newnodep_76052(((NU8) 113), (*P_79157));
+F.line = 981;F.filename = "pbraces.nim";
+Pushind_72286((*P_79157).Lex, (*(*P_79157).Tok).Indent);
+F.line = 982;F.filename = "pbraces.nim";
+Gettok_76038(P_79157);
+F.line = 983;F.filename = "pbraces.nim";
+Skipcomment_76047(P_79157, Result_79213);
+F.line = 984;F.filename = "pbraces.nim";
+while (1) {
+F.line = 985;F.filename = "pbraces.nim";
+switch ((*(*P_79157).Tok).Toktype) {
+case ((NU8) 103):
+F.line = 987;F.filename = "pbraces.nim";
+Gettok_76038(P_79157);
 break;
 case ((NU8) 11):
-Result_77340 = Parsecase_76880(P_77339);
+case ((NU8) 60):
+case ((NU8) 2):
+case ((NU8) 101):
+case ((NU8) 41):
+F.line = 989;F.filename = "pbraces.nim";
+LOC2 = 0;
+LOC2 = Parseobjectpart_79154(P_79157);
+Addson_50823(Result_79213, LOC2);
+break;
+case ((NU8) 104):
+F.line = 991;F.filename = "pbraces.nim";
+Gettok_76038(P_79157);
+F.line = 992;F.filename = "pbraces.nim";
+goto LA1;
+break;
+case ((NU8) 1):
+F.line = 994;F.filename = "pbraces.nim";
+goto LA1;
+break;
+default:
+F.line = 996;F.filename = "pbraces.nim";
+LOC3 = 0;
+LOC3 = Toktostr_72323((*P_79157).Tok);
+Parmessage_76042((*P_79157), ((NU8) 19), LOC3);
+F.line = 997;F.filename = "pbraces.nim";
+goto LA1;
+break;
+}
+} LA1: ;
+F.line = 998;F.filename = "pbraces.nim";
+Popind_72291((*P_79157).Lex);
+break;
+case ((NU8) 60):
+F.line = 1000;F.filename = "pbraces.nim";
+Result_79213 = Parseobjectwhen_79158(P_79157);
+break;
+case ((NU8) 11):
+F.line = 1002;F.filename = "pbraces.nim";
+Result_79213 = Parseobjectcase_79183(P_79157);
+break;
+case ((NU8) 2):
+case ((NU8) 101):
+F.line = 1004;F.filename = "pbraces.nim";
+Result_79213 = Parseidentcolonequals_78504(P_79157, 1);
+F.line = 1005;F.filename = "pbraces.nim";
+Skipcomment_76047(P_79157, Result_79213);
+break;
+case ((NU8) 41):
+F.line = 1007;F.filename = "pbraces.nim";
+Result_79213 = Newnodep_76052(((NU8) 18), (*P_79157));
+F.line = 1008;F.filename = "pbraces.nim";
+Gettok_76038(P_79157);
+break;
+default:
+F.line = 1009;F.filename = "pbraces.nim";
+Result_79213 = NIM_NIL;
+break;
+}
+framePtr = framePtr->prev;
+return Result_79213;
+}
+N_NIMCALL(TY50525*, Parseobject_79218)(TY76011* P_79221) {
+TY50525* Result_79222;
+TY50525* A_79223;
+TY50525* LOC4;
+TY50525* LOC8;
+TY50525* LOC9;
+volatile struct {TFrame* prev;NCSTRING procname;NI line;NCSTRING filename;NI len;
+} F;
+F.procname = "parseObject";
+F.prev = framePtr;
+F.filename = "rod/pbraces.nim";
+F.line = 0;
+framePtr = (TFrame*)&F;
+F.len = 0;
+Result_79222 = 0;
+A_79223 = 0;
+F.line = 1013;F.filename = "pbraces.nim";
+Result_79222 = Newnodep_76052(((NU8) 111), (*P_79221));
+F.line = 1014;F.filename = "pbraces.nim";
+Gettok_76038(P_79221);
+F.line = 1015;F.filename = "pbraces.nim";
+if (!((*(*P_79221).Tok).Toktype == ((NU8) 88))) goto LA2;
+F.line = 1015;F.filename = "pbraces.nim";
+LOC4 = 0;
+LOC4 = Parsepragma_78397(P_79221);
+Addson_50823(Result_79222, LOC4);
+goto LA1;
+LA2: ;
+F.line = 1016;F.filename = "pbraces.nim";
+Addson_50823(Result_79222, NIM_NIL);
+LA1: ;
+F.line = 1017;F.filename = "pbraces.nim";
+if (!((*(*P_79221).Tok).Toktype == ((NU8) 45))) goto LA6;
+F.line = 1018;F.filename = "pbraces.nim";
+A_79223 = Newnodep_76052(((NU8) 67), (*P_79221));
+F.line = 1019;F.filename = "pbraces.nim";
+Gettok_76038(P_79221);
+F.line = 1020;F.filename = "pbraces.nim";
+LOC8 = 0;
+LOC8 = Parsetypedesc_78020(P_79221);
+Addson_50823(A_79223, LOC8);
+F.line = 1021;F.filename = "pbraces.nim";
+Addson_50823(Result_79222, A_79223);
+goto LA5;
+LA6: ;
+F.line = 1023;F.filename = "pbraces.nim";
+Addson_50823(Result_79222, NIM_NIL);
+LA5: ;
+F.line = 1024;F.filename = "pbraces.nim";
+Skipcomment_76047(P_79221, Result_79222);
+F.line = 1025;F.filename = "pbraces.nim";
+LOC9 = 0;
+LOC9 = Parseobjectpart_79154(P_79221);
+Addson_50823(Result_79222, LOC9);
+framePtr = framePtr->prev;
+return Result_79222;
+}
+N_NIMCALL(TY50525*, Parsedistinct_79242)(TY76011* P_79245) {
+TY50525* Result_79246;
+TY50525* LOC1;
+volatile struct {TFrame* prev;NCSTRING procname;NI line;NCSTRING filename;NI len;
+} F;
+F.procname = "parseDistinct";
+F.prev = framePtr;
+F.filename = "rod/pbraces.nim";
+F.line = 0;
+framePtr = (TFrame*)&F;
+F.len = 0;
+Result_79246 = 0;
+F.line = 1028;F.filename = "pbraces.nim";
+Result_79246 = Newnodep_76052(((NU8) 119), (*P_79245));
+F.line = 1029;F.filename = "pbraces.nim";
+Gettok_76038(P_79245);
+F.line = 1030;F.filename = "pbraces.nim";
+Optind_76100(P_79245, Result_79246);
+F.line = 1031;F.filename = "pbraces.nim";
+LOC1 = 0;
+LOC1 = Parsetypedesc_78020(P_79245);
+Addson_50823(Result_79246, LOC1);
+framePtr = framePtr->prev;
+return Result_79246;
+}
+N_NIMCALL(TY50525*, Parsetypedef_79247)(TY76011* P_79250) {
+TY50525* Result_79251;
+TY50525* A_79252;
+TY50525* LOC1;
+TY50525* LOC5;
+volatile struct {TFrame* prev;NCSTRING procname;NI line;NCSTRING filename;NI len;
+} F;
+F.procname = "parseTypeDef";
+F.prev = framePtr;
+F.filename = "rod/pbraces.nim";
+F.line = 0;
+framePtr = (TFrame*)&F;
+F.len = 0;
+Result_79251 = 0;
+A_79252 = 0;
+F.line = 1035;F.filename = "pbraces.nim";
+Result_79251 = Newnodep_76052(((NU8) 91), (*P_79250));
+F.line = 1036;F.filename = "pbraces.nim";
+LOC1 = 0;
+LOC1 = Identwithpragma_78483(P_79250);
+Addson_50823(Result_79251, LOC1);
+F.line = 1037;F.filename = "pbraces.nim";
+if (!((*(*P_79250).Tok).Toktype == ((NU8) 82))) goto LA3;
+F.line = 1037;F.filename = "pbraces.nim";
+LOC5 = 0;
+LOC5 = Parsegenericparamlist_78983(P_79250);
+Addson_50823(Result_79251, LOC5);
+goto LA2;
+LA3: ;
+F.line = 1038;F.filename = "pbraces.nim";
+Addson_50823(Result_79251, NIM_NIL);
+LA2: ;
+F.line = 1039;F.filename = "pbraces.nim";
+if (!((*(*P_79250).Tok).Toktype == ((NU8) 95))) goto LA7;
+F.line = 1040;F.filename = "pbraces.nim";
+Gettok_76038(P_79250);
+F.line = 1041;F.filename = "pbraces.nim";
+Optind_76100(P_79250, Result_79251);
+F.line = 1042;F.filename = "pbraces.nim";
+switch ((*(*P_79250).Tok).Toktype) {
+case ((NU8) 44):
+F.line = 1043;F.filename = "pbraces.nim";
+A_79252 = Parseobject_79218(P_79250);
+break;
+case ((NU8) 22):
+F.line = 1044;F.filename = "pbraces.nim";
+A_79252 = Parseenum_79119(P_79250);
+break;
+case ((NU8) 17):
+F.line = 1045;F.filename = "pbraces.nim";
+A_79252 = Parsedistinct_79242(P_79250);
+break;
+default:
+F.line = 1046;F.filename = "pbraces.nim";
+A_79252 = Parsetypedesc_78020(P_79250);
+break;
+}
+F.line = 1047;F.filename = "pbraces.nim";
+Addson_50823(Result_79251, A_79252);
+goto LA6;
+LA7: ;
+F.line = 1049;F.filename = "pbraces.nim";
+Addson_50823(Result_79251, NIM_NIL);
+LA6: ;
+F.line = 1050;F.filename = "pbraces.nim";
+Indandcomment_76105(P_79250, Result_79251);
+framePtr = framePtr->prev;
+return Result_79251;
+}
+N_NIMCALL(TY50525*, Parsevartuple_79271)(TY76011* P_79274) {
+TY50525* Result_79275;
+TY50525* A_79276;
+NIM_BOOL LOC2;
+TY50525* LOC7;
+volatile struct {TFrame* prev;NCSTRING procname;NI line;NCSTRING filename;NI len;
+} F;
+F.procname = "parseVarTuple";
+F.prev = framePtr;
+F.filename = "rod/pbraces.nim";
+F.line = 0;
+framePtr = (TFrame*)&F;
+F.len = 0;
+Result_79275 = 0;
+A_79276 = 0;
+F.line = 1054;F.filename = "pbraces.nim";
+Result_79275 = Newnodep_76052(((NU8) 26), (*P_79274));
+F.line = 1055;F.filename = "pbraces.nim";
+Gettok_76038(P_79274);
+F.line = 1056;F.filename = "pbraces.nim";
+Optind_76100(P_79274, Result_79275);
+F.line = 1057;F.filename = "pbraces.nim";
+while (1) {
+LOC2 = ((*(*P_79274).Tok).Toktype == ((NU8) 2));
+if (LOC2) goto LA3;
+LOC2 = ((*(*P_79274).Tok).Toktype == ((NU8) 101));
+LA3: ;
+if (!LOC2) goto LA1;
+F.line = 1058;F.filename = "pbraces.nim";
+A_79276 = Identwithpragma_78483(P_79274);
+F.line = 1059;F.filename = "pbraces.nim";
+Addson_50823(Result_79275, A_79276);
+F.line = 1060;F.filename = "pbraces.nim";
+if (!!(((*(*P_79274).Tok).Toktype == ((NU8) 92)))) goto LA5;
+F.line = 1060;F.filename = "pbraces.nim";
+goto LA1;
+LA5: ;
+F.line = 1061;F.filename = "pbraces.nim";
+Gettok_76038(P_79274);
+F.line = 1062;F.filename = "pbraces.nim";
+Optind_76100(P_79274, A_79276);
+} LA1: ;
+F.line = 1063;F.filename = "pbraces.nim";
+Addson_50823(Result_79275, NIM_NIL);
+F.line = 1064;F.filename = "pbraces.nim";
+Optpar_76096(P_79274);
+F.line = 1065;F.filename = "pbraces.nim";
+Eat_76087(P_79274, ((NU8) 81));
+F.line = 1066;F.filename = "pbraces.nim";
+Eat_76087(P_79274, ((NU8) 95));
+F.line = 1067;F.filename = "pbraces.nim";
+Optind_76100(P_79274, Result_79275);
+F.line = 1068;F.filename = "pbraces.nim";
+LOC7 = 0;
+LOC7 = Parseexpr_78012(P_79274);
+Addson_50823(Result_79275, LOC7);
+framePtr = framePtr->prev;
+return Result_79275;
+}
+N_NIMCALL(TY50525*, Parsevariable_79305)(TY76011* P_79308) {
+TY50525* Result_79309;
+volatile struct {TFrame* prev;NCSTRING procname;NI line;NCSTRING filename;NI len;
+} F;
+F.procname = "parseVariable";
+F.prev = framePtr;
+F.filename = "rod/pbraces.nim";
+F.line = 0;
+framePtr = (TFrame*)&F;
+F.len = 0;
+Result_79309 = 0;
+F.line = 1071;F.filename = "pbraces.nim";
+if (!((*(*P_79308).Tok).Toktype == ((NU8) 80))) goto LA2;
+F.line = 1071;F.filename = "pbraces.nim";
+Result_79309 = Parsevartuple_79271(P_79308);
+goto LA1;
+LA2: ;
+F.line = 1072;F.filename = "pbraces.nim";
+Result_79309 = Parseidentcolonequals_78504(P_79308, 1);
+LA1: ;
+F.line = 1073;F.filename = "pbraces.nim";
+Indandcomment_76105(P_79308, Result_79309);
+framePtr = framePtr->prev;
+return Result_79309;
+}
+N_NIMCALL(TY50525*, Simplestmt_79320)(TY76011* P_79323) {
+TY50525* Result_79324;
+NIM_BOOL LOC2;
+volatile struct {TFrame* prev;NCSTRING procname;NI line;NCSTRING filename;NI len;
+} F;
+F.procname = "simpleStmt";
+F.prev = framePtr;
+F.filename = "rod/pbraces.nim";
+F.line = 0;
+framePtr = (TFrame*)&F;
+F.len = 0;
+Result_79324 = 0;
+F.line = 1076;F.filename = "pbraces.nim";
+switch ((*(*P_79323).Tok).Toktype) {
+case ((NU8) 52):
+F.line = 1077;F.filename = "pbraces.nim";
+Result_79324 = Parsereturnorraise_78835(P_79323, ((NU8) 96));
+break;
+case ((NU8) 50):
+F.line = 1078;F.filename = "pbraces.nim";
+Result_79324 = Parsereturnorraise_78835(P_79323, ((NU8) 95));
+break;
+case ((NU8) 65):
+F.line = 1079;F.filename = "pbraces.nim";
+Result_79324 = Parseyieldordiscard_78841(P_79323, ((NU8) 92));
+break;
+case ((NU8) 16):
+F.line = 1080;F.filename = "pbraces.nim";
+Result_79324 = Parseyieldordiscard_78841(P_79323, ((NU8) 100));
+break;
+case ((NU8) 10):
+F.line = 1081;F.filename = "pbraces.nim";
+Result_79324 = Parsebreakorcontinue_78847(P_79323, ((NU8) 97));
+break;
+case ((NU8) 14):
+F.line = 1082;F.filename = "pbraces.nim";
+Result_79324 = Parsebreakorcontinue_78847(P_79323, ((NU8) 98));
+break;
+case ((NU8) 88):
+F.line = 1083;F.filename = "pbraces.nim";
+Result_79324 = Parsepragma_78397(P_79323);
+break;
+case ((NU8) 30):
+F.line = 1084;F.filename = "pbraces.nim";
+Result_79324 = Parseimportorincludestmt_78802(P_79323, ((NU8) 102));
+break;
+case ((NU8) 26):
+F.line = 1085;F.filename = "pbraces.nim";
+Result_79324 = Parsefromstmt_78819(P_79323);
+break;
+case ((NU8) 32):
+F.line = 1086;F.filename = "pbraces.nim";
+Result_79324 = Parseimportorincludestmt_78802(P_79323, ((NU8) 104));
+break;
+case ((NU8) 100):
+F.line = 1087;F.filename = "pbraces.nim";
+Result_79324 = Newcommentstmt_79051(P_79323);
+break;
+default:
+F.line = 1089;F.filename = "pbraces.nim";
+LOC2 = Isexprstart_78720((*P_79323));
+if (!LOC2) goto LA3;
+F.line = 1089;F.filename = "pbraces.nim";
+Result_79324 = Parseexprstmt_78724(P_79323);
+goto LA1;
+LA3: ;
+F.line = 1090;F.filename = "pbraces.nim";
+Result_79324 = NIM_NIL;
+LA1: ;
+break;
+}
+F.line = 1091;F.filename = "pbraces.nim";
+if (!!((Result_79324 == NIM_NIL))) goto LA6;
+F.line = 1091;F.filename = "pbraces.nim";
+Skipcomment_76047(P_79323, Result_79324);
+LA6: ;
+framePtr = framePtr->prev;
+return Result_79324;
+}
+N_NIMCALL(TY50525*, Parsetype_79336)(TY76011* P_79339) {
+TY50525* Result_79340;
+volatile struct {TFrame* prev;NCSTRING procname;NI line;NCSTRING filename;NI len;
+} F;
+F.procname = "parseType";
+F.prev = framePtr;
+F.filename = "rod/pbraces.nim";
+F.line = 0;
+framePtr = (TFrame*)&F;
+F.len = 0;
+Result_79340 = 0;
+F.line = 1094;F.filename = "pbraces.nim";
+Result_79340 = Newnodep_76052(((NU8) 90), (*P_79339));
+F.line = 1095;F.filename = "pbraces.nim";
+while (1) {
+F.line = 1096;F.filename = "pbraces.nim";
+switch ((*(*P_79339).Tok).Toktype) {
+case ((NU8) 100):
+F.line = 1098;F.filename = "pbraces.nim";
+Skipcomment_76047(P_79339, Result_79340);
+break;
+case ((NU8) 58):
+break;
+case ((NU8) 22):
+break;
+case ((NU8) 44):
+break;
+case ((NU8) 57):
+break;
+default:
+F.line = 1107;F.filename = "pbraces.nim";
+goto LA1;
+break;
+}
+} LA1: ;
+framePtr = framePtr->prev;
+return Result_79340;
+}
+N_NIMCALL(TY50525*, Complexorsimplestmt_79342)(TY76011* P_79345) {
+TY50525* Result_79346;
+volatile struct {TFrame* prev;NCSTRING procname;NI line;NCSTRING filename;NI len;
+} F;
+F.procname = "complexOrSimpleStmt";
+F.prev = framePtr;
+F.filename = "rod/pbraces.nim";
+F.line = 0;
+framePtr = (TFrame*)&F;
+F.len = 0;
+Result_79346 = 0;
+F.line = 1110;F.filename = "pbraces.nim";
+switch ((*(*P_79345).Tok).Toktype) {
+case ((NU8) 28):
+F.line = 1112;F.filename = "pbraces.nim";
+Result_79346 = Parseiforwhen_78853(P_79345, ((NU8) 82));
+break;
+case ((NU8) 61):
+F.line = 1114;F.filename = "pbraces.nim";
+Result_79346 = Parsewhile_78879(P_79345);
+break;
+case ((NU8) 11):
+F.line = 1116;F.filename = "pbraces.nim";
+Result_79346 = Parsecase_78884(P_79345);
 break;
 case ((NU8) 56):
-Result_77340 = Parsetry_76906(P_77339);
+F.line = 1118;F.filename = "pbraces.nim";
+Result_79346 = Parsetry_78910(P_79345);
 break;
 case ((NU8) 25):
-Result_77340 = Parsefor_76942(P_77339);
+F.line = 1120;F.filename = "pbraces.nim";
+Result_79346 = Parsefor_78947(P_79345);
 break;
 case ((NU8) 9):
-Result_77340 = Parseblock_76958(P_77339);
+F.line = 1122;F.filename = "pbraces.nim";
+Result_79346 = Parseblock_78963(P_79345);
 break;
 case ((NU8) 6):
-Result_77340 = Parseasm_76963(P_77339);
+F.line = 1124;F.filename = "pbraces.nim";
+Result_79346 = Parseasm_78968(P_79345);
 break;
 case ((NU8) 48):
-Result_77340 = Parseroutine_77012(P_77339, ((NU8) 69));
+F.line = 1126;F.filename = "pbraces.nim";
+Result_79346 = Parseroutine_79018(P_79345, ((NU8) 69));
 break;
 case ((NU8) 39):
-Result_77340 = Parseroutine_77012(P_77339, ((NU8) 70));
+F.line = 1128;F.filename = "pbraces.nim";
+Result_79346 = Parseroutine_79018(P_79345, ((NU8) 70));
 break;
 case ((NU8) 35):
-Result_77340 = Parseroutine_77012(P_77339, ((NU8) 74));
+F.line = 1130;F.filename = "pbraces.nim";
+Result_79346 = Parseroutine_79018(P_79345, ((NU8) 74));
 break;
 case ((NU8) 38):
-Result_77340 = Parseroutine_77012(P_77339, ((NU8) 72));
+F.line = 1132;F.filename = "pbraces.nim";
+Result_79346 = Parseroutine_79018(P_79345, ((NU8) 72));
 break;
 case ((NU8) 55):
-Result_77340 = Parseroutine_77012(P_77339, ((NU8) 73));
+F.line = 1134;F.filename = "pbraces.nim";
+Result_79346 = Parseroutine_79018(P_79345, ((NU8) 73));
 break;
 case ((NU8) 15):
-Result_77340 = Parseroutine_77012(P_77339, ((NU8) 71));
+F.line = 1136;F.filename = "pbraces.nim";
+Result_79346 = Parseroutine_79018(P_79345, ((NU8) 71));
 break;
 case ((NU8) 58):
 case ((NU8) 22):
 case ((NU8) 44):
 case ((NU8) 57):
-Result_77340 = NIM_NIL;
+F.line = 1138;F.filename = "pbraces.nim";
+Result_79346 = NIM_NIL;
 break;
 case ((NU8) 13):
-Result_77340 = Parseconstsection_77080(P_77339);
+F.line = 1140;F.filename = "pbraces.nim";
+Result_79346 = Parseconstsection_79086(P_79345);
 break;
 case ((NU8) 60):
-Result_77340 = Parseiforwhen_76849(P_77339, ((NU8) 83));
+F.line = 1142;F.filename = "pbraces.nim";
+Result_79346 = Parseiforwhen_78853(P_79345, ((NU8) 83));
 break;
 case ((NU8) 59):
-Result_77340 = Parsesection_77055(P_77339, ((NU8) 87), Parsevariable_77299);
+F.line = 1144;F.filename = "pbraces.nim";
+Result_79346 = Parsesection_79061(P_79345, ((NU8) 87), Parsevariable_79305);
 break;
 default:
-Result_77340 = Simplestmt_77314(P_77339);
+F.line = 1145;F.filename = "pbraces.nim";
+Result_79346 = Simplestmt_79320(P_79345);
 break;
 }
-return Result_77340;
+framePtr = framePtr->prev;
+return Result_79346;
 }
-N_NIMCALL(TY49523*, Parseall_76004)(TY74011* P_76007) {
-TY49523* Result_77395;
-TY49523* A_77396;
-NimStringDesc* LOC5;
-Result_77395 = 0;
-A_77396 = 0;
-Result_77395 = Newnodep_74052(((NU8) 101), (*P_76007));
+N_NIMCALL(TY50525*, Parsestmt_78016)(TY76011* P_78019) {
+TY50525* Result_79351;
+TY50525* A_79352;
+NimStringDesc* LOC11;
+volatile struct {TFrame* prev;NCSTRING procname;NI line;NCSTRING filename;NI len;
+} F;
+F.procname = "parseStmt";
+F.prev = framePtr;
+F.filename = "rod/pbraces.nim";
+F.line = 0;
+framePtr = (TFrame*)&F;
+F.len = 0;
+Result_79351 = 0;
+A_79352 = 0;
+F.line = 1149;F.filename = "pbraces.nim";
+if (!((*(*P_78019).Tok).Toktype == ((NU8) 84))) goto LA2;
+F.line = 1150;F.filename = "pbraces.nim";
+Result_79351 = Newnodep_76052(((NU8) 101), (*P_78019));
+F.line = 1151;F.filename = "pbraces.nim";
+Gettok_76038(P_78019);
+F.line = 1152;F.filename = "pbraces.nim";
 while (1) {
-switch ((*(*P_76007).Tok).Toktype) {
+F.line = 1153;F.filename = "pbraces.nim";
+switch ((*(*P_78019).Tok).Toktype) {
+case ((NU8) 103):
+case ((NU8) 102):
+case ((NU8) 104):
+F.line = 1154;F.filename = "pbraces.nim";
+Gettok_76038(P_78019);
+break;
+case ((NU8) 1):
+case ((NU8) 85):
+F.line = 1155;F.filename = "pbraces.nim";
+goto LA4;
+break;
+default:
+F.line = 1157;F.filename = "pbraces.nim";
+A_79352 = Complexorsimplestmt_79342(P_78019);
+F.line = 1158;F.filename = "pbraces.nim";
+if (!(A_79352 == NIM_NIL)) goto LA6;
+F.line = 1158;F.filename = "pbraces.nim";
+goto LA4;
+LA6: ;
+F.line = 1159;F.filename = "pbraces.nim";
+Addson_50823(Result_79351, A_79352);
+break;
+}
+} LA4: ;
+F.line = 1160;F.filename = "pbraces.nim";
+Eat_76087(P_78019, ((NU8) 85));
+goto LA1;
+LA2: ;
+F.line = 1163;F.filename = "pbraces.nim";
+switch ((*(*P_78019).Tok).Toktype) {
+case ((NU8) 28):
+case ((NU8) 61):
+case ((NU8) 11):
+case ((NU8) 56):
+case ((NU8) 25):
+case ((NU8) 9):
+case ((NU8) 6):
+case ((NU8) 48):
+case ((NU8) 35):
+case ((NU8) 38):
+case ((NU8) 58):
+case ((NU8) 13):
+case ((NU8) 60):
+case ((NU8) 59):
+F.line = 1166;F.filename = "pbraces.nim";
+Parmessage_76042((*P_78019), ((NU8) 149), ((NimStringDesc*) &TMP78982));
+F.line = 1167;F.filename = "pbraces.nim";
+Result_79351 = NIM_NIL;
+break;
+default:
+F.line = 1169;F.filename = "pbraces.nim";
+Result_79351 = Simplestmt_79320(P_78019);
+F.line = 1170;F.filename = "pbraces.nim";
+if (!(Result_79351 == NIM_NIL)) goto LA9;
+F.line = 1170;F.filename = "pbraces.nim";
+LOC11 = 0;
+LOC11 = Toktostr_72323((*P_78019).Tok);
+Parmessage_76042((*P_78019), ((NU8) 57), LOC11);
+LA9: ;
+F.line = 1171;F.filename = "pbraces.nim";
+if (!((*(*P_78019).Tok).Toktype == ((NU8) 102) || (*(*P_78019).Tok).Toktype == ((NU8) 104) || (*(*P_78019).Tok).Toktype == ((NU8) 103))) goto LA13;
+F.line = 1171;F.filename = "pbraces.nim";
+Gettok_76038(P_78019);
+LA13: ;
+break;
+}
+LA1: ;
+framePtr = framePtr->prev;
+return Result_79351;
+}
+N_NIMCALL(TY50525*, Parseall_78004)(TY76011* P_78007) {
+TY50525* Result_79401;
+TY50525* A_79402;
+NimStringDesc* LOC5;
+volatile struct {TFrame* prev;NCSTRING procname;NI line;NCSTRING filename;NI len;
+} F;
+F.procname = "ParseAll";
+F.prev = framePtr;
+F.filename = "rod/pbraces.nim";
+F.line = 0;
+framePtr = (TFrame*)&F;
+F.len = 0;
+Result_79401 = 0;
+A_79402 = 0;
+F.line = 1175;F.filename = "pbraces.nim";
+Result_79401 = Newnodep_76052(((NU8) 101), (*P_78007));
+F.line = 1176;F.filename = "pbraces.nim";
+while (1) {
+F.line = 1177;F.filename = "pbraces.nim";
+switch ((*(*P_78007).Tok).Toktype) {
 case ((NU8) 104):
 case ((NU8) 102):
 case ((NU8) 103):
-Gettok_74038(P_76007);
+F.line = 1178;F.filename = "pbraces.nim";
+Gettok_76038(P_78007);
 break;
 case ((NU8) 1):
+F.line = 1179;F.filename = "pbraces.nim";
 goto LA1;
 break;
 default:
-A_77396 = Complexorsimplestmt_77336(P_76007);
-if (!(A_77396 == NIM_NIL)) goto LA3;
-LOC5 = Toktostr_70323((*P_76007).Tok);
-Parmessage_74042((*P_76007), ((NU8) 57), LOC5);
+F.line = 1181;F.filename = "pbraces.nim";
+A_79402 = Complexorsimplestmt_79342(P_78007);
+F.line = 1182;F.filename = "pbraces.nim";
+if (!(A_79402 == NIM_NIL)) goto LA3;
+F.line = 1182;F.filename = "pbraces.nim";
+LOC5 = 0;
+LOC5 = Toktostr_72323((*P_78007).Tok);
+Parmessage_76042((*P_78007), ((NU8) 57), LOC5);
 LA3: ;
-Addson_49821(Result_77395, A_77396);
+F.line = 1183;F.filename = "pbraces.nim";
+Addson_50823(Result_79401, A_79402);
 break;
 }
 } LA1: ;
-return Result_77395;
+framePtr = framePtr->prev;
+return Result_79401;
 }
-N_NIMCALL(TY49523*, Parsetoplevelstmt_76008)(TY74011* P_76011) {
-TY49523* Result_77413;
+N_NIMCALL(TY50525*, Parsetoplevelstmt_78008)(TY76011* P_78011) {
+TY50525* Result_79419;
 NimStringDesc* LOC5;
-Result_77413 = 0;
-Result_77413 = NIM_NIL;
+volatile struct {TFrame* prev;NCSTRING procname;NI line;NCSTRING filename;NI len;
+} F;
+F.procname = "parseTopLevelStmt";
+F.prev = framePtr;
+F.filename = "rod/pbraces.nim";
+F.line = 0;
+framePtr = (TFrame*)&F;
+F.len = 0;
+Result_79419 = 0;
+F.line = 1186;F.filename = "pbraces.nim";
+Result_79419 = NIM_NIL;
+F.line = 1187;F.filename = "pbraces.nim";
 while (1) {
-switch ((*(*P_76011).Tok).Toktype) {
+F.line = 1188;F.filename = "pbraces.nim";
+switch ((*(*P_78011).Tok).Toktype) {
 case ((NU8) 104):
 case ((NU8) 102):
 case ((NU8) 103):
-Gettok_74038(P_76011);
+F.line = 1189;F.filename = "pbraces.nim";
+Gettok_76038(P_78011);
 break;
 case ((NU8) 1):
+F.line = 1190;F.filename = "pbraces.nim";
 goto LA1;
 break;
 default:
-Result_77413 = Complexorsimplestmt_77336(P_76011);
-if (!(Result_77413 == NIM_NIL)) goto LA3;
-LOC5 = Toktostr_70323((*P_76011).Tok);
-Parmessage_74042((*P_76011), ((NU8) 57), LOC5);
+F.line = 1192;F.filename = "pbraces.nim";
+Result_79419 = Complexorsimplestmt_79342(P_78011);
+F.line = 1193;F.filename = "pbraces.nim";
+if (!(Result_79419 == NIM_NIL)) goto LA3;
+F.line = 1193;F.filename = "pbraces.nim";
+LOC5 = 0;
+LOC5 = Toktostr_72323((*P_78011).Tok);
+Parmessage_76042((*P_78011), ((NU8) 57), LOC5);
 LA3: ;
+F.line = 1194;F.filename = "pbraces.nim";
 goto LA1;
 break;
 }
 } LA1: ;
-return Result_77413;
+framePtr = framePtr->prev;
+return Result_79419;
 }
 N_NOINLINE(void, pbracesInit)(void) {
+volatile struct {TFrame* prev;NCSTRING procname;NI line;NCSTRING filename;NI len;
+} F;
+F.procname = "pbraces";
+F.prev = framePtr;
+F.filename = "rod/pbraces.nim";
+F.line = 0;
+framePtr = (TFrame*)&F;
+F.len = 0;
+framePtr = framePtr->prev;
 }
 

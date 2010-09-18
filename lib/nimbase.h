@@ -177,10 +177,6 @@ __TINYC__
 **
 **  Fortunately the ISO C99 specifications define the functions lrint, lrintf,
 **  llrint and llrintf which fix this problem as a side effect.
-**
-**  On Unix-like systems, the configure process should have detected the
-**  presence of these functions. If they weren't found we have to replace them
-**  here with a standard C cast.
 */
 
 /*
@@ -433,14 +429,6 @@ struct NimException {
 
 #define NIM_POSIX_INIT  __attribute__((constructor)) 
 
-#ifdef __GNUC__
-#define likely(x) __builtin_expect(x, 1)
-#define unlikely(x) __builtin_expect(x, 0)
-#else
-#define likely(x) (x)
-#define unlikely(x) (x)
-#endif
-
 #if defined(_MSCVER) && defined(__i386__)
 __declspec(naked) int __fastcall NimXadd(volatile int* pNum, int val) {
   __asm {
@@ -454,6 +442,11 @@ __declspec(naked) int __fastcall NimXadd(volatile int* pNum, int val) {
 #ifdef __GNUC__
 /* Ugly hack because some platforms put underscores before their function names and some don't (and asm statements have to care) */
 void raiseOverflow() asm("raiseOverflow") __attribute__((noinline));
+#  define likely(x) __builtin_expect(x, 1)
+#  define unlikely(x) __builtin_expect(x, 0)
+#else
+#  define likely(x) (x)
+#  define unlikely(x) (x)
 #endif
 
 #endif

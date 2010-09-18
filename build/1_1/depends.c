@@ -5,44 +5,45 @@ typedef long int NI;
 typedef unsigned long int NU;
 #include "nimbase.h"
 
-typedef struct TY46008 TY46008;
-typedef struct TY98006 TY98006;
-typedef struct TY98002 TY98002;
-typedef struct TY49545 TY49545;
+typedef struct TY47008 TY47008;
 typedef struct NimStringDesc NimStringDesc;
 typedef struct TGenericSeq TGenericSeq;
-typedef struct TY86031 TY86031;
-typedef struct TY49523 TY49523;
-typedef struct TY181010 TY181010;
+typedef struct TY50525 TY50525;
+typedef struct TY100002 TY100002;
+typedef struct TY184010 TY184010;
 typedef struct TNimType TNimType;
 typedef struct TNimNode TNimNode;
+typedef struct TY50551 TY50551;
+typedef struct TY42532 TY42532;
+typedef struct TY50547 TY50547;
+typedef struct TY49011 TY49011;
+typedef struct TY50519 TY50519;
+typedef struct TY33515 TY33515;
 typedef struct TNimObject TNimObject;
-typedef struct TY10202 TY10202;
-typedef struct TY10214 TY10214;
-typedef struct TY10590 TY10590;
-typedef struct TY10218 TY10218;
-typedef struct TY10210 TY10210;
-typedef struct TY10588 TY10588;
-typedef struct TY49549 TY49549;
-typedef struct TY41532 TY41532;
-typedef struct TY48011 TY48011;
-typedef struct TY49517 TY49517;
-typedef struct TY32515 TY32515;
-typedef struct TY48005 TY48005;
-typedef struct TY49527 TY49527;
-typedef struct TY49525 TY49525;
-typedef struct TY49537 TY49537;
-typedef struct TY49541 TY49541;
-typedef struct TY33221 TY33221;
-typedef struct TY86029 TY86029;
-typedef struct TY53223 TY53223;
-typedef struct TY53221 TY53221;
-typedef struct TY53219 TY53219;
-typedef struct TY49561 TY49561;
-typedef struct TY49559 TY49559;
-typedef struct TY49557 TY49557;
-typedef struct TY49547 TY49547;
-typedef struct TY37013 TY37013;
+typedef struct TY49005 TY49005;
+typedef struct TY50529 TY50529;
+typedef struct TY50527 TY50527;
+typedef struct TY50539 TY50539;
+typedef struct TY50543 TY50543;
+typedef struct TY10602 TY10602;
+typedef struct TY8004 TY8004;
+typedef struct TY10990 TY10990;
+typedef struct TY10618 TY10618;
+typedef struct TY10614 TY10614;
+typedef struct TY10610 TY10610;
+typedef struct TY10988 TY10988;
+typedef struct TY100006 TY100006;
+typedef struct TY88031 TY88031;
+typedef struct TY50549 TY50549;
+typedef struct TY38013 TY38013;
+typedef struct TY4377 TY4377;
+typedef struct TY88029 TY88029;
+typedef struct TY54223 TY54223;
+typedef struct TY54221 TY54221;
+typedef struct TY54219 TY54219;
+typedef struct TY50563 TY50563;
+typedef struct TY50561 TY50561;
+typedef struct TY50559 TY50559;
 struct TGenericSeq {
 NI len;
 NI space;
@@ -52,16 +53,7 @@ struct NimStringDesc {
   TGenericSeq Sup;
 TY239 data;
 };
-typedef N_NIMCALL_PTR(TY98002*, TY98007) (TY49545* Module_98008, NimStringDesc* Filename_98009);
-typedef N_NIMCALL_PTR(TY98002*, TY98012) (TY49545* Module_98013, NimStringDesc* Filename_98014, TY86031* Rd_98015);
-typedef N_NIMCALL_PTR(TY49523*, TY98018) (TY98002* P_98019, TY49523* N_98020);
-typedef N_NIMCALL_PTR(TY49523*, TY98023) (TY98002* P_98024, TY49523* Toplevelstmt_98025);
-struct TY98006 {
-TY98007 Open;
-TY98012 Opencached;
-TY98018 Close;
-TY98023 Process;
-};
+typedef TY47008* TY54695[2];
 struct TNimType {
 NI size;
 NU8 kind;
@@ -78,56 +70,15 @@ NCSTRING name;
 NI len;
 TNimNode** sons;
 };
-struct TNimObject {
-TNimType* m_type;
-};
-struct TY98002 {
-  TNimObject Sup;
-};
-struct TY181010 {
-  TY98002 Sup;
-TY49545* Module;
-NimStringDesc* Filename;
-};
-struct TY10202 {
-NI Refcount;
-TNimType* Typ;
-};
-struct TY10218 {
-NI Len;
-NI Cap;
-TY10202** D;
-};
-struct TY10214 {
-NI Counter;
-NI Max;
-TY10210* Head;
-TY10210** Data;
-};
-struct TY10588 {
-NI Stackscans;
-NI Cyclecollections;
-NI Maxthreshold;
-NI Maxstacksize;
-NI Maxstackcells;
-NI Cycletablesize;
-};
-struct TY10590 {
-TY10218 Zct;
-TY10218 Decstack;
-TY10214 Cycleroots;
-TY10218 Tempstack;
-TY10588 Stat;
-};
-struct TY41532 {
+struct TY42532 {
 NI16 Line;
 NI16 Col;
 NI32 Fileindex;
 };
-struct TY49523 {
-TY49549* Typ;
+struct TY50525 {
+TY50551* Typ;
 NimStringDesc* Comment;
-TY41532 Info;
+TY42532 Info;
 NU8 Flags;
 NU8 Kind;
 union {
@@ -137,98 +88,193 @@ struct {NF64 Floatval;
 } S2;
 struct {NimStringDesc* Strval;
 } S3;
-struct {TY49545* Sym;
+struct {TY50547* Sym;
 } S4;
-struct {TY48011* Ident;
+struct {TY49011* Ident;
 } S5;
-struct {TY49517* Sons;
+struct {TY50519* Sons;
 } S6;
 } KindU;
 };
-struct TY32515 {
+struct TY33515 {
 NimStringDesc* Dir;
 NimStringDesc* Name;
 NimStringDesc* Ext;
 };
-typedef TY46008* TY169860[2];
-struct TY48005 {
+typedef NU8 TY50999[16];
+struct TNimObject {
+TNimType* m_type;
+};
+struct TY100002 {
+  TNimObject Sup;
+};
+struct TY184010 {
+  TY100002 Sup;
+TY50547* Module;
+NimStringDesc* Filename;
+};
+struct TY49005 {
   TNimObject Sup;
 NI Id;
 };
-struct TY49527 {
+struct TY50529 {
 TNimType* m_type;
 NI Counter;
-TY49525* Data;
+TY50527* Data;
 };
-struct TY49537 {
+struct TY50539 {
 NU8 K;
 NU8 S;
 NU8 Flags;
-TY49549* T;
-TY46008* R;
+TY50551* T;
+TY47008* R;
 NI A;
 };
-struct TY49545 {
-  TY48005 Sup;
+struct TY50547 {
+  TY49005 Sup;
 NU8 Kind;
 NU8 Magic;
-TY49549* Typ;
-TY48011* Name;
-TY41532 Info;
-TY49545* Owner;
+TY50551* Typ;
+TY49011* Name;
+TY42532 Info;
+TY50547* Owner;
 NU32 Flags;
-TY49527 Tab;
-TY49523* Ast;
+TY50529 Tab;
+TY50525* Ast;
 NU32 Options;
 NI Position;
 NI Offset;
-TY49537 Loc;
-TY49541* Annex;
+TY50539 Loc;
+TY50543* Annex;
 };
-struct TY48011 {
-  TY48005 Sup;
+struct TY49011 {
+  TY49005 Sup;
 NimStringDesc* S;
-TY48011* Next;
+TY49011* Next;
 NI H;
 };
-struct TY46008 {
+struct TY10602 {
+NI Refcount;
+TNimType* Typ;
+};
+typedef N_STDCALL_PTR(void, TY8016) (TY8004* L_8018);
+struct TY10618 {
+NI Len;
+NI Cap;
+TY10602** D;
+};
+struct TY10614 {
+NI Counter;
+NI Max;
+TY10610* Head;
+TY10610** Data;
+};
+struct TY8004 {
+void* Debuginfo;
+NI32 Lockcount;
+NI32 Recursioncount;
+NI Owningthread;
+NI Locksemaphore;
+NI32 Reserved;
+};
+struct TY10988 {
+NI Stackscans;
+NI Cyclecollections;
+NI Maxthreshold;
+NI Maxstacksize;
+NI Maxstackcells;
+NI Cycletablesize;
+};
+struct TY10990 {
+TY10618 Zct;
+TY10618 Decstack;
+TY10614 Cycleroots;
+TY10618 Tempstack;
+TY8004 Cyclerootslock;
+TY8004 Zctlock;
+TY10988 Stat;
+};
+typedef N_STDCALL_PTR(void, TY8020) (TY8004* L_8022);
+typedef N_NIMCALL_PTR(TY100002*, TY100007) (TY50547* Module_100008, NimStringDesc* Filename_100009);
+typedef N_NIMCALL_PTR(TY100002*, TY100012) (TY50547* Module_100013, NimStringDesc* Filename_100014, TY88031* Rd_100015);
+typedef N_NIMCALL_PTR(TY50525*, TY100018) (TY100002* P_100019, TY50525* N_100020);
+typedef N_NIMCALL_PTR(TY50525*, TY100023) (TY100002* P_100024, TY50525* Toplevelstmt_100025);
+struct TY100006 {
+TY100007 Open;
+TY100012 Opencached;
+TY100018 Close;
+TY100023 Process;
+};
+struct TY47008 {
   TNimObject Sup;
-TY46008* Left;
-TY46008* Right;
+TY47008* Left;
+TY47008* Right;
 NI Length;
 NimStringDesc* Data;
 };
-struct TY53219 {
+struct TY50551 {
+  TY49005 Sup;
+NU8 Kind;
+TY50549* Sons;
+TY50525* N;
+NU8 Flags;
+NU8 Callconv;
+TY50547* Owner;
+TY50547* Sym;
+NI64 Size;
+NI Align;
+NI Containerid;
+TY50539 Loc;
+};
+struct TY38013 {
+  TNimObject Sup;
+TY38013* Prev;
+TY38013* Next;
+};
+struct TY50543 {
+  TY38013 Sup;
+NU8 Kind;
+NIM_BOOL Generated;
+TY47008* Name;
+TY50525* Path;
+};
+typedef NI TY8614[16];
+struct TY10610 {
+TY10610* Next;
+NI Key;
+TY8614 Bits;
+};
+struct TY54219 {
 NI Key;
 NI Val;
 };
-struct TY53223 {
+struct TY54223 {
 NI Counter;
-TY53221* Data;
+TY54221* Data;
 };
-struct TY86029 {
+struct TY88029 {
 NI Lastidxkey;
 NI Lastidxval;
-TY53223 Tab;
-TY46008* R;
+TY54223 Tab;
+TY47008* R;
 NI Offset;
 };
-struct TY49557 {
-TY48005* Key;
+struct TY50559 {
+TY49005* Key;
 TNimObject* Val;
 };
-struct TY49561 {
+struct TY50563 {
 NI Counter;
-TY49559* Data;
+TY50561* Data;
 };
-struct TY86031 {
+struct TY88031 {
   TNimObject Sup;
 NI Pos;
 NimStringDesc* S;
 NU32 Options;
 NU8 Reason;
-TY33221* Moddeps;
-TY33221* Files;
+TY4377* Moddeps;
+TY4377* Files;
 NI Dataidx;
 NI Convertersidx;
 NI Initidx;
@@ -236,287 +282,557 @@ NI Interfidx;
 NI Compilerprocsidx;
 NI Cgenidx;
 NimStringDesc* Filename;
-TY86029 Index;
-TY86029 Imports;
+TY88029 Index;
+TY88029 Imports;
 NI Readerindex;
 NI Line;
 NI Moduleid;
-TY49561 Syms;
+TY50563 Syms;
 };
-typedef NI TY8214[16];
-struct TY10210 {
-TY10210* Next;
-NI Key;
-TY8214 Bits;
-};
-struct TY49549 {
-  TY48005 Sup;
-NU8 Kind;
-TY49547* Sons;
-TY49523* N;
-NU8 Flags;
-NU8 Callconv;
-TY49545* Owner;
-TY49545* Sym;
-NI64 Size;
-NI Align;
-NI Containerid;
-TY49537 Loc;
-};
-struct TY37013 {
-  TNimObject Sup;
-TY37013* Prev;
-TY37013* Next;
-};
-struct TY49541 {
-  TY37013 Sup;
-NU8 Kind;
-NIM_BOOL Generated;
-TY46008* Name;
-TY49523* Path;
-};
-struct TY49517 {
+struct TY50519 {
   TGenericSeq Sup;
-  TY49523* data[SEQ_DECL_SIZE];
+  TY50525* data[SEQ_DECL_SIZE];
 };
-struct TY49525 {
+struct TY50527 {
   TGenericSeq Sup;
-  TY49545* data[SEQ_DECL_SIZE];
+  TY50547* data[SEQ_DECL_SIZE];
 };
-struct TY33221 {
+struct TY50549 {
+  TGenericSeq Sup;
+  TY50551* data[SEQ_DECL_SIZE];
+};
+struct TY4377 {
   TGenericSeq Sup;
   NimStringDesc* data[SEQ_DECL_SIZE];
 };
-struct TY53221 {
+struct TY54221 {
   TGenericSeq Sup;
-  TY53219 data[SEQ_DECL_SIZE];
+  TY54219 data[SEQ_DECL_SIZE];
 };
-struct TY49559 {
+struct TY50561 {
   TGenericSeq Sup;
-  TY49557 data[SEQ_DECL_SIZE];
+  TY50559 data[SEQ_DECL_SIZE];
 };
-struct TY49547 {
-  TGenericSeq Sup;
-  TY49549* data[SEQ_DECL_SIZE];
-};
-N_NIMCALL(void, Initpass_98031)(TY98006* P_98034);
-N_NIMCALL(TY98002*, Myopen_181130)(TY49545* Module_181132, NimStringDesc* Filename_181133);
-N_NIMCALL(void*, newObj)(TNimType* Typ_11907, NI Size_11908);
-static N_INLINE(void, asgnRef)(void** Dest_11412, void* Src_11413);
-static N_INLINE(void, Incref_11401)(TY10202* C_11403);
-static N_INLINE(NIM_BOOL, Canbecycleroot_10626)(TY10202* C_10628);
-static N_INLINE(void, Rtladdcycleroot_11252)(TY10202* C_11254);
-N_NOINLINE(void, Incl_10474)(TY10214* S_10477, TY10202* Cell_10478);
-static N_INLINE(TY10202*, Usrtocell_10622)(void* Usr_10624);
-static N_INLINE(void, Decref_11260)(TY10202* C_11262);
-static N_INLINE(void, Rtladdzct_11256)(TY10202* C_11258);
-N_NOINLINE(void, Addzct_10611)(TY10218* S_10614, TY10202* C_10615);
-static N_INLINE(void, asgnRefNoCycle)(void** Dest_11416, void* Src_11417);
-N_NIMCALL(NimStringDesc*, copyString)(NimStringDesc* Src_16908);
-N_NIMCALL(TY49523*, Adddotdependency_181025)(TY98002* C_181027, TY49523* N_181028);
-N_NIMCALL(NI, Sonslen_49801)(TY49523* N_49803);
-N_NIMCALL(void, nossplitFile)(NimStringDesc* Path_32514, TY32515* Result);
-N_NIMCALL(NimStringDesc*, Getmodulefile_103013)(TY49523* N_103015);
-N_NIMCALL(void, Adddependencyaux_181016)(NimStringDesc* Importing_181018, NimStringDesc* Imported_181019);
-N_NIMCALL(void, Appf_46074)(TY46008** C_46077, NimStringDesc* Frmt_46078, TY46008** Args_46080, NI Args_46080Len0);
-N_NIMCALL(TY46008*, Torope_46046)(NimStringDesc* S_46048);
-N_NIMCALL(void, Writerope_46058)(TY46008* Head_46060, NimStringDesc* Filename_46061);
-N_NIMCALL(TY46008*, Ropef_46069)(NimStringDesc* Frmt_46071, TY46008** Args_46073, NI Args_46073Len0);
-N_NIMCALL(NimStringDesc*, nosChangeFileExt)(NimStringDesc* Filename_32820, NimStringDesc* Ext_32821);
-N_NIMCALL(NimStringDesc*, nosextractFilename)(NimStringDesc* Path_32585);
-STRING_LITERAL(TMP192473, "$1 -> $2;$n", 11);
-STRING_LITERAL(TMP192474, "digraph $1 {$n$2}$n", 19);
-STRING_LITERAL(TMP192475, "", 0);
-STRING_LITERAL(TMP192476, "dot", 3);
-TY46008* Gdotgraph_181015;
-extern TNimType* NTI181012; /* PGen */
-extern TNimType* NTI181010; /* TGen */
-extern TY10590 Gch_10608;
-static N_INLINE(NIM_BOOL, Canbecycleroot_10626)(TY10202* C_10628) {
-NIM_BOOL Result_10629;
-Result_10629 = 0;
-Result_10629 = !((((*(*C_10628).Typ).flags &(1<<((((NU8) 1))&7)))!=0));
-return Result_10629;
+N_NIMCALL(void, Adddependencyaux_184016)(NimStringDesc* Importing_184018, NimStringDesc* Imported_184019);
+N_NIMCALL(void, Appf_47074)(TY47008** C_47077, NimStringDesc* Frmt_47078, TY47008** Args_47080, NI Args_47080Len0);
+N_NIMCALL(TY47008*, Torope_47046)(NimStringDesc* S_47048);
+N_NIMCALL(TY50525*, Adddotdependency_184026)(TY100002* C_184028, TY50525* N_184029);
+N_NIMCALL(void, chckObj)(TNimType* Obj_5575, TNimType* Subclass_5576);
+N_NIMCALL(NI, Sonslen_50803)(TY50525* N_50805);
+static N_INLINE(NI, subInt)(NI A_6003, NI B_6004);
+N_NOINLINE(void, raiseOverflow)(void);
+N_NIMCALL(void, nossplitFile)(NimStringDesc* Path_33514, TY33515* Result);
+N_NIMCALL(NimStringDesc*, Getmodulefile_105013)(TY50525* N_105015);
+N_NOINLINE(void, raiseFieldError)(NimStringDesc* F_5475);
+N_NOINLINE(void, raiseIndexError)(void);
+N_NIMCALL(NimStringDesc*, copyString)(NimStringDesc* Src_17308);
+static N_INLINE(NI, addInt)(NI A_5803, NI B_5804);
+N_NIMCALL(void, Generatedot_184006)(NimStringDesc* Project_184008);
+N_NIMCALL(void, Writerope_47058)(TY47008* Head_47060, NimStringDesc* Filename_47061);
+N_NIMCALL(TY47008*, Ropef_47069)(NimStringDesc* Frmt_47071, TY47008** Args_47073, NI Args_47073Len0);
+N_NIMCALL(NimStringDesc*, nosChangeFileExt)(NimStringDesc* Filename_33820, NimStringDesc* Ext_33821);
+N_NIMCALL(NimStringDesc*, nosextractFilename)(NimStringDesc* Path_33585);
+N_NIMCALL(TY100002*, Myopen_184137)(TY50547* Module_184139, NimStringDesc* Filename_184140);
+N_NIMCALL(void*, newObj)(TNimType* Typ_12307, NI Size_12308);
+static N_INLINE(void, asgnRef)(void** Dest_11814, void* Src_11815);
+static N_INLINE(void, Incref_11802)(TY10602* C_11804);
+static N_INLINE(NI, Atomicinc_3001)(NI* Memloc_3004, NI X_3005);
+static N_INLINE(NIM_BOOL, Canbecycleroot_11040)(TY10602* C_11042);
+static N_INLINE(void, Rtladdcycleroot_11652)(TY10602* C_11654);
+N_NOINLINE(void, Incl_10874)(TY10614* S_10877, TY10602* Cell_10878);
+static N_INLINE(TY10602*, Usrtocell_11036)(void* Usr_11038);
+static N_INLINE(void, Decref_11664)(TY10602* C_11666);
+static N_INLINE(NI, Atomicdec_3006)(NI* Memloc_3009, NI X_3010);
+static N_INLINE(void, Rtladdzct_11658)(TY10602* C_11660);
+N_NOINLINE(void, Addzct_11025)(TY10618* S_11028, TY10602* C_11029);
+static N_INLINE(void, asgnRefNoCycle)(void** Dest_11818, void* Src_11819);
+N_NIMCALL(TY100006, Gendependpass_184004)(void);
+N_NIMCALL(void, Initpass_100031)(TY100006* P_100034);
+STRING_LITERAL(TMP184025, "$1 -> $2;$n", 11);
+static NIM_CONST TY50999 TMP184125 = {
+0xEC, 0xFF, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00,
+0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00}
+;STRING_LITERAL(TMP184126, "sons", 4);
+STRING_LITERAL(TMP184134, "digraph $1 {$n$2}$n", 19);
+STRING_LITERAL(TMP184135, "", 0);
+STRING_LITERAL(TMP184136, "dot", 3);
+TY47008* Gdotgraph_184015;
+extern TNimType* NTI184010; /* TGen */
+extern TNimType* NTI184012; /* PGen */
+extern TY8016 Dl_8015;
+extern TY10990 Gch_11010;
+extern TY8020 Dl_8019;
+N_NIMCALL(void, Adddependencyaux_184016)(NimStringDesc* Importing_184018, NimStringDesc* Imported_184019) {
+TY54695 LOC1;
+volatile struct {TFrame* prev;NCSTRING procname;NI line;NCSTRING filename;NI len;
+} F;
+F.procname = "addDependencyAux";
+F.prev = framePtr;
+F.filename = "rod/depends.nim";
+F.line = 0;
+framePtr = (TFrame*)&F;
+F.len = 0;
+F.line = 27;F.filename = "depends.nim";
+memset((void*)&LOC1, 0, sizeof(LOC1));
+LOC1[0] = Torope_47046(Importing_184018);
+LOC1[1] = Torope_47046(Imported_184019);
+Appf_47074(&Gdotgraph_184015, ((NimStringDesc*) &TMP184025), LOC1, 2);
+framePtr = framePtr->prev;
 }
-static N_INLINE(void, Rtladdcycleroot_11252)(TY10202* C_11254) {
-Incl_10474(&Gch_10608.Cycleroots, C_11254);
-}
-static N_INLINE(void, Incref_11401)(TY10202* C_11403) {
+static N_INLINE(NI, subInt)(NI A_6003, NI B_6004) {
+NI Result_6005;
 NIM_BOOL LOC2;
-(*C_11403).Refcount = (NI32)((NU32)((*C_11403).Refcount) + (NU32)(8));
-LOC2 = Canbecycleroot_10626(C_11403);
-if (!LOC2) goto LA3;
-Rtladdcycleroot_11252(C_11403);
+Result_6005 = 0;
+Result_6005 = (NI32)((NU32)(A_6003) - (NU32)(B_6004));
+LOC2 = (0 <= (NI32)(Result_6005 ^ A_6003));
+if (LOC2) goto LA3;
+LOC2 = (0 <= (NI32)(Result_6005 ^ (NI32)((NU32) ~(B_6004))));
 LA3: ;
+if (!LOC2) goto LA4;
+goto BeforeRet;
+LA4: ;
+raiseOverflow();
+BeforeRet: ;
+return Result_6005;
 }
-static N_INLINE(TY10202*, Usrtocell_10622)(void* Usr_10624) {
-TY10202* Result_10625;
-Result_10625 = 0;
-Result_10625 = ((TY10202*) ((NI32)((NU32)(((NI) (Usr_10624))) - (NU32)(((NI) (((NI)sizeof(TY10202))))))));
-return Result_10625;
+static N_INLINE(NI, addInt)(NI A_5803, NI B_5804) {
+NI Result_5805;
+NIM_BOOL LOC2;
+Result_5805 = 0;
+Result_5805 = (NI32)((NU32)(A_5803) + (NU32)(B_5804));
+LOC2 = (0 <= (NI32)(Result_5805 ^ A_5803));
+if (LOC2) goto LA3;
+LOC2 = (0 <= (NI32)(Result_5805 ^ B_5804));
+LA3: ;
+if (!LOC2) goto LA4;
+goto BeforeRet;
+LA4: ;
+raiseOverflow();
+BeforeRet: ;
+return Result_5805;
 }
-static N_INLINE(void, Rtladdzct_11256)(TY10202* C_11258) {
-Addzct_10611(&Gch_10608.Zct, C_11258);
-}
-static N_INLINE(void, Decref_11260)(TY10202* C_11262) {
-NIM_BOOL LOC4;
-(*C_11262).Refcount = (NI32)((NU32)((*C_11262).Refcount) - (NU32)(8));
-if (!((NU32)((*C_11262).Refcount) < (NU32)(8))) goto LA2;
-Rtladdzct_11256(C_11262);
-goto LA1;
-LA2: ;
-LOC4 = Canbecycleroot_10626(C_11262);
-if (!LOC4) goto LA5;
-Rtladdcycleroot_11252(C_11262);
-goto LA1;
-LA5: ;
-LA1: ;
-}
-static N_INLINE(void, asgnRef)(void** Dest_11412, void* Src_11413) {
-TY10202* LOC4;
-TY10202* LOC8;
-if (!!((Src_11413 == NIM_NIL))) goto LA2;
-LOC4 = Usrtocell_10622(Src_11413);
-Incref_11401(LOC4);
-LA2: ;
-if (!!(((*Dest_11412) == NIM_NIL))) goto LA6;
-LOC8 = Usrtocell_10622((*Dest_11412));
-Decref_11260(LOC8);
-LA6: ;
-(*Dest_11412) = Src_11413;
-}
-static N_INLINE(void, asgnRefNoCycle)(void** Dest_11416, void* Src_11417) {
-TY10202* C_11418;
-TY10202* C_11419;
-if (!!((Src_11417 == NIM_NIL))) goto LA2;
-C_11418 = 0;
-C_11418 = Usrtocell_10622(Src_11417);
-(*C_11418).Refcount = (NI32)((NU32)((*C_11418).Refcount) + (NU32)(8));
-LA2: ;
-if (!!(((*Dest_11416) == NIM_NIL))) goto LA5;
-C_11419 = 0;
-C_11419 = Usrtocell_10622((*Dest_11416));
-(*C_11419).Refcount = (NI32)((NU32)((*C_11419).Refcount) - (NU32)(8));
-if (!((NU32)((*C_11419).Refcount) < (NU32)(8))) goto LA8;
-Rtladdzct_11256(C_11419);
-LA8: ;
-LA5: ;
-(*Dest_11416) = Src_11417;
-}
-N_NIMCALL(TY98002*, Myopen_181130)(TY49545* Module_181132, NimStringDesc* Filename_181133) {
-TY98002* Result_181134;
-TY181010* G_181135;
-Result_181134 = 0;
-G_181135 = 0;
-G_181135 = (TY181010*) newObj(NTI181012, sizeof(TY181010));
-(*G_181135).Sup.Sup.m_type = NTI181010;
-asgnRef((void**) &(*G_181135).Module, Module_181132);
-asgnRefNoCycle((void**) &(*G_181135).Filename, copyString(Filename_181133));
-Result_181134 = &G_181135->Sup;
-return Result_181134;
-}
-N_NIMCALL(void, Adddependencyaux_181016)(NimStringDesc* Importing_181018, NimStringDesc* Imported_181019) {
-TY169860 LOC1;
-LOC1[0] = Torope_46046(Importing_181018);
-LOC1[1] = Torope_46046(Imported_181019);
-Appf_46074(&Gdotgraph_181015, ((NimStringDesc*) &TMP192473), LOC1, 2);
-}
-N_NIMCALL(TY49523*, Adddotdependency_181025)(TY98002* C_181027, TY49523* N_181028) {
-TY49523* Result_181029;
-TY181010* G_181041;
-NI I_181064;
-NI HEX3Atmp_181112;
+N_NIMCALL(TY50525*, Adddotdependency_184026)(TY100002* C_184028, TY50525* N_184029) {
+TY50525* Result_184030;
+TY184010* G_184042;
+NI I_184065;
+NI HEX3Atmp_184113;
 NI LOC4;
-NI Res_181114;
-NimStringDesc* Imported_181077;
+NI Res_184115;
+NimStringDesc* Imported_184078;
 NimStringDesc* LOC6;
-TY32515 LOC7;
-NimStringDesc* Imported_181090;
+TY33515 LOC7;
+NimStringDesc* Imported_184091;
 NimStringDesc* LOC8;
-TY32515 LOC9;
-NI I_181098;
-NI HEX3Atmp_181118;
+TY33515 LOC9;
+NI I_184099;
+NI HEX3Atmp_184119;
 NI LOC10;
-NI Res_181120;
-TY49523* LOC12;
-Result_181029 = 0;
-Result_181029 = N_181028;
-if (!(N_181028 == NIM_NIL)) goto LA2;
+NI Res_184121;
+TY50525* LOC12;
+volatile struct {TFrame* prev;NCSTRING procname;NI line;NCSTRING filename;NI len;
+} F;
+F.procname = "addDotDependency";
+F.prev = framePtr;
+F.filename = "rod/depends.nim";
+F.line = 0;
+framePtr = (TFrame*)&F;
+F.len = 0;
+Result_184030 = 0;
+F.line = 31;F.filename = "depends.nim";
+Result_184030 = N_184029;
+F.line = 32;F.filename = "depends.nim";
+if (!(N_184029 == NIM_NIL)) goto LA2;
+F.line = 32;F.filename = "depends.nim";
 goto BeforeRet;
 LA2: ;
-G_181041 = 0;
-G_181041 = ((TY181010*) (C_181027));
-switch ((*N_181028).Kind) {
+G_184042 = 0;
+F.line = 33;F.filename = "depends.nim";
+if (C_184028) chckObj((*C_184028).Sup.m_type, NTI184010);
+G_184042 = ((TY184010*) (C_184028));
+F.line = 34;F.filename = "depends.nim";
+switch ((*N_184029).Kind) {
 case ((NU8) 102):
-I_181064 = 0;
-HEX3Atmp_181112 = 0;
-LOC4 = Sonslen_49801(N_181028);
-HEX3Atmp_181112 = (NI32)(LOC4 - 1);
-Res_181114 = 0;
-Res_181114 = 0;
+I_184065 = 0;
+HEX3Atmp_184113 = 0;
+F.line = 36;F.filename = "depends.nim";
+LOC4 = Sonslen_50803(N_184029);
+HEX3Atmp_184113 = subInt(LOC4, 1);
+Res_184115 = 0;
+F.line = 1021;F.filename = "system.nim";
+Res_184115 = 0;
+F.line = 1022;F.filename = "system.nim";
 while (1) {
-if (!(Res_181114 <= HEX3Atmp_181112)) goto LA5;
-I_181064 = Res_181114;
-Imported_181077 = 0;
-LOC6 = Getmodulefile_103013((*N_181028).KindU.S6.Sons->data[I_181064]);
+if (!(Res_184115 <= HEX3Atmp_184113)) goto LA5;
+F.line = 1021;F.filename = "system.nim";
+I_184065 = Res_184115;
+Imported_184078 = 0;
+F.line = 37;F.filename = "depends.nim";
+if (((TMP184125[(*N_184029).Kind/8] &(1<<((*N_184029).Kind%8)))!=0)) raiseFieldError(((NimStringDesc*) &TMP184126));
+if ((NU)(I_184065) >= (NU)((*N_184029).KindU.S6.Sons->Sup.len)) raiseIndexError();
+LOC6 = 0;
+LOC6 = Getmodulefile_105013((*N_184029).KindU.S6.Sons->data[I_184065]);
+memset((void*)&LOC7, 0, sizeof(LOC7));
 nossplitFile(LOC6, &LOC7);
-Imported_181077 = copyString(LOC7.Name);
-Adddependencyaux_181016((*(*(*G_181041).Module).Name).S, Imported_181077);
-Res_181114 += 1;
+Imported_184078 = copyString(LOC7.Name);
+F.line = 38;F.filename = "depends.nim";
+Adddependencyaux_184016((*(*(*G_184042).Module).Name).S, Imported_184078);
+F.line = 1024;F.filename = "system.nim";
+Res_184115 = addInt(Res_184115, 1);
 } LA5: ;
 break;
 case ((NU8) 103):
-Imported_181090 = 0;
-LOC8 = Getmodulefile_103013((*N_181028).KindU.S6.Sons->data[0]);
+Imported_184091 = 0;
+F.line = 40;F.filename = "depends.nim";
+if (((TMP184125[(*N_184029).Kind/8] &(1<<((*N_184029).Kind%8)))!=0)) raiseFieldError(((NimStringDesc*) &TMP184126));
+if ((NU)(0) >= (NU)((*N_184029).KindU.S6.Sons->Sup.len)) raiseIndexError();
+LOC8 = 0;
+LOC8 = Getmodulefile_105013((*N_184029).KindU.S6.Sons->data[0]);
+memset((void*)&LOC9, 0, sizeof(LOC9));
 nossplitFile(LOC8, &LOC9);
-Imported_181090 = copyString(LOC9.Name);
-Adddependencyaux_181016((*(*(*G_181041).Module).Name).S, Imported_181090);
+Imported_184091 = copyString(LOC9.Name);
+F.line = 41;F.filename = "depends.nim";
+Adddependencyaux_184016((*(*(*G_184042).Module).Name).S, Imported_184091);
 break;
 case ((NU8) 101):
 case ((NU8) 99):
 case ((NU8) 106):
 case ((NU8) 107):
-I_181098 = 0;
-HEX3Atmp_181118 = 0;
-LOC10 = Sonslen_49801(N_181028);
-HEX3Atmp_181118 = (NI32)(LOC10 - 1);
-Res_181120 = 0;
-Res_181120 = 0;
+I_184099 = 0;
+HEX3Atmp_184119 = 0;
+F.line = 43;F.filename = "depends.nim";
+LOC10 = Sonslen_50803(N_184029);
+HEX3Atmp_184119 = subInt(LOC10, 1);
+Res_184121 = 0;
+F.line = 1021;F.filename = "system.nim";
+Res_184121 = 0;
+F.line = 1022;F.filename = "system.nim";
 while (1) {
-if (!(Res_181120 <= HEX3Atmp_181118)) goto LA11;
-I_181098 = Res_181120;
-LOC12 = Adddotdependency_181025(C_181027, (*N_181028).KindU.S6.Sons->data[I_181098]);
-Res_181120 += 1;
+if (!(Res_184121 <= HEX3Atmp_184119)) goto LA11;
+F.line = 1021;F.filename = "system.nim";
+I_184099 = Res_184121;
+F.line = 43;F.filename = "depends.nim";
+if (((TMP184125[(*N_184029).Kind/8] &(1<<((*N_184029).Kind%8)))!=0)) raiseFieldError(((NimStringDesc*) &TMP184126));
+if ((NU)(I_184099) >= (NU)((*N_184029).KindU.S6.Sons->Sup.len)) raiseIndexError();
+LOC12 = 0;
+LOC12 = Adddotdependency_184026(C_184028, (*N_184029).KindU.S6.Sons->data[I_184099]);
+F.line = 1024;F.filename = "system.nim";
+Res_184121 = addInt(Res_184121, 1);
 } LA11: ;
 break;
 default:
 break;
 }
 BeforeRet: ;
-return Result_181029;
+framePtr = framePtr->prev;
+return Result_184030;
 }
-N_NIMCALL(TY98006, Gendependpass_181004)(void) {
-TY98006 Result_181153;
-memset((void*)&Result_181153, 0, sizeof(Result_181153));
-Initpass_98031(&Result_181153);
-Result_181153.Open = Myopen_181130;
-Result_181153.Process = Adddotdependency_181025;
-return Result_181153;
-}
-N_NIMCALL(void, Generatedot_181006)(NimStringDesc* Project_181008) {
-TY169860 LOC1;
+N_NIMCALL(void, Generatedot_184006)(NimStringDesc* Project_184008) {
+TY54695 LOC1;
 NimStringDesc* LOC2;
 NimStringDesc* LOC3;
-TY46008* LOC4;
+TY47008* LOC4;
 NimStringDesc* LOC5;
-LOC2 = nosextractFilename(Project_181008);
-LOC3 = nosChangeFileExt(LOC2, ((NimStringDesc*) &TMP192475));
-LOC1[0] = Torope_46046(LOC3);
-LOC1[1] = Gdotgraph_181015;
-LOC4 = Ropef_46069(((NimStringDesc*) &TMP192474), LOC1, 2);
-LOC5 = nosChangeFileExt(Project_181008, ((NimStringDesc*) &TMP192476));
-Writerope_46058(LOC4, LOC5);
+volatile struct {TFrame* prev;NCSTRING procname;NI line;NCSTRING filename;NI len;
+} F;
+F.procname = "generateDot";
+F.prev = framePtr;
+F.filename = "rod/depends.nim";
+F.line = 0;
+framePtr = (TFrame*)&F;
+F.len = 0;
+F.line = 48;F.filename = "depends.nim";
+memset((void*)&LOC1, 0, sizeof(LOC1));
+LOC2 = 0;
+LOC2 = nosextractFilename(Project_184008);
+LOC3 = 0;
+LOC3 = nosChangeFileExt(LOC2, ((NimStringDesc*) &TMP184135));
+LOC1[0] = Torope_47046(LOC3);
+LOC1[1] = Gdotgraph_184015;
+LOC4 = 0;
+LOC4 = Ropef_47069(((NimStringDesc*) &TMP184134), LOC1, 2);
+LOC5 = 0;
+LOC5 = nosChangeFileExt(Project_184008, ((NimStringDesc*) &TMP184136));
+Writerope_47058(LOC4, LOC5);
+framePtr = framePtr->prev;
+}
+static N_INLINE(NI, Atomicinc_3001)(NI* Memloc_3004, NI X_3005) {
+NI Result_7408;
+volatile struct {TFrame* prev;NCSTRING procname;NI line;NCSTRING filename;NI len;
+} F;
+F.procname = "atomicInc";
+F.prev = framePtr;
+F.filename = "/home/andreas/projects/nimrod/lib/system/systhread.nim";
+F.line = 0;
+framePtr = (TFrame*)&F;
+F.len = 0;
+Result_7408 = 0;
+F.line = 29;F.filename = "systhread.nim";
+Result_7408 = __sync_add_and_fetch(Memloc_3004, X_3005);
+framePtr = framePtr->prev;
+return Result_7408;
+}
+static N_INLINE(NIM_BOOL, Canbecycleroot_11040)(TY10602* C_11042) {
+NIM_BOOL Result_11043;
+volatile struct {TFrame* prev;NCSTRING procname;NI line;NCSTRING filename;NI len;
+} F;
+F.procname = "canbeCycleRoot";
+F.prev = framePtr;
+F.filename = "/home/andreas/projects/nimrod/lib/system/gc.nim";
+F.line = 0;
+framePtr = (TFrame*)&F;
+F.len = 0;
+Result_11043 = 0;
+F.line = 103;F.filename = "gc.nim";
+Result_11043 = !((((*(*C_11042).Typ).flags &(1<<((((NU8) 1))&7)))!=0));
+framePtr = framePtr->prev;
+return Result_11043;
+}
+static N_INLINE(void, Rtladdcycleroot_11652)(TY10602* C_11654) {
+volatile struct {TFrame* prev;NCSTRING procname;NI line;NCSTRING filename;NI len;
+} F;
+F.procname = "rtlAddCycleRoot";
+F.prev = framePtr;
+F.filename = "/home/andreas/projects/nimrod/lib/system/gc.nim";
+F.line = 0;
+framePtr = (TFrame*)&F;
+F.len = 0;
+F.line = 205;F.filename = "gc.nim";
+if (!NIM_TRUE) goto LA2;
+F.line = 205;F.filename = "gc.nim";
+Dl_8015(&Gch_11010.Cyclerootslock);
+LA2: ;
+F.line = 206;F.filename = "gc.nim";
+Incl_10874(&Gch_11010.Cycleroots, C_11654);
+F.line = 207;F.filename = "gc.nim";
+if (!NIM_TRUE) goto LA5;
+F.line = 207;F.filename = "gc.nim";
+Dl_8019(&Gch_11010.Cyclerootslock);
+LA5: ;
+framePtr = framePtr->prev;
+}
+static N_INLINE(void, Incref_11802)(TY10602* C_11804) {
+NI LOC1;
+NIM_BOOL LOC3;
+volatile struct {TFrame* prev;NCSTRING procname;NI line;NCSTRING filename;NI len;
+} F;
+F.procname = "incRef";
+F.prev = framePtr;
+F.filename = "/home/andreas/projects/nimrod/lib/system/gc.nim";
+F.line = 0;
+framePtr = (TFrame*)&F;
+F.len = 0;
+F.line = 226;F.filename = "gc.nim";
+LOC1 = Atomicinc_3001(&(*C_11804).Refcount, 8);
+F.line = 227;F.filename = "gc.nim";
+LOC3 = Canbecycleroot_11040(C_11804);
+if (!LOC3) goto LA4;
+F.line = 228;F.filename = "gc.nim";
+Rtladdcycleroot_11652(C_11804);
+LA4: ;
+framePtr = framePtr->prev;
+}
+static N_INLINE(TY10602*, Usrtocell_11036)(void* Usr_11038) {
+TY10602* Result_11039;
+volatile struct {TFrame* prev;NCSTRING procname;NI line;NCSTRING filename;NI len;
+} F;
+F.procname = "usrToCell";
+F.prev = framePtr;
+F.filename = "/home/andreas/projects/nimrod/lib/system/gc.nim";
+F.line = 0;
+framePtr = (TFrame*)&F;
+F.len = 0;
+Result_11039 = 0;
+F.line = 100;F.filename = "gc.nim";
+Result_11039 = ((TY10602*) ((NI32)((NU32)(((NI) (Usr_11038))) - (NU32)(((NI) (((NI)sizeof(TY10602))))))));
+framePtr = framePtr->prev;
+return Result_11039;
+}
+static N_INLINE(NI, Atomicdec_3006)(NI* Memloc_3009, NI X_3010) {
+NI Result_7606;
+volatile struct {TFrame* prev;NCSTRING procname;NI line;NCSTRING filename;NI len;
+} F;
+F.procname = "atomicDec";
+F.prev = framePtr;
+F.filename = "/home/andreas/projects/nimrod/lib/system/systhread.nim";
+F.line = 0;
+framePtr = (TFrame*)&F;
+F.len = 0;
+Result_7606 = 0;
+F.line = 37;F.filename = "systhread.nim";
+Result_7606 = __sync_sub_and_fetch(Memloc_3009, X_3010);
+framePtr = framePtr->prev;
+return Result_7606;
+}
+static N_INLINE(void, Rtladdzct_11658)(TY10602* C_11660) {
+volatile struct {TFrame* prev;NCSTRING procname;NI line;NCSTRING filename;NI len;
+} F;
+F.procname = "rtlAddZCT";
+F.prev = framePtr;
+F.filename = "/home/andreas/projects/nimrod/lib/system/gc.nim";
+F.line = 0;
+framePtr = (TFrame*)&F;
+F.len = 0;
+F.line = 211;F.filename = "gc.nim";
+if (!NIM_TRUE) goto LA2;
+F.line = 211;F.filename = "gc.nim";
+Dl_8015(&Gch_11010.Zctlock);
+LA2: ;
+F.line = 212;F.filename = "gc.nim";
+Addzct_11025(&Gch_11010.Zct, C_11660);
+F.line = 213;F.filename = "gc.nim";
+if (!NIM_TRUE) goto LA5;
+F.line = 213;F.filename = "gc.nim";
+Dl_8019(&Gch_11010.Zctlock);
+LA5: ;
+framePtr = framePtr->prev;
+}
+static N_INLINE(void, Decref_11664)(TY10602* C_11666) {
+NI LOC2;
+NIM_BOOL LOC5;
+volatile struct {TFrame* prev;NCSTRING procname;NI line;NCSTRING filename;NI len;
+} F;
+F.procname = "decRef";
+F.prev = framePtr;
+F.filename = "/home/andreas/projects/nimrod/lib/system/gc.nim";
+F.line = 0;
+framePtr = (TFrame*)&F;
+F.len = 0;
+F.line = 219;F.filename = "gc.nim";
+F.line = 220;F.filename = "gc.nim";
+LOC2 = Atomicdec_3006(&(*C_11666).Refcount, 8);
+if (!((NU32)(LOC2) < (NU32)(8))) goto LA3;
+F.line = 221;F.filename = "gc.nim";
+Rtladdzct_11658(C_11666);
+goto LA1;
+LA3: ;
+LOC5 = Canbecycleroot_11040(C_11666);
+if (!LOC5) goto LA6;
+F.line = 223;F.filename = "gc.nim";
+Rtladdcycleroot_11652(C_11666);
+goto LA1;
+LA6: ;
+LA1: ;
+framePtr = framePtr->prev;
+}
+static N_INLINE(void, asgnRef)(void** Dest_11814, void* Src_11815) {
+TY10602* LOC4;
+TY10602* LOC8;
+volatile struct {TFrame* prev;NCSTRING procname;NI line;NCSTRING filename;NI len;
+} F;
+F.procname = "asgnRef";
+F.prev = framePtr;
+F.filename = "/home/andreas/projects/nimrod/lib/system/gc.nim";
+F.line = 0;
+framePtr = (TFrame*)&F;
+F.len = 0;
+F.line = 235;F.filename = "gc.nim";
+F.line = 237;F.filename = "gc.nim";
+if (!!((Src_11815 == NIM_NIL))) goto LA2;
+F.line = 237;F.filename = "gc.nim";
+LOC4 = Usrtocell_11036(Src_11815);
+Incref_11802(LOC4);
+LA2: ;
+F.line = 238;F.filename = "gc.nim";
+if (!!(((*Dest_11814) == NIM_NIL))) goto LA6;
+F.line = 238;F.filename = "gc.nim";
+LOC8 = Usrtocell_11036((*Dest_11814));
+Decref_11664(LOC8);
+LA6: ;
+F.line = 239;F.filename = "gc.nim";
+(*Dest_11814) = Src_11815;
+framePtr = framePtr->prev;
+}
+static N_INLINE(void, asgnRefNoCycle)(void** Dest_11818, void* Src_11819) {
+TY10602* C_11820;
+NI LOC4;
+TY10602* C_11822;
+NI LOC9;
+volatile struct {TFrame* prev;NCSTRING procname;NI line;NCSTRING filename;NI len;
+} F;
+F.procname = "asgnRefNoCycle";
+F.prev = framePtr;
+F.filename = "/home/andreas/projects/nimrod/lib/system/gc.nim";
+F.line = 0;
+framePtr = (TFrame*)&F;
+F.len = 0;
+F.line = 244;F.filename = "gc.nim";
+if (!!((Src_11819 == NIM_NIL))) goto LA2;
+C_11820 = 0;
+F.line = 245;F.filename = "gc.nim";
+C_11820 = Usrtocell_11036(Src_11819);
+F.line = 246;F.filename = "gc.nim";
+LOC4 = Atomicinc_3001(&(*C_11820).Refcount, 8);
+LA2: ;
+F.line = 247;F.filename = "gc.nim";
+if (!!(((*Dest_11818) == NIM_NIL))) goto LA6;
+C_11822 = 0;
+F.line = 248;F.filename = "gc.nim";
+C_11822 = Usrtocell_11036((*Dest_11818));
+F.line = 249;F.filename = "gc.nim";
+LOC9 = Atomicdec_3006(&(*C_11822).Refcount, 8);
+if (!((NU32)(LOC9) < (NU32)(8))) goto LA10;
+F.line = 250;F.filename = "gc.nim";
+Rtladdzct_11658(C_11822);
+LA10: ;
+LA6: ;
+F.line = 251;F.filename = "gc.nim";
+(*Dest_11818) = Src_11819;
+framePtr = framePtr->prev;
+}
+N_NIMCALL(TY100002*, Myopen_184137)(TY50547* Module_184139, NimStringDesc* Filename_184140) {
+TY100002* Result_184141;
+TY184010* G_184142;
+volatile struct {TFrame* prev;NCSTRING procname;NI line;NCSTRING filename;NI len;
+} F;
+F.procname = "myOpen";
+F.prev = framePtr;
+F.filename = "rod/depends.nim";
+F.line = 0;
+framePtr = (TFrame*)&F;
+F.len = 0;
+Result_184141 = 0;
+G_184142 = 0;
+F.line = 54;F.filename = "depends.nim";
+G_184142 = (TY184010*) newObj(NTI184012, sizeof(TY184010));
+(*G_184142).Sup.Sup.m_type = NTI184010;
+F.line = 55;F.filename = "depends.nim";
+asgnRef((void**) &(*G_184142).Module, Module_184139);
+F.line = 56;F.filename = "depends.nim";
+asgnRefNoCycle((void**) &(*G_184142).Filename, copyString(Filename_184140));
+F.line = 57;F.filename = "depends.nim";
+Result_184141 = &G_184142->Sup;
+framePtr = framePtr->prev;
+return Result_184141;
+}
+N_NIMCALL(TY100006, Gendependpass_184004)(void) {
+TY100006 Result_184160;
+volatile struct {TFrame* prev;NCSTRING procname;NI line;NCSTRING filename;NI len;
+} F;
+F.procname = "genDependPass";
+F.prev = framePtr;
+F.filename = "rod/depends.nim";
+F.line = 0;
+framePtr = (TFrame*)&F;
+F.len = 0;
+memset((void*)&Result_184160, 0, sizeof(Result_184160));
+F.line = 60;F.filename = "depends.nim";
+Initpass_100031(&Result_184160);
+F.line = 61;F.filename = "depends.nim";
+Result_184160.Open = Myopen_184137;
+F.line = 62;F.filename = "depends.nim";
+Result_184160.Process = Adddotdependency_184026;
+framePtr = framePtr->prev;
+return Result_184160;
 }
 N_NOINLINE(void, dependsInit)(void) {
+volatile struct {TFrame* prev;NCSTRING procname;NI line;NCSTRING filename;NI len;
+} F;
+F.procname = "depends";
+F.prev = framePtr;
+F.filename = "rod/depends.nim";
+F.line = 0;
+framePtr = (TFrame*)&F;
+F.len = 0;
+framePtr = framePtr->prev;
 }
 

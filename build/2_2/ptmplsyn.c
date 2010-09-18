@@ -5,28 +5,28 @@ typedef long long int NI;
 typedef unsigned long long int NU;
 #include "nimbase.h"
 
-typedef struct TY71013 TY71013;
+typedef struct TY89009 TY89009;
+typedef struct TY73013 TY73013;
 typedef struct NimStringDesc NimStringDesc;
 typedef struct TGenericSeq TGenericSeq;
-typedef struct TY53523 TY53523;
-typedef struct TY87009 TY87009;
-typedef struct TY45532 TY45532;
+typedef struct TY46532 TY46532;
+typedef struct TY54525 TY54525;
 typedef struct TNimObject TNimObject;
 typedef struct TNimType TNimType;
 typedef struct TNimNode TNimNode;
-typedef struct TY53549 TY53549;
-typedef struct TY53545 TY53545;
-typedef struct TY52011 TY52011;
-typedef struct TY53517 TY53517;
-typedef struct TY52005 TY52005;
-typedef struct TY53547 TY53547;
-typedef struct TY53537 TY53537;
-typedef struct TY50008 TY50008;
-typedef struct TY53527 TY53527;
-typedef struct TY53525 TY53525;
-typedef struct TY53541 TY53541;
-typedef struct TY41013 TY41013;
-typedef NU8 TY20402[32];
+typedef struct TY54551 TY54551;
+typedef struct TY54547 TY54547;
+typedef struct TY53011 TY53011;
+typedef struct TY54519 TY54519;
+typedef struct TY53005 TY53005;
+typedef struct TY54549 TY54549;
+typedef struct TY54539 TY54539;
+typedef struct TY51008 TY51008;
+typedef struct TY54529 TY54529;
+typedef struct TY54527 TY54527;
+typedef struct TY54543 TY54543;
+typedef struct TY42013 TY42013;
+typedef NU8 TY21402[32];
 struct TGenericSeq {
 NI len;
 NI space;
@@ -36,24 +36,28 @@ struct NimStringDesc {
   TGenericSeq Sup;
 TY239 data;
 };
-struct TY45532 {
+struct TY46532 {
 NI16 Line;
 NI16 Col;
 int Fileindex;
 };
-struct TY87009 {
-TY71013* Inp;
+struct TY89009 {
+TY73013* Inp;
 NU8 State;
-TY45532 Info;
+TY46532 Info;
 NI Indent;
-NI Par;
+NI Emitpar;
 NimStringDesc* X;
-TY71013* Outp;
+TY73013* Outp;
 NIM_CHAR Subschar;
 NIM_CHAR Nimdirective;
 NimStringDesc* Emit;
 NimStringDesc* Conc;
 NimStringDesc* Tostr;
+NI Curly;
+NI Bracket;
+NI Par;
+NIM_BOOL Pendingexprline;
 };
 struct TNimType {
 NI size;
@@ -66,7 +70,7 @@ void* finalizer;
 struct TNimObject {
 TNimType* m_type;
 };
-struct TY71013 {
+struct TY73013 {
   TNimObject Sup;
 NU8 Kind;
 FILE* F;
@@ -74,10 +78,10 @@ NimStringDesc* S;
 NI Rd;
 NI Wr;
 };
-struct TY53523 {
-TY53549* Typ;
+struct TY54525 {
+TY54551* Typ;
 NimStringDesc* Comment;
-TY45532 Info;
+TY46532 Info;
 NU8 Flags;
 NU8 Kind;
 union {
@@ -87,11 +91,11 @@ struct {NF64 Floatval;
 } S2;
 struct {NimStringDesc* Strval;
 } S3;
-struct {TY53545* Sym;
+struct {TY54547* Sym;
 } S4;
-struct {TY52011* Ident;
+struct {TY53011* Ident;
 } S5;
-struct {TY53517* Sons;
+struct {TY54519* Sons;
 } S6;
 } KindU;
 };
@@ -103,153 +107,362 @@ NCSTRING name;
 NI len;
 TNimNode** sons;
 };
-struct TY52005 {
+struct TY53005 {
   TNimObject Sup;
 NI Id;
 };
-struct TY53537 {
+struct TY54539 {
 NU8 K;
 NU8 S;
 NU8 Flags;
-TY53549* T;
-TY50008* R;
+TY54551* T;
+TY51008* R;
 NI A;
 };
-struct TY53549 {
-  TY52005 Sup;
+struct TY54551 {
+  TY53005 Sup;
 NU8 Kind;
-TY53547* Sons;
-TY53523* N;
+TY54549* Sons;
+TY54525* N;
 NU8 Flags;
 NU8 Callconv;
-TY53545* Owner;
-TY53545* Sym;
+TY54547* Owner;
+TY54547* Sym;
 NI64 Size;
 NI Align;
 NI Containerid;
-TY53537 Loc;
+TY54539 Loc;
 };
-struct TY53527 {
+struct TY54529 {
 TNimType* m_type;
 NI Counter;
-TY53525* Data;
+TY54527* Data;
 };
-struct TY53545 {
-  TY52005 Sup;
+struct TY54547 {
+  TY53005 Sup;
 NU8 Kind;
 NU8 Magic;
-TY53549* Typ;
-TY52011* Name;
-TY45532 Info;
-TY53545* Owner;
+TY54551* Typ;
+TY53011* Name;
+TY46532 Info;
+TY54547* Owner;
 NU32 Flags;
-TY53527 Tab;
-TY53523* Ast;
+TY54529 Tab;
+TY54525* Ast;
 NU32 Options;
 NI Position;
 NI Offset;
-TY53537 Loc;
-TY53541* Annex;
+TY54539 Loc;
+TY54543* Annex;
 };
-struct TY52011 {
-  TY52005 Sup;
+struct TY53011 {
+  TY53005 Sup;
 NimStringDesc* S;
-TY52011* Next;
+TY53011* Next;
 NI H;
 };
-struct TY50008 {
+struct TY51008 {
   TNimObject Sup;
-TY50008* Left;
-TY50008* Right;
+TY51008* Left;
+TY51008* Right;
 NI Length;
 NimStringDesc* Data;
 };
-struct TY41013 {
+struct TY42013 {
   TNimObject Sup;
-TY41013* Prev;
-TY41013* Next;
+TY42013* Prev;
+TY42013* Next;
 };
-struct TY53541 {
-  TY41013 Sup;
+struct TY54543 {
+  TY42013 Sup;
 NU8 Kind;
 NIM_BOOL Generated;
-TY50008* Name;
-TY53523* Path;
+TY51008* Name;
+TY54525* Path;
 };
-struct TY53517 {
+struct TY54519 {
   TGenericSeq Sup;
-  TY53523* data[SEQ_DECL_SIZE];
+  TY54525* data[SEQ_DECL_SIZE];
 };
-struct TY53547 {
+struct TY54549 {
   TGenericSeq Sup;
-  TY53549* data[SEQ_DECL_SIZE];
+  TY54551* data[SEQ_DECL_SIZE];
 };
-struct TY53525 {
+struct TY54527 {
   TGenericSeq Sup;
-  TY53545* data[SEQ_DECL_SIZE];
+  TY54547* data[SEQ_DECL_SIZE];
 };
-N_NIMCALL(TY45532, Newlineinfo_45574)(NimStringDesc* Filename_45576, NI Line_45577, NI Col_45578);
-N_NIMCALL(TY71013*, Llstreamopen_71025)(NimStringDesc* Data_71027);
-N_NIMCALL(NIM_CHAR, Chararg_86014)(TY53523* N_86016, NimStringDesc* Name_86017, NI Pos_86018, NIM_CHAR Default_86019);
-N_NIMCALL(NimStringDesc*, Strarg_86020)(TY53523* N_86022, NimStringDesc* Name_86023, NI Pos_86024, NimStringDesc* Default_86025);
-N_NIMCALL(NIM_BOOL, Llstreamatend_71071)(TY71013* S_71073);
-N_NIMCALL(NimStringDesc*, Llstreamreadline_71048)(TY71013* S_71050);
-N_NIMCALL(void, Parseline_87032)(TY87009* P_87035);
-N_NIMCALL(void, Newline_87026)(TY87009* P_87029);
-N_NIMCALL(void, Llstreamwrite_71054)(TY71013* S_71056, NimStringDesc* Data_71057);
-N_NIMCALL(NimStringDesc*, nsuRepeatChar)(NI Count_23750, NIM_CHAR C_23751);
-N_NIMCALL(NimStringDesc*, copyString)(NimStringDesc* Src_17108);
+N_NIMCALL(void, Newline_89030)(TY89009* P_89033);
+N_NIMCALL(void, Llstreamwrite_73054)(TY73013* S_73056, NimStringDesc* Data_73057);
+N_NIMCALL(NimStringDesc*, nsuRepeatChar)(NI Count_24750, NIM_CHAR C_24751);
+N_NIMCALL(void, Scanpar_89037)(TY89009* P_89040, NI D_89041);
+N_NOINLINE(void, raiseIndexError)(void);
+static N_INLINE(NI, addInt)(NI A_5803, NI B_5804);
+N_NOINLINE(void, raiseOverflow)(void);
+static N_INLINE(NI, subInt)(NI A_6003, NI B_6004);
+N_NIMCALL(NIM_BOOL, Endswithopr_89128)(TY89009* P_89130);
+static N_INLINE(NIM_BOOL, Withinexpr_89167)(TY89009* P_89169);
+N_NIMCALL(void, Parseline_89177)(TY89009* P_89180);
+N_NIMCALL(NimStringDesc*, copyString)(NimStringDesc* Src_17508);
 N_NIMCALL(NimStringDesc*, addChar)(NimStringDesc* S_1603, NIM_CHAR C_1604);
-N_NIMCALL(NU8, Whichkeyword_69468)(NimStringDesc* Id_69470);
-N_NIMCALL(void, Limessage_45562)(TY45532 Info_45564, NU8 Msg_45565, NimStringDesc* Arg_45566);
-N_NIMCALL(NimStringDesc*, copyStr)(NimStringDesc* S_1748, NI First_1749);
-N_NIMCALL(NimStringDesc*, nsuToHex)(NI64 X_23450, NI Len_23451);
-N_NIMCALL(void, Llstreamwrite_71058)(TY71013* S_71060, NIM_CHAR Data_71061);
-N_NIMCALL(void, Llstreamclose_71040)(TY71013* S_71042);
-NIM_CONST TY20402 Patternchars_87024 = {
+N_NIMCALL(NU8, Whichkeyword_70468)(NimStringDesc* Id_70470);
+static N_INLINE(NI, chckRange)(NI I_4610, NI A_4611, NI B_4612);
+N_NOINLINE(void, raiseRangeError)(NI64 Val_5418);
+N_NIMCALL(void, Limessage_46562)(TY46532 Info_46564, NU8 Msg_46565, NimStringDesc* Arg_46566);
+N_NIMCALL(NimStringDesc*, copyStr)(NimStringDesc* S_1924, NI First_1925);
+N_NIMCALL(NimStringDesc*, nsuToHex)(NI64 X_24450, NI Len_24451);
+N_NIMCALL(void, Llstreamwrite_73058)(TY73013* S_73060, NIM_CHAR Data_73061);
+N_NIMCALL(TY73013*, Filtertmpl_89001)(TY73013* Stdin_89003, NimStringDesc* Filename_89004, TY54525* Call_89005);
+N_NIMCALL(TY46532, Newlineinfo_46574)(NimStringDesc* Filename_46576, NI Line_46577, NI Col_46578);
+N_NIMCALL(TY73013*, Llstreamopen_73025)(NimStringDesc* Data_73027);
+N_NIMCALL(NIM_CHAR, Chararg_88014)(TY54525* N_88016, NimStringDesc* Name_88017, NI Pos_88018, NIM_CHAR Default_88019);
+N_NIMCALL(NimStringDesc*, Strarg_88020)(TY54525* N_88022, NimStringDesc* Name_88023, NI Pos_88024, NimStringDesc* Default_88025);
+N_NIMCALL(NIM_BOOL, Llstreamatend_73071)(TY73013* S_73073);
+N_NIMCALL(NimStringDesc*, Llstreamreadline_73048)(TY73013* S_73050);
+N_NIMCALL(void, Llstreamclose_73040)(TY73013* S_73042);
+NIM_CONST TY21402 Patternchars_89028 = {
 0x00, 0x00, 0x00, 0x00, 0x00, 0x40, 0xFF, 0x03,
 0xFE, 0xFF, 0xFF, 0x87, 0xFE, 0xFF, 0xFF, 0x07,
 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF,
 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF}
 ;
-STRING_LITERAL(TMP193827, "", 0);
-STRING_LITERAL(TMP193828, "subschar", 8);
-STRING_LITERAL(TMP193829, "metachar", 8);
-STRING_LITERAL(TMP193830, "emit", 4);
-STRING_LITERAL(TMP193831, "result.add", 10);
-STRING_LITERAL(TMP193832, "conc", 4);
-STRING_LITERAL(TMP193833, " & ", 3);
-STRING_LITERAL(TMP193834, "tostring", 8);
-STRING_LITERAL(TMP193835, "$", 1);
-STRING_LITERAL(TMP193836, "\012", 1);
-STRING_LITERAL(TMP193837, "end", 3);
-STRING_LITERAL(TMP193838, "#end", 4);
-STRING_LITERAL(TMP193839, "\"", 1);
-STRING_LITERAL(TMP193840, "(\"", 2);
-STRING_LITERAL(TMP193841, "\\x", 2);
-STRING_LITERAL(TMP193842, "\\\\", 2);
-STRING_LITERAL(TMP193843, "\\\'", 2);
-STRING_LITERAL(TMP193844, "\\\"", 2);
-STRING_LITERAL(TMP193845, "}", 1);
-STRING_LITERAL(TMP193846, "\\n\"", 3);
-N_NIMCALL(void, Newline_87026)(TY87009* P_87029) {
+STRING_LITERAL(TMP89036, "\012", 1);
+static NIM_CONST TY21402 TMP89166 = {
+0x00, 0x00, 0x00, 0x00, 0x72, 0xBC, 0x00, 0xD0,
+0x01, 0x00, 0x00, 0x50, 0x00, 0x00, 0x00, 0x50,
+0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00}
+;STRING_LITERAL(TMP89490, "", 0);
+STRING_LITERAL(TMP89491, "end", 3);
+STRING_LITERAL(TMP89492, "#end", 4);
+STRING_LITERAL(TMP89493, "\"", 1);
+STRING_LITERAL(TMP89494, "(\"", 2);
+STRING_LITERAL(TMP89495, "\\x", 2);
+STRING_LITERAL(TMP89496, "\\\\", 2);
+STRING_LITERAL(TMP89497, "\\\'", 2);
+STRING_LITERAL(TMP89498, "\\\"", 2);
+STRING_LITERAL(TMP89499, "}", 1);
+STRING_LITERAL(TMP89500, "$", 1);
+STRING_LITERAL(TMP89501, "\\n\"", 3);
+STRING_LITERAL(TMP89512, "subschar", 8);
+STRING_LITERAL(TMP89513, "metachar", 8);
+STRING_LITERAL(TMP89514, "emit", 4);
+STRING_LITERAL(TMP89515, "result.add", 10);
+STRING_LITERAL(TMP89516, "conc", 4);
+STRING_LITERAL(TMP89517, " & ", 3);
+STRING_LITERAL(TMP89518, "tostring", 8);
+N_NIMCALL(void, Newline_89030)(TY89009* P_89033) {
 NimStringDesc* LOC1;
-LOC1 = nsuRepeatChar((*P_87029).Par, 41);
-Llstreamwrite_71054((*P_87029).Outp, LOC1);
-(*P_87029).Par = 0;
-if (!(((NI16) 1) < (*P_87029).Info.Line)) goto LA3;
-Llstreamwrite_71054((*P_87029).Outp, ((NimStringDesc*) &TMP193836));
+NimStringDesc* LOC8;
+volatile struct {TFrame* prev;NCSTRING procname;NI line;NCSTRING filename;NI len;
+} F;
+F.procname = "newLine";
+F.prev = framePtr;
+F.filename = "rod/ptmplsyn.nim";
+F.line = 0;
+framePtr = (TFrame*)&F;
+F.len = 0;
+F.line = 40;F.filename = "ptmplsyn.nim";
+LOC1 = 0;
+LOC1 = nsuRepeatChar((*P_89033).Emitpar, 41);
+Llstreamwrite_73054((*P_89033).Outp, LOC1);
+F.line = 41;F.filename = "ptmplsyn.nim";
+(*P_89033).Emitpar = 0;
+F.line = 42;F.filename = "ptmplsyn.nim";
+if (!(((NI16) 1) < (*P_89033).Info.Line)) goto LA3;
+F.line = 42;F.filename = "ptmplsyn.nim";
+Llstreamwrite_73054((*P_89033).Outp, ((NimStringDesc*) &TMP89036));
 LA3: ;
+F.line = 43;F.filename = "ptmplsyn.nim";
+if (!(*P_89033).Pendingexprline) goto LA6;
+F.line = 44;F.filename = "ptmplsyn.nim";
+LOC8 = 0;
+LOC8 = nsuRepeatChar(2, 32);
+Llstreamwrite_73054((*P_89033).Outp, LOC8);
+F.line = 45;F.filename = "ptmplsyn.nim";
+(*P_89033).Pendingexprline = NIM_FALSE;
+LA6: ;
+framePtr = framePtr->prev;
 }
-N_NIMCALL(void, Parseline_87032)(TY87009* P_87035) {
-NI D_87036;
-NI J_87037;
-NI Curly_87038;
-NimStringDesc* Keyw_87039;
+static N_INLINE(NI, addInt)(NI A_5803, NI B_5804) {
+NI Result_5805;
+NIM_BOOL LOC2;
+Result_5805 = 0;
+Result_5805 = (NI64)((NU64)(A_5803) + (NU64)(B_5804));
+LOC2 = (0 <= (NI64)(Result_5805 ^ A_5803));
+if (LOC2) goto LA3;
+LOC2 = (0 <= (NI64)(Result_5805 ^ B_5804));
+LA3: ;
+if (!LOC2) goto LA4;
+goto BeforeRet;
+LA4: ;
+raiseOverflow();
+BeforeRet: ;
+return Result_5805;
+}
+static N_INLINE(NI, subInt)(NI A_6003, NI B_6004) {
+NI Result_6005;
+NIM_BOOL LOC2;
+Result_6005 = 0;
+Result_6005 = (NI64)((NU64)(A_6003) - (NU64)(B_6004));
+LOC2 = (0 <= (NI64)(Result_6005 ^ A_6003));
+if (LOC2) goto LA3;
+LOC2 = (0 <= (NI64)(Result_6005 ^ (NI64)((NU64) ~(B_6004))));
+LA3: ;
+if (!LOC2) goto LA4;
+goto BeforeRet;
+LA4: ;
+raiseOverflow();
+BeforeRet: ;
+return Result_6005;
+}
+N_NIMCALL(void, Scanpar_89037)(TY89009* P_89040, NI D_89041) {
+NI I_89042;
+volatile struct {TFrame* prev;NCSTRING procname;NI line;NCSTRING filename;NI len;
+} F;
+F.procname = "scanPar";
+F.prev = framePtr;
+F.filename = "rod/ptmplsyn.nim";
+F.line = 0;
+framePtr = (TFrame*)&F;
+F.len = 0;
+I_89042 = 0;
+F.line = 48;F.filename = "ptmplsyn.nim";
+I_89042 = D_89041;
+F.line = 49;F.filename = "ptmplsyn.nim";
+while (1) {
+F.line = 50;F.filename = "ptmplsyn.nim";
+if ((NU)(I_89042) > (NU)((*P_89040).X->Sup.len)) raiseIndexError();
+switch (((NU8)((*P_89040).X->data[I_89042]))) {
+case 0:
+F.line = 51;F.filename = "ptmplsyn.nim";
+goto LA1;
+break;
+case 40:
+F.line = 52;F.filename = "ptmplsyn.nim";
+(*P_89040).Par = addInt((*P_89040).Par, 1);
+break;
+case 41:
+F.line = 53;F.filename = "ptmplsyn.nim";
+(*P_89040).Par = subInt((*P_89040).Par, 1);
+break;
+case 91:
+F.line = 54;F.filename = "ptmplsyn.nim";
+(*P_89040).Bracket = addInt((*P_89040).Bracket, 1);
+break;
+case 93:
+F.line = 55;F.filename = "ptmplsyn.nim";
+(*P_89040).Bracket = subInt((*P_89040).Bracket, 1);
+break;
+case 123:
+F.line = 56;F.filename = "ptmplsyn.nim";
+(*P_89040).Curly = addInt((*P_89040).Curly, 1);
+break;
+case 125:
+F.line = 57;F.filename = "ptmplsyn.nim";
+(*P_89040).Curly = subInt((*P_89040).Curly, 1);
+break;
+default:
+break;
+}
+F.line = 59;F.filename = "ptmplsyn.nim";
+I_89042 = addInt(I_89042, 1);
+} LA1: ;
+framePtr = framePtr->prev;
+}
+N_NIMCALL(NIM_BOOL, Endswithopr_89128)(TY89009* P_89130) {
+NIM_BOOL Result_89131;
+NI I_89134;
+NIM_BOOL LOC2;
+NIM_BOOL LOC5;
+volatile struct {TFrame* prev;NCSTRING procname;NI line;NCSTRING filename;NI len;
+} F;
+F.procname = "endsWithOpr";
+F.prev = framePtr;
+F.filename = "rod/ptmplsyn.nim";
+F.line = 0;
+framePtr = (TFrame*)&F;
+F.len = 0;
+Result_89131 = 0;
+I_89134 = 0;
+F.line = 62;F.filename = "ptmplsyn.nim";
+I_89134 = subInt((*P_89130).X->Sup.len, 1);
+F.line = 63;F.filename = "ptmplsyn.nim";
+while (1) {
+LOC2 = (0 <= I_89134);
+if (!(LOC2)) goto LA3;
+if ((NU)(I_89134) > (NU)((*P_89130).X->Sup.len)) raiseIndexError();
+LOC2 = ((NU8)((*P_89130).X->data[I_89134]) == (NU8)(32));
+LA3: ;
+if (!LOC2) goto LA1;
+F.line = 63;F.filename = "ptmplsyn.nim";
+I_89134 = subInt(I_89134, 1);
+} LA1: ;
+F.line = 64;F.filename = "ptmplsyn.nim";
+LOC5 = (0 <= I_89134);
+if (!(LOC5)) goto LA6;
+if ((NU)(I_89134) > (NU)((*P_89130).X->Sup.len)) raiseIndexError();
+LOC5 = ((TMP89166[((NU8)((*P_89130).X->data[I_89134]))/8] &(1<<(((NU8)((*P_89130).X->data[I_89134]))%8)))!=0);
+LA6: ;
+if (!LOC5) goto LA7;
+F.line = 66;F.filename = "ptmplsyn.nim";
+Result_89131 = NIM_TRUE;
+LA7: ;
+framePtr = framePtr->prev;
+return Result_89131;
+}
+static N_INLINE(NIM_BOOL, Withinexpr_89167)(TY89009* P_89169) {
+NIM_BOOL Result_89170;
+NIM_BOOL LOC1;
+NIM_BOOL LOC2;
+volatile struct {TFrame* prev;NCSTRING procname;NI line;NCSTRING filename;NI len;
+} F;
+F.procname = "withInExpr";
+F.prev = framePtr;
+F.filename = "rod/ptmplsyn.nim";
+F.line = 0;
+framePtr = (TFrame*)&F;
+F.len = 0;
+Result_89170 = 0;
+F.line = 69;F.filename = "ptmplsyn.nim";
+LOC2 = (0 < (*P_89169).Par);
+if (LOC2) goto LA3;
+LOC2 = (0 < (*P_89169).Bracket);
+LA3: ;
+LOC1 = LOC2;
+if (LOC1) goto LA4;
+LOC1 = (0 < (*P_89169).Curly);
+LA4: ;
+Result_89170 = LOC1;
+framePtr = framePtr->prev;
+return Result_89170;
+}
+static N_INLINE(NI, chckRange)(NI I_4610, NI A_4611, NI B_4612) {
+NI Result_5516;
+NIM_BOOL LOC2;
+Result_5516 = 0;
+LOC2 = (A_4611 <= I_4610);
+if (!(LOC2)) goto LA3;
+LOC2 = (I_4610 <= B_4612);
+LA3: ;
+if (!LOC2) goto LA4;
+Result_5516 = I_4610;
+goto BeforeRet;
+goto LA1;
+LA4: ;
+raiseRangeError(((NI64) (I_4610)));
+LA1: ;
+BeforeRet: ;
+return Result_5516;
+}
+N_NIMCALL(void, Parseline_89177)(TY89009* P_89180) {
+NI D_89181;
+NI J_89182;
+NI Curly_89183;
+NimStringDesc* Keyw_89184;
 NIM_BOOL LOC3;
-NU8 LOC11;
-NimStringDesc* LOC15;
-NimStringDesc* LOC16;
+NIM_BOOL LOC11;
+NU8 LOC13;
 NimStringDesc* LOC17;
 NimStringDesc* LOC18;
 NimStringDesc* LOC19;
@@ -257,51 +470,98 @@ NimStringDesc* LOC20;
 NimStringDesc* LOC21;
 NimStringDesc* LOC22;
 NimStringDesc* LOC23;
+NimStringDesc* LOC24;
 NimStringDesc* LOC25;
-D_87036 = 0;
-J_87037 = 0;
-Curly_87038 = 0;
-Keyw_87039 = 0;
-J_87037 = 0;
+NimStringDesc* LOC27;
+volatile struct {TFrame* prev;NCSTRING procname;NI line;NCSTRING filename;NI len;
+} F;
+F.procname = "parseLine";
+F.prev = framePtr;
+F.filename = "rod/ptmplsyn.nim";
+F.line = 0;
+framePtr = (TFrame*)&F;
+F.len = 0;
+D_89181 = 0;
+J_89182 = 0;
+Curly_89183 = 0;
+Keyw_89184 = 0;
+F.line = 75;F.filename = "ptmplsyn.nim";
+J_89182 = 0;
+F.line = 76;F.filename = "ptmplsyn.nim";
 while (1) {
-if (!((NU8)((*P_87035).X->data[J_87037]) == (NU8)(32))) goto LA1;
-J_87037 += 1;
+if ((NU)(J_89182) > (NU)((*P_89180).X->Sup.len)) raiseIndexError();
+if (!((NU8)((*P_89180).X->data[J_89182]) == (NU8)(32))) goto LA1;
+F.line = 76;F.filename = "ptmplsyn.nim";
+J_89182 = addInt(J_89182, 1);
 } LA1: ;
-LOC3 = ((NU8)((*P_87035).X->data[0]) == (NU8)((*P_87035).Nimdirective));
+F.line = 77;F.filename = "ptmplsyn.nim";
+if ((NU)(0) > (NU)((*P_89180).X->Sup.len)) raiseIndexError();
+LOC3 = ((NU8)((*P_89180).X->data[0]) == (NU8)((*P_89180).Nimdirective));
 if (!(LOC3)) goto LA4;
-LOC3 = ((NU8)((*P_87035).X->data[1]) == (NU8)(33));
+if ((NU)(1) > (NU)((*P_89180).X->Sup.len)) raiseIndexError();
+LOC3 = ((NU8)((*P_89180).X->data[1]) == (NU8)(33));
 LA4: ;
 if (!LOC3) goto LA5;
-Newline_87026(P_87035);
+F.line = 78;F.filename = "ptmplsyn.nim";
+Newline_89030(P_89180);
 goto LA2;
 LA5: ;
-if (!((NU8)((*P_87035).X->data[J_87037]) == (NU8)((*P_87035).Nimdirective))) goto LA7;
-Newline_87026(P_87035);
-J_87037 += 1;
+if ((NU)(J_89182) > (NU)((*P_89180).X->Sup.len)) raiseIndexError();
+if (!((NU8)((*P_89180).X->data[J_89182]) == (NU8)((*P_89180).Nimdirective))) goto LA7;
+F.line = 80;F.filename = "ptmplsyn.nim";
+Newline_89030(P_89180);
+F.line = 81;F.filename = "ptmplsyn.nim";
+J_89182 = addInt(J_89182, 1);
+F.line = 82;F.filename = "ptmplsyn.nim";
 while (1) {
-if (!((NU8)((*P_87035).X->data[J_87037]) == (NU8)(32))) goto LA9;
-J_87037 += 1;
+if ((NU)(J_89182) > (NU)((*P_89180).X->Sup.len)) raiseIndexError();
+if (!((NU8)((*P_89180).X->data[J_89182]) == (NU8)(32))) goto LA9;
+F.line = 82;F.filename = "ptmplsyn.nim";
+J_89182 = addInt(J_89182, 1);
 } LA9: ;
-D_87036 = J_87037;
-Keyw_87039 = copyString(((NimStringDesc*) &TMP193827));
+F.line = 83;F.filename = "ptmplsyn.nim";
+D_89181 = J_89182;
+F.line = 84;F.filename = "ptmplsyn.nim";
+Keyw_89184 = copyString(((NimStringDesc*) &TMP89490));
+F.line = 85;F.filename = "ptmplsyn.nim";
 while (1) {
-if (!(((NU8)((*P_87035).X->data[J_87037])) >= ((NU8)(97)) && ((NU8)((*P_87035).X->data[J_87037])) <= ((NU8)(122)) || ((NU8)((*P_87035).X->data[J_87037])) >= ((NU8)(65)) && ((NU8)((*P_87035).X->data[J_87037])) <= ((NU8)(90)) || ((NU8)((*P_87035).X->data[J_87037])) >= ((NU8)(48)) && ((NU8)((*P_87035).X->data[J_87037])) <= ((NU8)(57)) || ((NU8)((*P_87035).X->data[J_87037])) >= ((NU8)(128)) && ((NU8)((*P_87035).X->data[J_87037])) <= ((NU8)(255)) || ((NU8)((*P_87035).X->data[J_87037])) == ((NU8)(46)) || ((NU8)((*P_87035).X->data[J_87037])) == ((NU8)(95)))) goto LA10;
-Keyw_87039 = addChar(Keyw_87039, (*P_87035).X->data[J_87037]);
-J_87037 += 1;
+if ((NU)(J_89182) > (NU)((*P_89180).X->Sup.len)) raiseIndexError();
+if (!(((NU8)((*P_89180).X->data[J_89182])) >= ((NU8)(97)) && ((NU8)((*P_89180).X->data[J_89182])) <= ((NU8)(122)) || ((NU8)((*P_89180).X->data[J_89182])) >= ((NU8)(65)) && ((NU8)((*P_89180).X->data[J_89182])) <= ((NU8)(90)) || ((NU8)((*P_89180).X->data[J_89182])) >= ((NU8)(48)) && ((NU8)((*P_89180).X->data[J_89182])) <= ((NU8)(57)) || ((NU8)((*P_89180).X->data[J_89182])) >= ((NU8)(128)) && ((NU8)((*P_89180).X->data[J_89182])) <= ((NU8)(255)) || ((NU8)((*P_89180).X->data[J_89182])) == ((NU8)(46)) || ((NU8)((*P_89180).X->data[J_89182])) == ((NU8)(95)))) goto LA10;
+F.line = 86;F.filename = "ptmplsyn.nim";
+if ((NU)(J_89182) > (NU)((*P_89180).X->Sup.len)) raiseIndexError();
+Keyw_89184 = addChar(Keyw_89184, (*P_89180).X->data[J_89182]);
+F.line = 87;F.filename = "ptmplsyn.nim";
+J_89182 = addInt(J_89182, 1);
 } LA10: ;
-LOC11 = Whichkeyword_69468(Keyw_87039);
-switch (LOC11) {
-case ((NU8) 19):
-if (!(2 <= (*P_87035).Indent)) goto LA13;
-(*P_87035).Indent -= 2;
-goto LA12;
-LA13: ;
-(*P_87035).Info.Col = ((NI16) (J_87037));
-Limessage_45562((*P_87035).Info, ((NU8) 159), ((NimStringDesc*) &TMP193837));
+F.line = 89;F.filename = "ptmplsyn.nim";
+Scanpar_89037(P_89180, J_89182);
+F.line = 90;F.filename = "ptmplsyn.nim";
+LOC11 = Withinexpr_89167(&(*P_89180));
+if (LOC11) goto LA12;
+LOC11 = Endswithopr_89128(&(*P_89180));
 LA12: ;
-LOC15 = nsuRepeatChar((*P_87035).Indent, 32);
-Llstreamwrite_71054((*P_87035).Outp, LOC15);
-Llstreamwrite_71054((*P_87035).Outp, ((NimStringDesc*) &TMP193838));
+(*P_89180).Pendingexprline = LOC11;
+F.line = 91;F.filename = "ptmplsyn.nim";
+LOC13 = Whichkeyword_70468(Keyw_89184);
+switch (LOC13) {
+case ((NU8) 19):
+F.line = 93;F.filename = "ptmplsyn.nim";
+if (!(2 <= (*P_89180).Indent)) goto LA15;
+F.line = 94;F.filename = "ptmplsyn.nim";
+(*P_89180).Indent = subInt((*P_89180).Indent, 2);
+goto LA14;
+LA15: ;
+F.line = 96;F.filename = "ptmplsyn.nim";
+(*P_89180).Info.Col = ((NI16)chckRange(J_89182, ((NI16) -32768), ((NI16) 32767)));
+F.line = 97;F.filename = "ptmplsyn.nim";
+Limessage_46562((*P_89180).Info, ((NU8) 159), ((NimStringDesc*) &TMP89491));
+LA14: ;
+F.line = 98;F.filename = "ptmplsyn.nim";
+LOC17 = 0;
+LOC17 = nsuRepeatChar((*P_89180).Indent, 32);
+Llstreamwrite_73054((*P_89180).Outp, LOC17);
+F.line = 99;F.filename = "ptmplsyn.nim";
+Llstreamwrite_73054((*P_89180).Outp, ((NimStringDesc*) &TMP89492));
 break;
 case ((NU8) 26):
 case ((NU8) 58):
@@ -316,181 +576,318 @@ case ((NU8) 13):
 case ((NU8) 36):
 case ((NU8) 53):
 case ((NU8) 37):
-LOC16 = nsuRepeatChar((*P_87035).Indent, 32);
-Llstreamwrite_71054((*P_87035).Outp, LOC16);
-LOC17 = copyStr((*P_87035).X, D_87036);
-Llstreamwrite_71054((*P_87035).Outp, LOC17);
-(*P_87035).Indent += 2;
+F.line = 102;F.filename = "ptmplsyn.nim";
+LOC18 = 0;
+LOC18 = nsuRepeatChar((*P_89180).Indent, 32);
+Llstreamwrite_73054((*P_89180).Outp, LOC18);
+F.line = 103;F.filename = "ptmplsyn.nim";
+LOC19 = 0;
+LOC19 = copyStr((*P_89180).X, D_89181);
+Llstreamwrite_73054((*P_89180).Outp, LOC19);
+F.line = 104;F.filename = "ptmplsyn.nim";
+(*P_89180).Indent = addInt((*P_89180).Indent, 2);
 break;
 case ((NU8) 17):
 case ((NU8) 43):
 case ((NU8) 18):
 case ((NU8) 21):
 case ((NU8) 22):
-LOC18 = nsuRepeatChar((NI64)((*P_87035).Indent - 2), 32);
-Llstreamwrite_71054((*P_87035).Outp, LOC18);
-LOC19 = copyStr((*P_87035).X, D_87036);
-Llstreamwrite_71054((*P_87035).Outp, LOC19);
+F.line = 106;F.filename = "ptmplsyn.nim";
+LOC20 = 0;
+LOC20 = nsuRepeatChar(subInt((*P_89180).Indent, 2), 32);
+Llstreamwrite_73054((*P_89180).Outp, LOC20);
+F.line = 107;F.filename = "ptmplsyn.nim";
+LOC21 = 0;
+LOC21 = copyStr((*P_89180).X, D_89181);
+Llstreamwrite_73054((*P_89180).Outp, LOC21);
 break;
 default:
-LOC20 = nsuRepeatChar((*P_87035).Indent, 32);
-Llstreamwrite_71054((*P_87035).Outp, LOC20);
-LOC21 = copyStr((*P_87035).X, D_87036);
-Llstreamwrite_71054((*P_87035).Outp, LOC21);
+F.line = 109;F.filename = "ptmplsyn.nim";
+LOC22 = 0;
+LOC22 = nsuRepeatChar((*P_89180).Indent, 32);
+Llstreamwrite_73054((*P_89180).Outp, LOC22);
+F.line = 110;F.filename = "ptmplsyn.nim";
+LOC23 = 0;
+LOC23 = copyStr((*P_89180).X, D_89181);
+Llstreamwrite_73054((*P_89180).Outp, LOC23);
 break;
 }
-(*P_87035).State = ((NU8) 0);
+F.line = 111;F.filename = "ptmplsyn.nim";
+(*P_89180).State = ((NU8) 0);
 goto LA2;
 LA7: ;
-J_87037 = 0;
-switch ((*P_87035).State) {
+F.line = 115;F.filename = "ptmplsyn.nim";
+(*P_89180).Par = 0;
+F.line = 116;F.filename = "ptmplsyn.nim";
+(*P_89180).Curly = 0;
+F.line = 117;F.filename = "ptmplsyn.nim";
+(*P_89180).Bracket = 0;
+F.line = 118;F.filename = "ptmplsyn.nim";
+J_89182 = 0;
+F.line = 119;F.filename = "ptmplsyn.nim";
+switch ((*P_89180).State) {
 case ((NU8) 1):
-Llstreamwrite_71054((*P_87035).Outp, (*P_87035).Conc);
-Llstreamwrite_71054((*P_87035).Outp, ((NimStringDesc*) &TMP193836));
-LOC22 = nsuRepeatChar((NI64)((*P_87035).Indent + 2), 32);
-Llstreamwrite_71054((*P_87035).Outp, LOC22);
-Llstreamwrite_71054((*P_87035).Outp, ((NimStringDesc*) &TMP193839));
+F.line = 122;F.filename = "ptmplsyn.nim";
+Llstreamwrite_73054((*P_89180).Outp, (*P_89180).Conc);
+F.line = 123;F.filename = "ptmplsyn.nim";
+Llstreamwrite_73054((*P_89180).Outp, ((NimStringDesc*) &TMP89036));
+F.line = 124;F.filename = "ptmplsyn.nim";
+LOC24 = 0;
+LOC24 = nsuRepeatChar(addInt((*P_89180).Indent, 2), 32);
+Llstreamwrite_73054((*P_89180).Outp, LOC24);
+F.line = 125;F.filename = "ptmplsyn.nim";
+Llstreamwrite_73054((*P_89180).Outp, ((NimStringDesc*) &TMP89493));
 break;
 case ((NU8) 0):
-Newline_87026(P_87035);
-LOC23 = nsuRepeatChar((*P_87035).Indent, 32);
-Llstreamwrite_71054((*P_87035).Outp, LOC23);
-Llstreamwrite_71054((*P_87035).Outp, (*P_87035).Emit);
-Llstreamwrite_71054((*P_87035).Outp, ((NimStringDesc*) &TMP193840));
-(*P_87035).Par += 1;
+F.line = 127;F.filename = "ptmplsyn.nim";
+Newline_89030(P_89180);
+F.line = 128;F.filename = "ptmplsyn.nim";
+LOC25 = 0;
+LOC25 = nsuRepeatChar((*P_89180).Indent, 32);
+Llstreamwrite_73054((*P_89180).Outp, LOC25);
+F.line = 129;F.filename = "ptmplsyn.nim";
+Llstreamwrite_73054((*P_89180).Outp, (*P_89180).Emit);
+F.line = 130;F.filename = "ptmplsyn.nim";
+Llstreamwrite_73054((*P_89180).Outp, ((NimStringDesc*) &TMP89494));
+F.line = 131;F.filename = "ptmplsyn.nim";
+(*P_89180).Emitpar = addInt((*P_89180).Emitpar, 1);
 break;
 }
-(*P_87035).State = ((NU8) 1);
+F.line = 132;F.filename = "ptmplsyn.nim";
+(*P_89180).State = ((NU8) 1);
+F.line = 133;F.filename = "ptmplsyn.nim";
 while (1) {
-switch (((NU8)((*P_87035).X->data[J_87037]))) {
+F.line = 134;F.filename = "ptmplsyn.nim";
+if ((NU)(J_89182) > (NU)((*P_89180).X->Sup.len)) raiseIndexError();
+switch (((NU8)((*P_89180).X->data[J_89182]))) {
 case 0:
-goto LA24;
+F.line = 136;F.filename = "ptmplsyn.nim";
+goto LA26;
 break;
 case 1 ... 31:
 case 128 ... 255:
-Llstreamwrite_71054((*P_87035).Outp, ((NimStringDesc*) &TMP193841));
-LOC25 = nsuToHex(((NI64) (((NU8)((*P_87035).X->data[J_87037])))), 2);
-Llstreamwrite_71054((*P_87035).Outp, LOC25);
-J_87037 += 1;
+F.line = 138;F.filename = "ptmplsyn.nim";
+Llstreamwrite_73054((*P_89180).Outp, ((NimStringDesc*) &TMP89495));
+F.line = 139;F.filename = "ptmplsyn.nim";
+if ((NU)(J_89182) > (NU)((*P_89180).X->Sup.len)) raiseIndexError();
+LOC27 = 0;
+LOC27 = nsuToHex(((NI64) (((NU8)((*P_89180).X->data[J_89182])))), 2);
+Llstreamwrite_73054((*P_89180).Outp, LOC27);
+F.line = 140;F.filename = "ptmplsyn.nim";
+J_89182 = addInt(J_89182, 1);
 break;
 case 92:
-Llstreamwrite_71054((*P_87035).Outp, ((NimStringDesc*) &TMP193842));
-J_87037 += 1;
+F.line = 142;F.filename = "ptmplsyn.nim";
+Llstreamwrite_73054((*P_89180).Outp, ((NimStringDesc*) &TMP89496));
+F.line = 143;F.filename = "ptmplsyn.nim";
+J_89182 = addInt(J_89182, 1);
 break;
 case 39:
-Llstreamwrite_71054((*P_87035).Outp, ((NimStringDesc*) &TMP193843));
-J_87037 += 1;
+F.line = 145;F.filename = "ptmplsyn.nim";
+Llstreamwrite_73054((*P_89180).Outp, ((NimStringDesc*) &TMP89497));
+F.line = 146;F.filename = "ptmplsyn.nim";
+J_89182 = addInt(J_89182, 1);
 break;
 case 34:
-Llstreamwrite_71054((*P_87035).Outp, ((NimStringDesc*) &TMP193844));
-J_87037 += 1;
+F.line = 148;F.filename = "ptmplsyn.nim";
+Llstreamwrite_73054((*P_89180).Outp, ((NimStringDesc*) &TMP89498));
+F.line = 149;F.filename = "ptmplsyn.nim";
+J_89182 = addInt(J_89182, 1);
 break;
 default:
-if (!((NU8)((*P_87035).X->data[J_87037]) == (NU8)((*P_87035).Subschar))) goto LA27;
-J_87037 += 1;
-switch (((NU8)((*P_87035).X->data[J_87037]))) {
+F.line = 151;F.filename = "ptmplsyn.nim";
+if ((NU)(J_89182) > (NU)((*P_89180).X->Sup.len)) raiseIndexError();
+if (!((NU8)((*P_89180).X->data[J_89182]) == (NU8)((*P_89180).Subschar))) goto LA29;
+F.line = 153;F.filename = "ptmplsyn.nim";
+J_89182 = addInt(J_89182, 1);
+F.line = 154;F.filename = "ptmplsyn.nim";
+if ((NU)(J_89182) > (NU)((*P_89180).X->Sup.len)) raiseIndexError();
+switch (((NU8)((*P_89180).X->data[J_89182]))) {
 case 123:
-(*P_87035).Info.Col = ((NI16) (J_87037));
-Llstreamwrite_71058((*P_87035).Outp, 34);
-Llstreamwrite_71054((*P_87035).Outp, (*P_87035).Conc);
-Llstreamwrite_71054((*P_87035).Outp, (*P_87035).Tostr);
-Llstreamwrite_71058((*P_87035).Outp, 40);
-J_87037 += 1;
-Curly_87038 = 0;
+F.line = 156;F.filename = "ptmplsyn.nim";
+(*P_89180).Info.Col = ((NI16)chckRange(J_89182, ((NI16) -32768), ((NI16) 32767)));
+F.line = 157;F.filename = "ptmplsyn.nim";
+Llstreamwrite_73058((*P_89180).Outp, 34);
+F.line = 158;F.filename = "ptmplsyn.nim";
+Llstreamwrite_73054((*P_89180).Outp, (*P_89180).Conc);
+F.line = 159;F.filename = "ptmplsyn.nim";
+Llstreamwrite_73054((*P_89180).Outp, (*P_89180).Tostr);
+F.line = 160;F.filename = "ptmplsyn.nim";
+Llstreamwrite_73058((*P_89180).Outp, 40);
+F.line = 161;F.filename = "ptmplsyn.nim";
+J_89182 = addInt(J_89182, 1);
+F.line = 162;F.filename = "ptmplsyn.nim";
+Curly_89183 = 0;
+F.line = 163;F.filename = "ptmplsyn.nim";
 while (1) {
-switch (((NU8)((*P_87035).X->data[J_87037]))) {
+F.line = 164;F.filename = "ptmplsyn.nim";
+if ((NU)(J_89182) > (NU)((*P_89180).X->Sup.len)) raiseIndexError();
+switch (((NU8)((*P_89180).X->data[J_89182]))) {
 case 0:
-Limessage_45562((*P_87035).Info, ((NU8) 182), ((NimStringDesc*) &TMP193845));
+F.line = 166;F.filename = "ptmplsyn.nim";
+Limessage_46562((*P_89180).Info, ((NU8) 182), ((NimStringDesc*) &TMP89499));
 break;
 case 123:
-J_87037 += 1;
-Curly_87038 += 1;
-Llstreamwrite_71058((*P_87035).Outp, 123);
+F.line = 168;F.filename = "ptmplsyn.nim";
+J_89182 = addInt(J_89182, 1);
+F.line = 169;F.filename = "ptmplsyn.nim";
+Curly_89183 = addInt(Curly_89183, 1);
+F.line = 170;F.filename = "ptmplsyn.nim";
+Llstreamwrite_73058((*P_89180).Outp, 123);
 break;
 case 125:
-J_87037 += 1;
-if (!(Curly_87038 == 0)) goto LA31;
-goto LA29;
-LA31: ;
-if (!(0 < Curly_87038)) goto LA34;
-Curly_87038 -= 1;
-LA34: ;
-Llstreamwrite_71058((*P_87035).Outp, 125);
+F.line = 172;F.filename = "ptmplsyn.nim";
+J_89182 = addInt(J_89182, 1);
+F.line = 173;F.filename = "ptmplsyn.nim";
+if (!(Curly_89183 == 0)) goto LA33;
+F.line = 173;F.filename = "ptmplsyn.nim";
+goto LA31;
+LA33: ;
+F.line = 174;F.filename = "ptmplsyn.nim";
+if (!(0 < Curly_89183)) goto LA36;
+F.line = 174;F.filename = "ptmplsyn.nim";
+Curly_89183 = subInt(Curly_89183, 1);
+LA36: ;
+F.line = 175;F.filename = "ptmplsyn.nim";
+Llstreamwrite_73058((*P_89180).Outp, 125);
 break;
 default:
-Llstreamwrite_71058((*P_87035).Outp, (*P_87035).X->data[J_87037]);
-J_87037 += 1;
+F.line = 177;F.filename = "ptmplsyn.nim";
+if ((NU)(J_89182) > (NU)((*P_89180).X->Sup.len)) raiseIndexError();
+Llstreamwrite_73058((*P_89180).Outp, (*P_89180).X->data[J_89182]);
+F.line = 178;F.filename = "ptmplsyn.nim";
+J_89182 = addInt(J_89182, 1);
 break;
 }
-} LA29: ;
-Llstreamwrite_71058((*P_87035).Outp, 41);
-Llstreamwrite_71054((*P_87035).Outp, (*P_87035).Conc);
-Llstreamwrite_71058((*P_87035).Outp, 34);
+} LA31: ;
+F.line = 179;F.filename = "ptmplsyn.nim";
+Llstreamwrite_73058((*P_89180).Outp, 41);
+F.line = 180;F.filename = "ptmplsyn.nim";
+Llstreamwrite_73054((*P_89180).Outp, (*P_89180).Conc);
+F.line = 181;F.filename = "ptmplsyn.nim";
+Llstreamwrite_73058((*P_89180).Outp, 34);
 break;
 case 97 ... 122:
 case 65 ... 90:
 case 128 ... 255:
-Llstreamwrite_71058((*P_87035).Outp, 34);
-Llstreamwrite_71054((*P_87035).Outp, (*P_87035).Conc);
-Llstreamwrite_71054((*P_87035).Outp, (*P_87035).Tostr);
-Llstreamwrite_71058((*P_87035).Outp, 40);
+F.line = 183;F.filename = "ptmplsyn.nim";
+Llstreamwrite_73058((*P_89180).Outp, 34);
+F.line = 184;F.filename = "ptmplsyn.nim";
+Llstreamwrite_73054((*P_89180).Outp, (*P_89180).Conc);
+F.line = 185;F.filename = "ptmplsyn.nim";
+Llstreamwrite_73054((*P_89180).Outp, (*P_89180).Tostr);
+F.line = 186;F.filename = "ptmplsyn.nim";
+Llstreamwrite_73058((*P_89180).Outp, 40);
+F.line = 187;F.filename = "ptmplsyn.nim";
 while (1) {
-if (!(((NU8)((*P_87035).X->data[J_87037])) >= ((NU8)(97)) && ((NU8)((*P_87035).X->data[J_87037])) <= ((NU8)(122)) || ((NU8)((*P_87035).X->data[J_87037])) >= ((NU8)(65)) && ((NU8)((*P_87035).X->data[J_87037])) <= ((NU8)(90)) || ((NU8)((*P_87035).X->data[J_87037])) >= ((NU8)(48)) && ((NU8)((*P_87035).X->data[J_87037])) <= ((NU8)(57)) || ((NU8)((*P_87035).X->data[J_87037])) >= ((NU8)(128)) && ((NU8)((*P_87035).X->data[J_87037])) <= ((NU8)(255)) || ((NU8)((*P_87035).X->data[J_87037])) == ((NU8)(46)) || ((NU8)((*P_87035).X->data[J_87037])) == ((NU8)(95)))) goto LA36;
-Llstreamwrite_71058((*P_87035).Outp, (*P_87035).X->data[J_87037]);
-J_87037 += 1;
-} LA36: ;
-Llstreamwrite_71058((*P_87035).Outp, 41);
-Llstreamwrite_71054((*P_87035).Outp, (*P_87035).Conc);
-Llstreamwrite_71058((*P_87035).Outp, 34);
+if ((NU)(J_89182) > (NU)((*P_89180).X->Sup.len)) raiseIndexError();
+if (!(((NU8)((*P_89180).X->data[J_89182])) >= ((NU8)(97)) && ((NU8)((*P_89180).X->data[J_89182])) <= ((NU8)(122)) || ((NU8)((*P_89180).X->data[J_89182])) >= ((NU8)(65)) && ((NU8)((*P_89180).X->data[J_89182])) <= ((NU8)(90)) || ((NU8)((*P_89180).X->data[J_89182])) >= ((NU8)(48)) && ((NU8)((*P_89180).X->data[J_89182])) <= ((NU8)(57)) || ((NU8)((*P_89180).X->data[J_89182])) >= ((NU8)(128)) && ((NU8)((*P_89180).X->data[J_89182])) <= ((NU8)(255)) || ((NU8)((*P_89180).X->data[J_89182])) == ((NU8)(46)) || ((NU8)((*P_89180).X->data[J_89182])) == ((NU8)(95)))) goto LA38;
+F.line = 188;F.filename = "ptmplsyn.nim";
+if ((NU)(J_89182) > (NU)((*P_89180).X->Sup.len)) raiseIndexError();
+Llstreamwrite_73058((*P_89180).Outp, (*P_89180).X->data[J_89182]);
+F.line = 189;F.filename = "ptmplsyn.nim";
+J_89182 = addInt(J_89182, 1);
+} LA38: ;
+F.line = 190;F.filename = "ptmplsyn.nim";
+Llstreamwrite_73058((*P_89180).Outp, 41);
+F.line = 191;F.filename = "ptmplsyn.nim";
+Llstreamwrite_73054((*P_89180).Outp, (*P_89180).Conc);
+F.line = 192;F.filename = "ptmplsyn.nim";
+Llstreamwrite_73058((*P_89180).Outp, 34);
 break;
 default:
-if (!((NU8)((*P_87035).X->data[J_87037]) == (NU8)((*P_87035).Subschar))) goto LA38;
-Llstreamwrite_71058((*P_87035).Outp, (*P_87035).Subschar);
-J_87037 += 1;
-goto LA37;
-LA38: ;
-(*P_87035).Info.Col = ((NI16) (J_87037));
-Limessage_45562((*P_87035).Info, ((NU8) 164), ((NimStringDesc*) &TMP193835));
-LA37: ;
+F.line = 194;F.filename = "ptmplsyn.nim";
+if ((NU)(J_89182) > (NU)((*P_89180).X->Sup.len)) raiseIndexError();
+if (!((NU8)((*P_89180).X->data[J_89182]) == (NU8)((*P_89180).Subschar))) goto LA40;
+F.line = 195;F.filename = "ptmplsyn.nim";
+Llstreamwrite_73058((*P_89180).Outp, (*P_89180).Subschar);
+F.line = 196;F.filename = "ptmplsyn.nim";
+J_89182 = addInt(J_89182, 1);
+goto LA39;
+LA40: ;
+F.line = 198;F.filename = "ptmplsyn.nim";
+(*P_89180).Info.Col = ((NI16)chckRange(J_89182, ((NI16) -32768), ((NI16) 32767)));
+F.line = 199;F.filename = "ptmplsyn.nim";
+Limessage_46562((*P_89180).Info, ((NU8) 164), ((NimStringDesc*) &TMP89500));
+LA39: ;
 break;
 }
-goto LA26;
-LA27: ;
-Llstreamwrite_71058((*P_87035).Outp, (*P_87035).X->data[J_87037]);
-J_87037 += 1;
-LA26: ;
+goto LA28;
+LA29: ;
+F.line = 201;F.filename = "ptmplsyn.nim";
+if ((NU)(J_89182) > (NU)((*P_89180).X->Sup.len)) raiseIndexError();
+Llstreamwrite_73058((*P_89180).Outp, (*P_89180).X->data[J_89182]);
+F.line = 202;F.filename = "ptmplsyn.nim";
+J_89182 = addInt(J_89182, 1);
+LA28: ;
 break;
 }
-} LA24: ;
-Llstreamwrite_71054((*P_87035).Outp, ((NimStringDesc*) &TMP193846));
+} LA26: ;
+F.line = 203;F.filename = "ptmplsyn.nim";
+Llstreamwrite_73054((*P_89180).Outp, ((NimStringDesc*) &TMP89501));
 LA2: ;
+framePtr = framePtr->prev;
 }
-N_NIMCALL(TY71013*, Filtertmpl_87001)(TY71013* Stdin_87003, NimStringDesc* Filename_87004, TY53523* Call_87005) {
-TY71013* Result_87350;
-TY87009 P_87351;
+N_NIMCALL(TY73013*, Filtertmpl_89001)(TY73013* Stdin_89003, NimStringDesc* Filename_89004, TY54525* Call_89005) {
+TY73013* Result_89507;
+TY89009 P_89508;
 NIM_BOOL LOC2;
-Result_87350 = 0;
-memset((void*)&P_87351, 0, sizeof(P_87351));
-P_87351.Info = Newlineinfo_45574(Filename_87004, 0, 0);
-P_87351.Outp = Llstreamopen_71025(((NimStringDesc*) &TMP193827));
-P_87351.Inp = Stdin_87003;
-P_87351.Subschar = Chararg_86014(Call_87005, ((NimStringDesc*) &TMP193828), 1, 36);
-P_87351.Nimdirective = Chararg_86014(Call_87005, ((NimStringDesc*) &TMP193829), 2, 35);
-P_87351.Emit = Strarg_86020(Call_87005, ((NimStringDesc*) &TMP193830), 3, ((NimStringDesc*) &TMP193831));
-P_87351.Conc = Strarg_86020(Call_87005, ((NimStringDesc*) &TMP193832), 4, ((NimStringDesc*) &TMP193833));
-P_87351.Tostr = Strarg_86020(Call_87005, ((NimStringDesc*) &TMP193834), 5, ((NimStringDesc*) &TMP193835));
+volatile struct {TFrame* prev;NCSTRING procname;NI line;NCSTRING filename;NI len;
+} F;
+F.procname = "filterTmpl";
+F.prev = framePtr;
+F.filename = "rod/ptmplsyn.nim";
+F.line = 0;
+framePtr = (TFrame*)&F;
+F.len = 0;
+Result_89507 = 0;
+memset((void*)&P_89508, 0, sizeof(P_89508));
+F.line = 207;F.filename = "ptmplsyn.nim";
+P_89508.Info = Newlineinfo_46574(Filename_89004, 0, 0);
+F.line = 208;F.filename = "ptmplsyn.nim";
+P_89508.Outp = Llstreamopen_73025(((NimStringDesc*) &TMP89490));
+F.line = 209;F.filename = "ptmplsyn.nim";
+P_89508.Inp = Stdin_89003;
+F.line = 210;F.filename = "ptmplsyn.nim";
+P_89508.Subschar = Chararg_88014(Call_89005, ((NimStringDesc*) &TMP89512), 1, 36);
+F.line = 211;F.filename = "ptmplsyn.nim";
+P_89508.Nimdirective = Chararg_88014(Call_89005, ((NimStringDesc*) &TMP89513), 2, 35);
+F.line = 212;F.filename = "ptmplsyn.nim";
+P_89508.Emit = Strarg_88020(Call_89005, ((NimStringDesc*) &TMP89514), 3, ((NimStringDesc*) &TMP89515));
+F.line = 213;F.filename = "ptmplsyn.nim";
+P_89508.Conc = Strarg_88020(Call_89005, ((NimStringDesc*) &TMP89516), 4, ((NimStringDesc*) &TMP89517));
+F.line = 214;F.filename = "ptmplsyn.nim";
+P_89508.Tostr = Strarg_88020(Call_89005, ((NimStringDesc*) &TMP89518), 5, ((NimStringDesc*) &TMP89500));
+F.line = 215;F.filename = "ptmplsyn.nim";
 while (1) {
-LOC2 = Llstreamatend_71071(P_87351.Inp);
+LOC2 = Llstreamatend_73071(P_89508.Inp);
 if (!!(LOC2)) goto LA1;
-P_87351.X = Llstreamreadline_71048(P_87351.Inp);
-P_87351.Info.Line = (NI16)(P_87351.Info.Line + ((NI16) 1));
-Parseline_87032(&P_87351);
+F.line = 216;F.filename = "ptmplsyn.nim";
+P_89508.X = Llstreamreadline_73048(P_89508.Inp);
+F.line = 217;F.filename = "ptmplsyn.nim";
+P_89508.Info.Line = ((NI)(P_89508.Info.Line) + (NI)(((NI16) 1)));
+if (P_89508.Info.Line < -32768 || P_89508.Info.Line > 32767) raiseOverflow();
+F.line = 218;F.filename = "ptmplsyn.nim";
+Parseline_89177(&P_89508);
 } LA1: ;
-Newline_87026(&P_87351);
-Result_87350 = P_87351.Outp;
-Llstreamclose_71040(P_87351.Inp);
-return Result_87350;
+F.line = 219;F.filename = "ptmplsyn.nim";
+Newline_89030(&P_89508);
+F.line = 220;F.filename = "ptmplsyn.nim";
+Result_89507 = P_89508.Outp;
+F.line = 221;F.filename = "ptmplsyn.nim";
+Llstreamclose_73040(P_89508.Inp);
+framePtr = framePtr->prev;
+return Result_89507;
 }
 N_NOINLINE(void, ptmplsynInit)(void) {
+volatile struct {TFrame* prev;NCSTRING procname;NI line;NCSTRING filename;NI len;
+} F;
+F.procname = "ptmplsyn";
+F.prev = framePtr;
+F.filename = "rod/ptmplsyn.nim";
+F.line = 0;
+framePtr = (TFrame*)&F;
+F.len = 0;
+framePtr = framePtr->prev;
 }
 

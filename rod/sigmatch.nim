@@ -54,6 +54,7 @@ proc initCandidate(c: var TCandidate, callee: PSym, binding: PNode) =
     var typeParams = callee.ast[genericParamsPos]
     if typeParams == nil:
       debug(callee)
+      debug(callee.ast)
       InternalError("wtf")
     for i in 1..min(sonsLen(typeParams), sonsLen(binding)-1):
       var formalTypeParam = typeParams.sons[i-1].typ

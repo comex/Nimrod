@@ -37,7 +37,7 @@ type
     sstack*: TSymSeq          # a stack of symbols to process
     tstack*: TTypeSeq         # a stack of types to process
     files*: TStringSeq
-    nodes: seq[PNode] # a raw list of nodes to process
+  #nodes: seq[PNode] # a raw list of nodes to process
 
   PRodWriter = ref TRodWriter
 
@@ -72,8 +72,8 @@ proc fileIdx(w: PRodWriter, filename: string): int =
 
 proc newRodWriter(modfilename: string, crc: TCrc32, module: PSym): PRodWriter = 
   new(result)
-  result.sstack = @ []
-  result.tstack = @ []
+  result.sstack = @[]
+  result.tstack = @[]
   InitXYTable(result.index.tab)
   InitXYTable(result.imports.tab)
   result.filename = modfilename
@@ -81,8 +81,8 @@ proc newRodWriter(modfilename: string, crc: TCrc32, module: PSym): PRodWriter =
   result.module = module
   result.defines = getDefines()
   result.options = options.gOptions
-  result.files = @ []
-  result.nodes = @ []
+  result.files = @[]
+  #result.nodes = @[]
 
 proc addModDep(w: PRodWriter, dep: string) = 
   if w.modDeps != nil: app(w.modDeps, " ")
@@ -284,11 +284,10 @@ proc symStack(w: PRodWriter) =
   setlen(w.sstack, 0)
 
 proc typeStack(w: PRodWriter) = 
-  var i, L: int
-  i = 0
+  var i = 0
   while i < len(w.tstack): 
     if XYTableGet(w.index.tab, w.tstack[i].id) == InvalidKeyInt:
-      L = ropeLen(w.data)
+      var L = ropeLen(w.data)
       addToIndex(w.index, w.tstack[i].id, L)
       app(w.data, encodeType(w, w.tstack[i]))
       app(w.data, rodNL)
@@ -317,9 +316,8 @@ proc addStmt(w: PRodWriter, n: PNode) =
   processStacks(w)
 
 proc writeRod(w: PRodWriter) = 
-  var content: PRope
   processStacks(w)            # write header:
-  content = toRope("NIM:")
+  var content = toRope("NIM:")
   app(content, toRope(FileVersion))
   app(content, rodNL)
   app(content, toRope("ID:"))
@@ -377,48 +375,43 @@ proc writeRod(w: PRodWriter) =
   #MessageOut('data ' + ToString(ropeLen(w.data)));
   writeRope(content, completeGeneratedFilePath(changeFileExt(w.filename, "rod")))
 
-proc process(c: PPassContext, n: PNode): PNode = 
-  var 
-    w: PRodWriter
-  result = n
-  if c == nil: return 
-  w = PRodWriter(c)
-  w.nodes.add(n)
+#proc process(c: PPassContext, n: PNode): PNode = 
+#  result = n
+#  if c == nil: return 
+#  var w = PRodWriter(c)
+#  w.nodes.add(n)
 
-proc processReal(w : PRodWriter, n : PNode) =
-  var
-    a: PNode
-    s: PSym
+proc process(w: PRodWriter, n: PNode) : PNode =
   case n.kind
   of nkStmtList: 
-    for i in countup(0, sonsLen(n) - 1): processReal(w, n.sons[i])
+    for i in countup(0, sonsLen(n) - 1): discard process(w, n.sons[i])
   of nkTemplateDef, nkMacroDef: 
-    s = n.sons[namePos].sym
+    var s = n.sons[namePos].sym
     addInterfaceSym(w, s)
   of nkProcDef, nkMethodDef, nkIteratorDef, nkConverterDef: 
-    s = n.sons[namePos].sym
+    var s = n.sons[namePos].sym
     if s == nil: InternalError(n.info, "rodwrite.process")
     if (n.sons[codePos] != nil) or (s.magic != mNone) or
         not (sfForward in s.flags): 
       addInterfaceSym(w, s)
   of nkVarSection: 
     for i in countup(0, sonsLen(n) - 1): 
-      a = n.sons[i]
+      var a = n.sons[i]
       if a.kind == nkCommentStmt: continue 
       if a.kind != nkIdentDefs: InternalError(a.info, "rodwrite.process")
       addInterfaceSym(w, a.sons[0].sym)
   of nkConstSection: 
     for i in countup(0, sonsLen(n) - 1): 
-      a = n.sons[i]
+      var a = n.sons[i]
       if a.kind == nkCommentStmt: continue 
       if a.kind != nkConstDef: InternalError(a.info, "rodwrite.process")
       addInterfaceSym(w, a.sons[0].sym)
   of nkTypeSection: 
     for i in countup(0, sonsLen(n) - 1): 
-      a = n.sons[i]
+      var a = n.sons[i]
       if a.kind == nkCommentStmt: continue 
       if a.sons[0].kind != nkSym: InternalError(a.info, "rodwrite.process")
-      s = a.sons[0].sym
+      var s = a.sons[0].sym
       addInterfaceSym(w, s) 
       # this takes care of enum fields too
       # Note: The check for ``s.typ.kind = tyEnum`` is wrong for enum
@@ -450,8 +443,8 @@ proc myOpen(module: PSym, filename: string): PPassContext =
 
 proc myClose(c: PPassContext, n: PNode): PNode = 
   var w = PRodWriter(c)
-  for node in w.nodes.items:
-    processReal(w, node)
+  #for node in w.nodes.items:
+  #  processReal(w, node)
   rawAddInterfaceSym(w, w.module)
   writeRod(w)
   result = n
