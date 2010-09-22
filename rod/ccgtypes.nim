@@ -91,7 +91,7 @@ proc mapType(typ: PType): TCTypeKind =
       of 8: result = ctInt64
       else: internalError("mapType")
   of tyRange: result = mapType(typ.sons[0])
-  of tyPtr, tyVar, tyConst, tyRef: 
+  of tyPtr, tyVar, tyRef: 
     case typ.sons[0].kind
     of tyOpenArray, tyArrayConstr, tyArray: result = ctArray
     else: result = ctPtr
@@ -122,7 +122,7 @@ proc isInvalidReturnType(rettype: PType): bool =
     case mapType(rettype)
     of ctArray: 
       result = not (skipTypes(rettype, abstractInst).kind in
-          {tyVar, tyConst, tyRef, tyPtr})
+          {tyVar, tyRef, tyPtr})
     of ctStruct: 
       result = needsComplexAssignment(skipTypes(rettype, abstractInst))
     else: result = false
@@ -184,15 +184,12 @@ proc genProcParams(m: BModule, t: PType, rettype, params: var PRope,
     if t.n.sons[i].kind != nkSym: InternalError(t.n.info, "genProcParams")
     var param = t.n.sons[i].sym
     fillLoc(param.loc, locParam, param.typ, mangleName(param), OnStack)
-    
     app(params, getTypeDescAux(m, param.typ, check))
     if ccgIntroducedPtr(param): 
       app(params, "*")
       incl(param.loc.flags, lfIndirect)
       param.loc.s = OnUnknown
     app(params, " ")
-    if lfIndirect notin param.loc.flags:
-      app(params, " const ")
     app(params, param.loc.r)  # declare the len field for open arrays:
     var arr = param.typ
     if arr.kind == tyVar: arr = arr.sons[0]
@@ -385,7 +382,7 @@ proc pushType(m: BModule, typ: PType) =
 proc getTypeDescAux(m: BModule, typ: PType, check: var TIdSet): PRope = 
   # returns only the type's name
   var 
-    rettype, desc, recdesc: PRope
+    name, rettype, desc, recdesc: PRope
     n: biggestInt
     t, et: PType
   t = getUniqueType(typ)
@@ -398,34 +395,27 @@ proc getTypeDescAux(m: BModule, typ: PType, check: var TIdSet): PRope =
     # XXX: this BUG is hard to fix -> we need to introduce helper structs,
     # but determining when this needs to be done is hard. We should split
     # C type generation into an analysis and a code generation phase somehow.
-  case t.kind
-  of tyRef, tyPtr, tyVar, tyConst: 
-    if t.kind == tyConst: 
-      et = getUniqueType(t.sons[0].sons[0])
-    else:
-      et = getUniqueType(t.sons[0])
+  case t.Kind
+  of tyRef, tyPtr, tyVar: 
+    et = getUniqueType(t.sons[0])
     if et.kind in {tyArrayConstr, tyArray, tyOpenArray}: 
       et = getUniqueType(elemType(et))
     case et.kind
     of tyObject, tyTuple: 
       # no restriction! We have a forward declaration for structs
-      result = getTypeForward(m, et)
-      if t.kind == tyConst: result = con(result, " const ")
-      result = con(result, "*")
+      name = getTypeForward(m, et)
+      result = con(name, "*")
       IdTablePut(m.typeCache, t, result)
       pushType(m, et)
     of tySequence: 
       # no restriction! We have a forward declaration for structs
-      result = getTypeForward(m, et)
-      if t.kind == tyConst: result = con(result, " const ")
-      result = con(result, "**")
+      name = getTypeForward(m, et)
+      result = con(name, "**")
       IdTablePut(m.typeCache, t, result)
       pushType(m, et)
     else: 
       # else we have a strong dependency  :-(
-      result = getTypeDescAux(m, et, check)
-      if t.kind == tyConst: result = con(result, " const ")
-      result = con(result, "*")
+      result = con(getTypeDescAux(m, et, check), "*")
       IdTablePut(m.typeCache, t, result)
   of tyOpenArray: 
     et = getUniqueType(t.sons[0])
@@ -764,7 +754,7 @@ proc genTypeInfo(m: BModule, typ: PType): PRope =
   of tyPointer, tyProc, tyBool, tyChar, tyCString, tyString, tyInt..tyFloat128, 
      tyVar: 
     genTypeInfoAuxBase(m, t, result, toRope("0"))
-  of tyRef, tyPtr, tySequence, tyRange, tyConst: 
+  of tyRef, tyPtr, tySequence, tyRange: 
     genTypeInfoAux(m, t, result)
   of tyArrayConstr, tyArray: 
     genArrayInfo(m, t, result)

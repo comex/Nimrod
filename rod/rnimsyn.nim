@@ -377,7 +377,6 @@ proc lsub(n: PNode): int =
   of nkRefTy: result = lsub(n.sons[0]) + len("ref_")
   of nkPtrTy: result = lsub(n.sons[0]) + len("ptr_")
   of nkVarTy: result = lsub(n.sons[0]) + len("var_")
-  of nkConstTy: result = lsub(n.sons[0]) + len("const_")
   of nkDistinctTy: result = lsub(n.sons[0]) + len("Distinct_")
   of nkTypeDef: result = lsons(n) + 3
   of nkOfInherit: result = lsub(n.sons[0]) + len("of_")
@@ -848,9 +847,6 @@ proc gsub(g: var TSrcGen, n: PNode, c: TContext) =
     gsub(g, n.sons[0])
   of nkVarTy: 
     putWithSpace(g, tkVar, "var")
-    gsub(g, n.sons[0])
-  of nkConstTy: 
-    putWithSpace(g, tkConst, "const")
     gsub(g, n.sons[0])
   of nkDistinctTy: 
     putWithSpace(g, tkDistinct, "distinct")
