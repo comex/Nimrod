@@ -142,25 +142,20 @@ when have_backtrace:
   proc auxWriteStackTraceWithBacktrace(s : var string) =
     # This is allowed to be expensive since it only happens during crashes (but this way you don't need manual stack tracing)
     var size = backtrace(cast[ptr pointer](addr(tempAddresses)), 128)
-    var enabled = false
-    for i in 0..size-1:
+    for i in countdown(size-1, 0):
       var dlresult = dladdr(tempAddresses[i], addr(tempDlInfo))
-      if enabled:
-        if dlresult != 0:
-          var oldLen = s.len
-          add(s, tempDlInfo.dli_fname)
-          if tempDlInfo.dli_sname != nil:
-            for k in 1..max(1, 25-(s.len-oldLen)): add(s, ' ')
-            add(s, tempDlInfo.dli_sname)
-        else:
-          add(s, '?')
-        add(s, stackTraceNewLine)
+      if dlresult != 0:
+        if tempDlInfo.dli_sname != nil and $tempDlInfo.dli_sname == "signalHandler":
+          # we're past what the user is interested in
+          break
+        var oldLen = s.len
+        add(s, tempDlInfo.dli_fname)
+        if tempDlInfo.dli_sname != nil:
+          for k in 1..max(1, 25-(s.len-oldLen)): add(s, ' ')
+          add(s, tempDlInfo.dli_sname)
       else:
-        if dlresult != 0 and tempDlInfo.dli_sname != nil and $tempDlInfo.dli_sname == "signalHandler":
-          # Once we're past signalHandler, we're at what the user is interested in
-          enabled = true
-    #framePtr
-
+        add(s, '?')
+      add(s, stackTraceNewLine)
 
 proc rawWriteStackTrace(s: var string) =
   when compileOption("stacktrace") or compileOption("linetrace"):
@@ -172,7 +167,7 @@ proc rawWriteStackTrace(s: var string) =
       add(s, stackTraceNewLine)
       auxWriteStackTrace(framePtr, s)
   else:
-    when have_backtrace: # ask Araq how to make this actually detect
+    when have_backtrace:
       add(s, "Traceback from system (most recent call last)")
       add(s, stackTraceNewLine)
       auxWriteStackTraceWithBacktrace(s)
